@@ -16,6 +16,8 @@ namespace HostedNetworkManager
 
         public HostedNetworkManager()
         {
+            uint returnValue = 0;
+
             var clientHandle = IntPtr.Zero;
             uint dataSize;
             var enabled = IntPtr.Zero;
@@ -29,7 +31,7 @@ namespace HostedNetworkManager
 
                 uint negotiatedVersion;
 
-                var returnValue = WlanApi.WlanOpenHandle(
+                returnValue = WlanApi.WlanOpenHandle(
                     WlanApiVersion.Version,
                     IntPtr.Zero,
                     out negotiatedVersion,
@@ -126,7 +128,33 @@ namespace HostedNetworkManager
             }
             finally
             {
+                if (returnValue != 0 && this.wlanHandle != IntPtr.Zero)
+                {
+                    WlanApi.WlanCloseHandle(this.wlanHandle, IntPtr.Zero);
+                    this.wlanHandle = IntPtr.Zero;
+                }
+
                 Unlock();
+
+                if (enabled != IntPtr.Zero)
+                {
+                    WlanApi.WlanFreeMemory(enabled);
+                }
+
+                if (connectionSettings != IntPtr.Zero)
+                {
+                    WlanApi.WlanFreeMemory(connectionSettings);
+                }
+
+                if (securitySettings != IntPtr.Zero)
+                {
+                    WlanApi.WlanFreeMemory(securitySettings);
+                }
+
+                if (status != IntPtr.Zero)
+                {
+                    WlanApi.WlanFreeMemory(status);
+                }
             }
         }
 

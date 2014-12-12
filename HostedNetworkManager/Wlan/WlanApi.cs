@@ -7,6 +7,23 @@ namespace HostedNetworkManager.Wlan
     {
         const string WlanApiDll = "Wlanapi.dll";
 
+        #region WlanCloseHandle
+
+        [DllImport(WlanApiDll)]
+        internal static extern uint WlanCloseHandle(
+            [In] IntPtr clientHandle,
+            IntPtr reserved);
+
+        #endregion WlanCloseHandle
+
+        #region WlanFreeMemory
+
+        [DllImport(WlanApiDll)]
+        internal static extern void WlanFreeMemory(
+            [In] IntPtr memory);
+
+        #endregion WlanFreeMemory
+
         #region WlanHostedNetworkInitSettings
 
         [DllImport(WlanApiDll)]
