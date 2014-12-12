@@ -1,25 +1,27 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Permissions;
 using System.Threading;
 using HostedNetworkManager.Wlan;
 
 namespace HostedNetworkManager
 {
-    public class HostedNetworkManager
+    public class HostedNetworkManager : IDisposable
     {
         readonly object l = new object();
 
-        private readonly IntPtr wlanHandle;
-        private readonly WlanHostedNetworkConnectionSettings connectionSettings;
-        private readonly WlanHostedNetworkSecuritySettings securitySettings;
-        private WlanHostedNetworkState hostedNetworkState;
+        private readonly WlanHandle _wlanHandle;
+        private WlanHostedNetworkConnectionSettings _connectionSettings;
+        private WlanHostedNetworkSecuritySettings _securitySettings;
+        private WlanHostedNetworkState _hostedNetworkState;
 
         public HostedNetworkManager()
         {
             uint returnValue = 0;
 
-            var clientHandle = IntPtr.Zero;
-            uint dataSize;
+            
             var enabled = IntPtr.Zero;
             var connectionSettings = IntPtr.Zero;
             var securitySettings = IntPtr.Zero;
@@ -31,6 +33,7 @@ namespace HostedNetworkManager
 
                 uint negotiatedVersion;
 
+                WlanHandle clientHandle;
                 returnValue = WlanApi.WlanOpenHandle(
                     WlanApiVersion.Version,
                     IntPtr.Zero,
@@ -44,7 +47,7 @@ namespace HostedNetworkManager
                     throw new WlanException("Wlan API version negotiation failed.");
                 }
 
-                this.wlanHandle = clientHandle;
+                this._wlanHandle = clientHandle;
 
                 WlanNotificationSource previousNotificationSource;
                 returnValue = WlanApi.WlanRegisterNotification(
@@ -66,6 +69,7 @@ namespace HostedNetworkManager
 
                 Utilities.ThrowOnError(returnValue);
 
+                uint dataSize;
                 WlanOpcodeValueType opcodeValueType;
                 returnValue = WlanApi.WlanHostedNetworkQueryProperty(
                     clientHandle,
@@ -95,7 +99,7 @@ namespace HostedNetworkManager
                     Utilities.ThrowOnError(13);
                 }
 
-                this.connectionSettings =
+                this._connectionSettings =
                     (WlanHostedNetworkConnectionSettings)
                         Marshal.PtrToStructure(connectionSettings, typeof (WlanHostedNetworkConnectionSettings));
 
@@ -109,7 +113,7 @@ namespace HostedNetworkManager
 
                 Utilities.ThrowOnError(returnValue);
 
-                this.securitySettings =
+                this._securitySettings =
                     (WlanHostedNetworkSecuritySettings)
                         Marshal.PtrToStructure(securitySettings, typeof (WlanHostedNetworkSecuritySettings));
 
@@ -124,14 +128,13 @@ namespace HostedNetworkManager
                     (WlanHostedNetworkStatus)
                         Marshal.PtrToStructure(status, typeof (WlanHostedNetworkStatus));
 
-                hostedNetworkState = wlanHostedNetworkStatus.HostedNetworkState;
+                _hostedNetworkState = wlanHostedNetworkStatus.HostedNetworkState;
             }
             finally
             {
-                if (returnValue != 0 && this.wlanHandle != IntPtr.Zero)
+                if (returnValue != 0 && !this._wlanHandle.IsInvalid)
                 {
-                    WlanApi.WlanCloseHandle(this.wlanHandle, IntPtr.Zero);
-                    this.wlanHandle = IntPtr.Zero;
+                    this._wlanHandle.Dispose();
                 }
 
                 Unlock();
@@ -158,6 +161,21 @@ namespace HostedNetworkManager
             }
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        [SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_wlanHandle != null && !_wlanHandle.IsInvalid)
+            {
+                _wlanHandle.Dispose();
+            }
+        }
+
         public bool IsHostedNetworkAllowed { get; private set; }
 
         public event EventHandler HostedNetworkEnabled;
@@ -167,6 +185,127 @@ namespace HostedNetworkManager
 
         public event EventHandler<DeviceConnectedEventArgs> DeviceConnected;
         public event EventHandler<DeviceDisconnectedEventArgs> DeviceDisconnected;
+
+        public string GetHostedNetworkName()
+        {
+            return this._connectionSettings.HostedNetworkSSID.SSID;
+        }
+
+        public void SetHostedNetworkName(string name)
+        {
+            var newSettings = new WlanHostedNetworkConnectionSettings
+            {
+                HostedNetworkSSID = new Dot11SSID {SSID = name, SSIDLength = (uint) name.Length},
+                MaxNumberOfPeers = this._connectionSettings.MaxNumberOfPeers
+            };
+
+            WlanHostedNetworkReason faileReason;
+            IntPtr newSettingPtr = Marshal.AllocHGlobal(Marshal.SizeOf(newSettings));
+            Marshal.StructureToPtr(newSettings, newSettingPtr, false);
+
+            Utilities.ThrowOnError(
+                WlanApi.WlanHostedNetworkSetProperty(
+                    this._wlanHandle,
+                    WlanHostedNetworkOpcode.ConnectionSettings,
+                    (uint)Marshal.SizeOf(newSettings),
+                    newSettingPtr,
+                    out faileReason,
+                    IntPtr.Zero));
+        }
+
+        public string GetHostedNetworkKey()
+        {
+            string result = string.Empty;
+
+            uint keyLength;
+            IntPtr keyData;
+            bool isPassPhrase;
+            bool isPersistent;
+            WlanHostedNetworkReason failReason;
+
+            uint error = WlanApi.WlanHostedNetworkQuerySecondaryKey(
+                this._wlanHandle,
+                out keyLength,
+                out keyData,
+                out isPassPhrase,
+                out isPersistent,
+                out failReason,
+                IntPtr.Zero);
+
+            Utilities.ThrowOnError(error);
+
+            if (keyLength != 0 && keyData != IntPtr.Zero)
+            {
+                result = Marshal.PtrToStringAnsi(keyData, (int)keyLength);
+                WlanApi.WlanFreeMemory(keyData);
+            }
+
+            return result;
+        }
+
+        public void SetHostedNetworkKey(string key)
+        {
+            WlanHostedNetworkReason failReason;
+
+            uint error = WlanApi.WlanHostedNetworkSetSecondaryKey(
+                this._wlanHandle,
+                (uint)key.Length + 1,
+                key,
+                true,
+                true,
+                out failReason,
+                IntPtr.Zero);
+
+            Utilities.ThrowOnError(error);
+        }
+
+        public void StartHostedNetwork()
+        {
+            if (_hostedNetworkState == WlanHostedNetworkState.Active)
+            {
+                return;
+            }
+
+            Lock();
+
+            try
+            {
+                WlanHostedNetworkReason failReason;
+                Utilities.ThrowOnError(
+                    WlanApi.WlanHostedNetworkStartUsing(
+                        this._wlanHandle,
+                        out failReason,
+                        IntPtr.Zero));
+            }
+            finally
+            {
+                Unlock();
+            }
+        }
+
+        public void StopHostedNetwork()
+        {
+            if (_hostedNetworkState != WlanHostedNetworkState.Active)
+            {
+                return;
+            }
+
+            Lock();
+
+            try
+            {
+                WlanHostedNetworkReason failReason;
+                Utilities.ThrowOnError(
+                    WlanApi.WlanHostedNetworkStartUsing(
+                        this._wlanHandle,
+                        out failReason,
+                        IntPtr.Zero));
+            }
+            finally
+            {
+                Unlock();
+            }
+        }
 
         private void Lock()
         {
@@ -242,6 +381,8 @@ namespace HostedNetworkManager
 
         void OnHostedNetworkEnabled()
         {
+            _hostedNetworkState = WlanHostedNetworkState.Idle;
+
             if (HostedNetworkEnabled != null)
             {
                 HostedNetworkEnabled(this, EventArgs.Empty);
@@ -250,6 +391,8 @@ namespace HostedNetworkManager
 
         void OnHostedNetworkStarted()
         {
+            _hostedNetworkState = WlanHostedNetworkState.Active;
+
             if (HostedNetworkStarted != null)
             {
                 HostedNetworkStarted(this, EventArgs.Empty);
@@ -258,6 +401,8 @@ namespace HostedNetworkManager
 
         void OnHostedNetworkStopped()
         {
+            _hostedNetworkState = WlanHostedNetworkState.Idle;
+
             if (HostedNetworkStopped != null)
             {
                 HostedNetworkStopped(this, EventArgs.Empty);
@@ -266,6 +411,8 @@ namespace HostedNetworkManager
 
         void OnHostedNetworkDisabled()
         {
+            _hostedNetworkState = WlanHostedNetworkState.Unavailable;
+
             if (HostedNetworkDisabled != null)
             {
                 HostedNetworkDisabled(this, EventArgs.Empty);

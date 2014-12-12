@@ -1,6 +1,4 @@
-﻿using HostedNetworkManager;
-
-namespace TestApp
+﻿namespace TestApp
 {
     class Program
     {

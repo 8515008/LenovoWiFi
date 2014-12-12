@@ -49,6 +49,7 @@
     <Compile Include="Wlan\WlanEnums.cs" />
     <Compile Include="Wlan\WlanEventArgs.cs" />
     <Compile Include="Wlan\WlanException.cs" />
+    <Compile Include="Wlan\WlanHandle.cs" />
     <Compile Include="Wlan\WlanStructs.cs" />
   </ItemGroup>
   <ItemGroup />
