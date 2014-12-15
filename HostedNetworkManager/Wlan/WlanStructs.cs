@@ -6,7 +6,7 @@ namespace HostedNetworkManager.Wlan
     internal struct Dot11SSID
     {
         internal uint SSIDLength;
-        [MarshalAs(UnmanagedType.LPTStr, SizeConst = 32)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         internal string SSID;
     }
 
@@ -25,7 +25,7 @@ namespace HostedNetworkManager.Wlan
 
     internal struct WlanHostedNetworkPeerState
     {
-        [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeConst = 6)]
+        [MarshalAs(UnmanagedType.ByValArray, ArraySubType = UnmanagedType.U1, SizeConst = 6)]
         internal byte[] PeerMacAddress;
         internal WlanHostedNetworkPeerAuthState PeerAuthState;
     }
@@ -47,11 +47,12 @@ namespace HostedNetworkManager.Wlan
     {
         internal WlanHostedNetworkState HostedNetworkState;
         internal Guid IPDeviceID;
-        [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeConst = 6)]
+        [MarshalAs(UnmanagedType.ByValArray, ArraySubType = UnmanagedType.U1, SizeConst = 6)]
         internal byte[] WlanHostedNetworkBSSID;
         internal Dot11PhyType Dot11PhyType;
         internal uint ChannelFrequency;
         internal uint NumberOfPeers;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
         internal WlanHostedNetworkPeerState[] PeerList;
     }
 

@@ -4,13 +4,13 @@ namespace HostedNetworkManager.Wlan
 {
     enum Dot11AuthAlgorithm : uint
     {
-        Open,
-        SharedKey,
-        WPA,
-        WPAPSK,
-        WPANone,
-        RSNA,
-        RSNAPSK,
+        Open = 1,
+        SharedKey = 2,
+        WPA = 3,
+        WPAPSK = 4,
+        WPANone = 5,
+        RSNA = 6,
+        RSNAPSK = 7,
         IHVStart = 0x80000000,
         IHVEnd = 0xFFFFFFFF
     }

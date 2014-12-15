@@ -111,7 +111,11 @@ namespace HostedNetworkManager
                     out opcodeValueType,
                     IntPtr.Zero);
 
-                Utilities.ThrowOnError(returnValue);
+                if (securitySettings == IntPtr.Zero
+                    || Marshal.SizeOf(typeof(WlanHostedNetworkSecuritySettings)) < dataSize)
+                {
+                    Utilities.ThrowOnError(13);
+                }
 
                 this._securitySettings =
                     (WlanHostedNetworkSecuritySettings)
@@ -124,7 +128,7 @@ namespace HostedNetworkManager
 
                 Utilities.ThrowOnError(returnValue);
 
-                WlanHostedNetworkStatus wlanHostedNetworkStatus =
+                var wlanHostedNetworkStatus =
                     (WlanHostedNetworkStatus)
                         Marshal.PtrToStructure(status, typeof (WlanHostedNetworkStatus));
 
@@ -211,6 +215,8 @@ namespace HostedNetworkManager
                     newSettingPtr,
                     out faileReason,
                     IntPtr.Zero));
+
+            this._connectionSettings = newSettings;
         }
 
         public string GetHostedNetworkKey()
@@ -371,7 +377,7 @@ namespace HostedNetworkManager
                             }
                             if (peerStateChange.NewState.PeerAuthState == WlanHostedNetworkPeerAuthState.Invalid)
                             {
-                                OnDeviceDisconnected(peerStateChange.NewState.PeerMacAddress);
+                                // OnDeviceDisconnected(peerStateChange.NewState.PeerMacAddress);
                             }
                         }
                         break;
@@ -423,9 +429,9 @@ namespace HostedNetworkManager
         {
             if (DeviceConnected != null)
             {
-                var args = new DeviceConnectedEventArgs(peerState.PeerMacAddress,
-                    Convert.ToBoolean(peerState.PeerAuthState));
-                DeviceConnected(this, args);
+                //var args = new DeviceConnectedEventArgs(peerState.PeerMacAddress,
+                //    Convert.ToBoolean(peerState.PeerAuthState));
+                //DeviceConnected(this, args);
             }
         }
 
