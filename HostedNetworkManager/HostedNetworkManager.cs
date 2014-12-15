@@ -1,8 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Security;
 using System.Security.Permissions;
+using System.Text;
 using System.Threading;
 using HostedNetworkManager.Wlan;
 
@@ -197,6 +196,13 @@ namespace HostedNetworkManager
 
         public void SetHostedNetworkName(string name)
         {
+            const int dot11SSIDMaxLength = 32;
+
+            if (Encoding.ASCII.GetByteCount(name) > dot11SSIDMaxLength)
+            {
+                throw new ArgumentOutOfRangeException("name", "The size of SSID should be less than 32 bytes.");
+            }
+
             var newSettings = new WlanHostedNetworkConnectionSettings
             {
                 HostedNetworkSSID = new Dot11SSID {SSID = name, SSIDLength = (uint) name.Length},
@@ -243,6 +249,12 @@ namespace HostedNetworkManager
             if (keyLength != 0 && keyData != IntPtr.Zero)
             {
                 result = Marshal.PtrToStringAnsi(keyData, (int)keyLength);
+
+                if (isPassPhrase)
+                {
+                    result = result.Substring(0, (int)keyLength - 1);
+                }
+
                 WlanApi.WlanFreeMemory(keyData);
             }
 
@@ -251,12 +263,19 @@ namespace HostedNetworkManager
 
         public void SetHostedNetworkKey(string key)
         {
+            var keyLength = Encoding.ASCII.GetByteCount(key);
+
+            if (keyLength < 8 || keyLength > 63)
+            {
+                throw new ArgumentOutOfRangeException("key", "The size of key should be between 8 and 64.");
+            }
+
             WlanHostedNetworkReason failReason;
 
             uint error = WlanApi.WlanHostedNetworkSetSecondaryKey(
                 this._wlanHandle,
                 (uint)key.Length + 1,
-                key,
+                Encoding.ASCII.GetBytes(key),
                 true,
                 true,
                 out failReason,
@@ -429,9 +448,9 @@ namespace HostedNetworkManager
         {
             if (DeviceConnected != null)
             {
-                //var args = new DeviceConnectedEventArgs(peerState.PeerMacAddress,
-                //    Convert.ToBoolean(peerState.PeerAuthState));
-                //DeviceConnected(this, args);
+                var args = new DeviceConnectedEventArgs(peerState.PeerMacAddress,
+                    Convert.ToBoolean(peerState.PeerAuthState));
+                DeviceConnected(this, args);
             }
         }
 

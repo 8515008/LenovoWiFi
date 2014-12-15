@@ -92,7 +92,7 @@ namespace HostedNetworkManager.Wlan
         internal static extern uint WlanHostedNetworkSetSecondaryKey(
             [In] WlanHandle clientHandle,
             [In] uint keyLength,
-            [In, MarshalAs(UnmanagedType.LPTStr)] string keyData,
+            [In] byte[] keyData,
             [In] bool isPassPhrase,
             [In] bool isPersistent,
             [Out] out WlanHostedNetworkReason failReason,
