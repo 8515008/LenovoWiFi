@@ -346,7 +346,7 @@ namespace Lenovo.WiFi
             {
                 WlanHostedNetworkReason failReason;
                 Utilities.ThrowOnError(
-                    WlanApi.WlanHostedNetworkStartUsing(
+                    WlanApi.WlanHostedNetworkStopUsing(
                         this._wlanHandle,
                         out failReason,
                         IntPtr.Zero));
