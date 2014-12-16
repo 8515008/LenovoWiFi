@@ -295,11 +295,6 @@ namespace HostedNetworkManager
 
         public void StartHostedNetwork()
         {
-            if (_hostedNetworkState == WlanHostedNetworkState.Active)
-            {
-                return;
-            }
-
             if (!_icsManager.IsServiceStatusValid)
             {
                 throw new ICSException("The service of ICS is in pending state.");
@@ -330,7 +325,7 @@ namespace HostedNetworkManager
                 var privateGuid = _hostedNetworkInterfaceGuid;
                 var publicGuid = GetPreferredPublicGuid(privateGuid);
 
-                _icsManager.EnableSharing(publicGuid.ToString(), privateGuid.ToString());
+                _icsManager.EnableSharing(publicGuid, privateGuid);
             }
             finally
             {

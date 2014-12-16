@@ -22,16 +22,16 @@ namespace HostedNetworkManager.ICS
             _icsService = new ServiceController("SharedAccess");
         }
 
-        public Dictionary<string, ICSConnection> Connections
+        public Dictionary<Guid, ICSConnection> Connections
         {
             get
             {
-                var dictionary = new Dictionary<string, ICSConnection>();
+                var dictionary = new Dictionary<Guid, ICSConnection>();
 
                 foreach (INetConnection conn in this._netSharingManager.EnumEveryConnection)
                 {
                     var icsConnection = new ICSConnection(this._netSharingManager, conn);
-                    dictionary.Add(icsConnection.InterfaceId, icsConnection);
+                    dictionary.Add(new Guid(icsConnection.InterfaceId), icsConnection);
                 }
 
                 return dictionary;
@@ -47,7 +47,7 @@ namespace HostedNetworkManager.ICS
             }
         }
 
-        internal void EnableSharing(string publicGuid, string privateGuid)
+        internal void EnableSharing(Guid publicGuid, Guid privateGuid)
         {
             if (!this.Connections.ContainsKey(publicGuid))
             {
