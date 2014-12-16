@@ -1,20 +1,26 @@
 ﻿using System;
+using System.Linq;
+using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading;
+using HostedNetworkManager.ICS;
 using HostedNetworkManager.Wlan;
 
 namespace HostedNetworkManager
 {
     public class HostedNetworkManager : IDisposable
     {
-        readonly object l = new object();
+        readonly object _l = new object();
 
         private readonly WlanHandle _wlanHandle;
         private WlanHostedNetworkConnectionSettings _connectionSettings;
         private WlanHostedNetworkSecuritySettings _securitySettings;
+        private Guid _hostedNetworkInterfaceGuid;
         private WlanHostedNetworkState _hostedNetworkState;
+
+        private ICSManager _icsManager;
 
         public HostedNetworkManager()
         {
@@ -131,7 +137,10 @@ namespace HostedNetworkManager
                     (WlanHostedNetworkStatus)
                         Marshal.PtrToStructure(status, typeof (WlanHostedNetworkStatus));
 
+                _hostedNetworkInterfaceGuid = wlanHostedNetworkStatus.IPDeviceID;
                 _hostedNetworkState = wlanHostedNetworkStatus.HostedNetworkState;
+
+                _icsManager = new ICSManager();
             }
             finally
             {
@@ -291,16 +300,37 @@ namespace HostedNetworkManager
                 return;
             }
 
+            if (!_icsManager.IsServiceStatusValid)
+            {
+                throw new ICSException("The service of ICS is in pending state.");
+            }
+
             Lock();
 
             try
             {
                 WlanHostedNetworkReason failReason;
+
+                if (_hostedNetworkState == WlanHostedNetworkState.Active)
+                {
+                    Utilities.ThrowOnError(
+                    WlanApi.WlanHostedNetworkForceStop(
+                        this._wlanHandle,
+                        out failReason,
+                        IntPtr.Zero
+                    ));
+                }
+
                 Utilities.ThrowOnError(
                     WlanApi.WlanHostedNetworkStartUsing(
                         this._wlanHandle,
                         out failReason,
                         IntPtr.Zero));
+
+                var privateGuid = _hostedNetworkInterfaceGuid;
+                var publicGuid = GetPreferredPublicGuid(privateGuid);
+
+                _icsManager.EnableSharing(publicGuid.ToString(), privateGuid.ToString());
             }
             finally
             {
@@ -332,14 +362,36 @@ namespace HostedNetworkManager
             }
         }
 
+        private Guid GetPreferredPublicGuid(Guid privateGuid)
+        {
+            var nics = NetworkInterface.GetAllNetworkInterfaces();
+
+            var nic = nics.FirstOrDefault(n => n.NetworkInterfaceType == NetworkInterfaceType.Ethernet
+                                               && n.OperationalStatus == OperationalStatus.Up);
+
+            if (nic == null)
+            {
+                nic = nics.FirstOrDefault(n => n.NetworkInterfaceType == NetworkInterfaceType.Ethernet
+                                                && n.OperationalStatus == OperationalStatus.Up
+                                                && new Guid(n.Id) != privateGuid);
+            }
+
+            if (nic == null)
+            {
+                throw new ApplicationException("No preferred public network is available.");
+            }
+
+            return new Guid(nic.Id);
+        }
+
         private void Lock()
         {
-            Monitor.Enter(l);
+            Monitor.Enter(_l);
         }
 
         private void Unlock()
         {
-            Monitor.Exit(l);
+            Monitor.Exit(_l);
         }
 
         private void OnNotification(WlanNotificationData notificationData, IntPtr context)
@@ -396,7 +448,7 @@ namespace HostedNetworkManager
                             }
                             if (peerStateChange.NewState.PeerAuthState == WlanHostedNetworkPeerAuthState.Invalid)
                             {
-                                // OnDeviceDisconnected(peerStateChange.NewState.PeerMacAddress);
+                                OnDeviceDisconnected(peerStateChange.NewState.PeerMacAddress);
                             }
                         }
                         break;

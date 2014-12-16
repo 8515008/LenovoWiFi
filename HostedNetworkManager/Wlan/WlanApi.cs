@@ -26,6 +26,16 @@ namespace HostedNetworkManager.Wlan
 
         #endregion WlanFreeMemory
 
+        #region WlanHostedNetworkForceStop
+
+        [DllImport(WlanApiDll)]
+        internal static extern uint WlanHostedNetworkForceStop(
+            [In] WlanHandle clientHandle,
+            [Out] out WlanHostedNetworkReason failReason,
+            IntPtr reserved);
+
+        #endregion
+
         #region WlanHostedNetworkInitSettings
 
         [DllImport(WlanApiDll)]
