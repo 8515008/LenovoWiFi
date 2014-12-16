@@ -1,11 +1,13 @@
-﻿namespace Lenovo.WiFi
+﻿using System.ComponentModel;
+
+namespace Lenovo.WiFi
 {
     partial class WindowsService
     {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.

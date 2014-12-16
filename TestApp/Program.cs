@@ -1,7 +1,6 @@
 ﻿using System;
-using Lenovo.WiFi;
 
-namespace TestApp
+namespace Lenovo.WiFi
 {
     class Program
     {

@@ -2,9 +2,8 @@
 
 namespace Lenovo.WiFi
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IDaemonService" in both code and config file together.
     [ServiceContract]
-    public interface IDaemonService
+    public interface IHostedNetworkService
     {
         [OperationContract]
         int GetHostedNetworkName(out string name);

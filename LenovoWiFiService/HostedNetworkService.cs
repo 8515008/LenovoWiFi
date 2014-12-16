@@ -2,8 +2,7 @@
 
 namespace Lenovo.WiFi
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "DaemonService" in both code and config file together.
-    public class DaemonService : IDaemonService
+    public class HostedNetworkService : IHostedNetworkService
     {
         readonly HostedNetworkManager _hostedNetworkManager = new HostedNetworkManager();
 

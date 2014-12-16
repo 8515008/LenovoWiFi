@@ -1,4 +1,5 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.ServiceModel;
 using System.ServiceProcess;
 
 namespace Lenovo.WiFi
@@ -19,7 +20,9 @@ namespace Lenovo.WiFi
                 _serviceHost.Close();
             }
 
-            _serviceHost = new ServiceHost(typeof(DaemonService));
+            _serviceHost = new ServiceHost(typeof(HostedNetworkService), new Uri("net.pipe://localhost/LenovoWiFiService/HostedNetworkService"));
+            _serviceHost.AddServiceEndpoint(typeof (IHostedNetworkService), new NetNamedPipeBinding(), "Pipe");
+
             _serviceHost.Open();
         }
 

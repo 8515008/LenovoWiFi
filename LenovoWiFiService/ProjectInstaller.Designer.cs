@@ -1,11 +1,14 @@
-﻿namespace Lenovo.WiFi
+﻿using System.ComponentModel;
+using System.ServiceProcess;
+
+namespace Lenovo.WiFi
 {
     partial class ProjectInstaller
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary> 
         /// Clean up any resources being used.
@@ -52,7 +55,7 @@
 
         #endregion
 
-        private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller;
-        private System.ServiceProcess.ServiceInstaller serviceInstaller;
+        private ServiceProcessInstaller serviceProcessInstaller;
+        private ServiceInstaller serviceInstaller;
     }
 }
