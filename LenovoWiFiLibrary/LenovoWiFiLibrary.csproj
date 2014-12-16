@@ -7,8 +7,8 @@
     <ProjectGuid>{5366D6EC-2EA6-443E-8871-475B41021F8B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HostedNetworkManager</RootNamespace>
-    <AssemblyName>HostedNetworkManager</AssemblyName>
+    <RootNamespace>Lenovo.WiFi</RootNamespace>
+    <AssemblyName>LenovoWiFiLibrary</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

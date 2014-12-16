@@ -1,4 +1,5 @@
 ﻿using System;
+using Lenovo.WiFi;
 
 namespace TestApp
 {
@@ -6,7 +7,7 @@ namespace TestApp
     {
         static void Main(string[] args)
         {
-            var manager = new HostedNetworkManager.HostedNetworkManager();
+            var manager = new HostedNetworkManager();
             manager.SetHostedNetworkName("Lenovo Wi-Fi");
             Console.WriteLine(manager.GetHostedNetworkName());
 

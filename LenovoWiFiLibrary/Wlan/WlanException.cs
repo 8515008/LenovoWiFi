@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace HostedNetworkManager.Wlan
+namespace Lenovo.WiFi.Wlan
 {
     public class WlanException : ApplicationException
     {

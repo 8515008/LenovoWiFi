@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 
-namespace HostedNetworkManager
+namespace Lenovo.WiFi
 {
     class Utilities
     {

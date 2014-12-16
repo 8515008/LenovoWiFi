@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ServiceProcess;
 using NETCONLib;
 
-namespace HostedNetworkManager.ICS
+namespace Lenovo.WiFi.ICS
 {
     internal class ICSManager
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using NETCONLib;
 
-namespace HostedNetworkManager.ICS
+namespace Lenovo.WiFi.ICS
 {
     internal class ICSConnection
     {

@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace HostedNetworkManager.Wlan
+namespace Lenovo.WiFi.Wlan
 {
     [SuppressUnmanagedCodeSecurity()]
     class WlanApi

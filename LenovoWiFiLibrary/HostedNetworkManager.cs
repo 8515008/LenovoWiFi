@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading;
-using HostedNetworkManager.ICS;
-using HostedNetworkManager.Wlan;
+using Lenovo.WiFi.ICS;
+using Lenovo.WiFi.Wlan;
 
-namespace HostedNetworkManager
+namespace Lenovo.WiFi
 {
     public class HostedNetworkManager : IDisposable
     {

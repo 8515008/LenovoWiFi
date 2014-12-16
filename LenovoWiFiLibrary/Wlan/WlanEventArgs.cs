@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.NetworkInformation;
 
-namespace HostedNetworkManager.Wlan
+namespace Lenovo.WiFi.Wlan
 {
     public class DeviceConnectedEventArgs : EventArgs
     {

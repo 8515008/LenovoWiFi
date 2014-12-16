@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace HostedNetworkManager.ICS
+namespace Lenovo.WiFi.ICS
 {
     public class ICSException : ApplicationException
     {

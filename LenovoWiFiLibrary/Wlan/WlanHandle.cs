@@ -3,7 +3,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Security.Permissions;
 using Microsoft.Win32.SafeHandles;
 
-namespace HostedNetworkManager.Wlan
+namespace Lenovo.WiFi.Wlan
 {
     [SecurityPermission(SecurityAction.InheritanceDemand, UnmanagedCode = true)]
     [SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]

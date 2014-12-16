@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HostedNetworkManager.Wlan
+namespace Lenovo.WiFi.Wlan
 {
     enum Dot11AuthAlgorithm : uint
     {
