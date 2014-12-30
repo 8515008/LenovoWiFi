@@ -10,6 +10,14 @@ namespace Lenovo.WiFi.Client.Windows
 
         public BottomRightWindow()
         {
+            this.BorderBrush = new SolidColorBrush(SystemColors.ActiveBorderColor);
+            this.BorderThickness = new Thickness(1);
+
+            this.ResizeMode = ResizeMode.NoResize;
+            this.ShowInTaskbar = false;
+            this.Topmost = true;
+            this.WindowStyle = WindowStyle.None;
+
             this.Loaded += Window_Loaded;
         }
 
@@ -18,9 +26,6 @@ namespace Lenovo.WiFi.Client.Windows
             var desktopWorkingArea = SystemParameters.WorkArea;
             this.Left = desktopWorkingArea.Right - this.Width - MarginRight;
             this.Top = desktopWorkingArea.Bottom - this.Height - MarginBottom;
-
-            this.BorderBrush = new SolidColorBrush(SystemColors.ActiveBorderColor);
-            this.BorderThickness = new Thickness(1);
         }
     }
 }
