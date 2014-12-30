@@ -6,6 +6,22 @@ namespace Lenovo.WiFi
     {
         readonly HostedNetworkManager _hostedNetworkManager = new HostedNetworkManager();
 
+        public HostedNetworkService()
+        {
+            SetHostedNetworkName(GenerateWiFiName());
+            SetHostedNetworkKey(GenerateWiFiKey());
+        }
+
+        private string GenerateWiFiName()
+        {
+            return "联想WiFi" + string.Format("{0:000}", new Random().Next(0, 100));
+        }
+
+        private string GenerateWiFiKey()
+        {
+            return "1234567890";
+        }
+
         public int GetHostedNetworkName(out string name)
         {
             name = _hostedNetworkManager.GetHostedNetworkName();

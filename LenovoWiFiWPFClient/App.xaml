@@ -1,8 +1,17 @@
-﻿<Application x:Class="LenovoWiFiWPFClient.App"
+﻿<Application
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="WiFiDetails.xaml">
+             xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Lenovo.WiFi.Client.App">
     <Application.Resources>
-         
+
+        <System:String x:Key="AppName">联想免费WiFi</System:String>
+        <System:String x:Key="WiFiName">WiFi名称：</System:String>
+        <System:String x:Key="WiFiKey">WiFi密码：</System:String>
+        <System:String x:Key="Modify">修改</System:String>
+        <System:String x:Key="Save">保存</System:String>
+        <System:String x:Key="Cancel">取消</System:String>
+        <BitmapImage x:Key="AppLogo" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="Resources\logo.ico"/>
+        <System:String x:Key="StartupMessage">正在创建免费WiFi，请稍候...</System:String>
+
     </Application.Resources>
 </Application>

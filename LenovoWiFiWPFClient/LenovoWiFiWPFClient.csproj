@@ -7,7 +7,7 @@
     <ProjectGuid>{52FFB1F0-5956-4540-8D46-3DD74519E5C7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LenovoWiFiWPFClient</RootNamespace>
+    <RootNamespace>Lenovo.WiFi.Client</RootNamespace>
     <AssemblyName>LenovoWiFiWPFClient</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -34,12 +34,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Gma.QrCodeNet.Encoding">
+      <HintPath>..\packages\QrCode.Net.0.4.0.0\lib\net35\Gma.QrCodeNet.Encoding.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -49,50 +48,44 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ClientConnectedTips.xaml.cs">
-      <DependentUpon>ClientConnectedTips.xaml</DependentUpon>
+    <Compile Include="Windows\BottomRightWindow.cs" />
+    <Compile Include="Windows\PopupWindow.xaml.cs">
+      <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WiFiMain.xaml.cs">
-      <DependentUpon>WiFiMain.xaml</DependentUpon>
+    <Compile Include="HostedNetworkClient.cs" />
+    <Compile Include="Windows\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WiFiDetails_MouseHover.xaml.cs">
-      <DependentUpon>WiFiDetails_MouseHover.xaml</DependentUpon>
+    <Compile Include="Windows\StatusWindow.xaml.cs">
+      <DependentUpon>StatusWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WiFiDetails.xaml.cs">
-      <DependentUpon>WiFiDetails.xaml</DependentUpon>
+    <Compile Include="Windows\SuccessWindow.xaml.cs">
+      <DependentUpon>SuccessWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="ClientConnectedTips.xaml">
+    <Page Include="Windows\PopupWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="InitPage.xaml">
+    <Page Include="Windows\StartupWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InitPage.xaml.cs">
-      <DependentUpon>InitPage.xaml</DependentUpon>
+    <Compile Include="Windows\StartupWindow.xaml.cs">
+      <DependentUpon>StartupWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="WiFiMain.xaml">
+    <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WiFiDetails_MouseHover.xaml">
+    <Page Include="Windows\StatusWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WiFiDetails.xaml">
+    <Page Include="Windows\SuccessWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -115,11 +108,21 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LenovoWiFiLibrary\LenovoWiFiLibrary.csproj">
+      <Project>{5366d6ec-2ea6-443e-8871-475b41021f8b}</Project>
+      <Name>LenovoWiFiLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
