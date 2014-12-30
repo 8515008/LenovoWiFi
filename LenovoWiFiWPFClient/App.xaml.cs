@@ -10,7 +10,7 @@ namespace Lenovo.WiFi.Client
     /// </summary>
     public partial class App : Application
     {
-        private HostedNetworkClient _client;
+        private readonly HostedNetworkClient  _client = new HostedNetworkClient();
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -28,9 +28,9 @@ namespace Lenovo.WiFi.Client
                 successWindow.Loaded += (sender, args) => startupWindow.Close();
                 this.MainWindow = successWindow;
                 this.MainWindow.Show();
-            });
+            }, TaskScheduler.FromCurrentSynchronizationContext());
 
-            startupTask.Start(TaskScheduler.FromCurrentSynchronizationContext());
+            startupTask.Start();
         }
     }
 }
