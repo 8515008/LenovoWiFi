@@ -16,7 +16,6 @@ namespace Lenovo.WiFi.Client.Windows
             this.ResizeMode = ResizeMode.NoResize;
             this.ShowInTaskbar = false;
             this.Topmost = true;
-            this.WindowStyle = WindowStyle.None;
 
             this.Loaded += Window_Loaded;
         }

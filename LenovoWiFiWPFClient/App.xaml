@@ -12,6 +12,7 @@
         <System:String x:Key="Cancel">取消</System:String>
         <BitmapImage x:Key="AppLogo" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="Resources\logo.ico"/>
         <System:String x:Key="StartupMessage">正在创建免费WiFi，请稍候...</System:String>
+        <BitmapImage x:Key="AppExit" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="Resources\exit.ico"/>
 
     </Application.Resources>
 </Application>

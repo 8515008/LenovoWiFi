@@ -3,7 +3,7 @@ using System.ServiceModel;
 
 namespace Lenovo.WiFi.Client
 {
-    internal class HostedNetworkClient
+    public class HostedNetworkClient
     {
         readonly ChannelFactory<IHostedNetworkService> _pipeFactory =
         new ChannelFactory<IHostedNetworkService>(
@@ -46,7 +46,7 @@ namespace Lenovo.WiFi.Client
         {
             string key;
 
-            this.Proxy.GetHostedNetworkName(out key);
+            this.Proxy.GetHostedNetworkKey(out key);
 
             return key;
         }

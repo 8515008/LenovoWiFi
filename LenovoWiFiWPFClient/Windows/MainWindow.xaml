@@ -4,7 +4,7 @@
         xmlns:WPF="clr-namespace:Gma.QrCodeNet.Encoding.Windows.WPF;assembly=Gma.QrCodeNet.Encoding"
         xmlns:windows="clr-namespace:Lenovo.WiFi.Client.Windows"
         x:Class="Lenovo.WiFi.Client.Windows.MainWindow"
-        Width="300" Height="300">
+        Width="300" Height="300" WindowStyle="None">
     <Grid>
         <Image x:Name="ImgIcon"
 			Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0" Source="{DynamicResource AppLogo}" />
