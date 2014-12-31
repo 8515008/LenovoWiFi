@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Lenovo.WiFi.Wlan
 {
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     internal struct Dot11SSID
     {
         internal uint SSIDLength;

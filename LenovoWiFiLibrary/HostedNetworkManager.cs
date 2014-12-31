@@ -214,7 +214,7 @@ namespace Lenovo.WiFi
 
             var newSettings = new WlanHostedNetworkConnectionSettings
             {
-                HostedNetworkSSID = new Dot11SSID {SSID = name, SSIDLength = (uint) name.Length},
+                HostedNetworkSSID = new Dot11SSID {SSID = name, SSIDLength = (uint) Encoding.Default.GetByteCount(name)},
                 MaxNumberOfPeers = this._connectionSettings.MaxNumberOfPeers
             };
 
