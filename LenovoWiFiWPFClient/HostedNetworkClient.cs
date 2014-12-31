@@ -3,7 +3,7 @@ using System.ServiceModel;
 
 namespace Lenovo.WiFi.Client
 {
-    public class HostedNetworkClient
+    public sealed class HostedNetworkClient : IDisposable
     {
         readonly ChannelFactory<IHostedNetworkService> _pipeFactory =
         new ChannelFactory<IHostedNetworkService>(
@@ -74,6 +74,11 @@ namespace Lenovo.WiFi.Client
         public void StopHostedNetwork()
         {
             this.Proxy.StopHostedNetwork();
+        }
+
+        public void Dispose()
+        {
+            _pipeFactory.Close();
         }
     }
 }
