@@ -2663,7 +2663,7 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>2052</td><td>Lenovo</td><td>0</td><td/><td>547561586</td></row>
+		<row><td>COMPANY_NAME</td><td>2052</td><td>Lenovo</td><td>0</td><td/><td>547591026</td></row>
 		<row><td>DN_AlwaysInstall</td><td>2052</td><td>始终安装</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>2052</td><td>系统颜色设置不足以运行 [ProductName]。</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION35</td><td>2052</td><td>Microsoft .NET Framework 3.5 needs to be installed for this installation to continue.</td><td>0</td><td/><td>-31271761</td></row>
@@ -3477,7 +3477,7 @@
 		<row><td>IDS_SETUPEXE_EXPIRE_MSG</td><td>2052</td><td>本安装程序的使用期到 %s 结束。安装程序现在将退出。</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>IDS_SETUPEXE_LAUNCH_COND_E</td><td>2052</td><td>本安装程序内建有 InstallShield 的评估版，只能用 setup.exe 文件启动。</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME1</td><td>2052</td><td>Launch |Built</td><td>0</td><td/><td>-31271761</td></row>
-		<row><td>IDS_SHORTCUT_DISPLAY_NAME2</td><td>2052</td><td>Client</td><td>0</td><td/><td>-31271761</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME2</td><td>2052</td><td>LENOVO~1|Lenovo WiFi</td><td>0</td><td/><td>547599666</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO</td><td>2052</td><td>从以下服务器列表中选择要连接的数据库服务器。</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_DB</td><td>2052</td><td>从以下的编录名称列表中，选择您希望将其作为目标的数据库编录。</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_TEMPLATE</td><td>2052</td><td>[IS_SQLBROWSE_INTRO]</td><td>0</td><td/><td>-31271761</td></row>
@@ -3767,8 +3767,8 @@
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>2052</td><td>对于运行 [ProductName] 内存量不足。</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>2052</td><td>对于运行 [ProductName] 屏幕分辨率不足。</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>ID_STRING1</td><td>2052</td><td/><td>0</td><td/><td>-31271761</td></row>
-		<row><td>ID_STRING2</td><td>2052</td><td>http://www.Lenovo.com</td><td>0</td><td/><td>547561586</td></row>
-		<row><td>ID_STRING3</td><td>2052</td><td>Lenovo</td><td>0</td><td/><td>547561586</td></row>
+		<row><td>ID_STRING2</td><td>2052</td><td>http://www.Lenovo.com</td><td>0</td><td/><td>547591026</td></row>
+		<row><td>ID_STRING3</td><td>2052</td><td>Lenovo</td><td>0</td><td/><td>547591026</td></row>
 		<row><td>ID_STRING4</td><td>2052</td><td>Launch |Built</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>ID_STRING5</td><td>2052</td><td>Launch |Built</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>ID_STRING6</td><td>1033</td><td>Lenovo WiFi enables you to start a free Wi-Fi with your laptop.</td><td>0</td><td/><td>-31311248</td></row>
