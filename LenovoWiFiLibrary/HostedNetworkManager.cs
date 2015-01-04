@@ -366,7 +366,7 @@ namespace Lenovo.WiFi
 
             if (nic == null)
             {
-                nic = nics.FirstOrDefault(n => n.NetworkInterfaceType == NetworkInterfaceType.Ethernet
+                nic = nics.FirstOrDefault(n => n.NetworkInterfaceType == NetworkInterfaceType.Wireless80211
                                                 && n.OperationalStatus == OperationalStatus.Up
                                                 && new Guid(n.Id) != privateGuid);
             }

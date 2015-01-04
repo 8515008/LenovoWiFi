@@ -2663,7 +2663,7 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>2052</td><td>Lenovo</td><td>0</td><td/><td>-31265457</td></row>
+		<row><td>COMPANY_NAME</td><td>2052</td><td>Lenovo</td><td>0</td><td/><td>547561586</td></row>
 		<row><td>DN_AlwaysInstall</td><td>2052</td><td>始终安装</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>2052</td><td>系统颜色设置不足以运行 [ProductName]。</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION35</td><td>2052</td><td>Microsoft .NET Framework 3.5 needs to be installed for this installation to continue.</td><td>0</td><td/><td>-31271761</td></row>
@@ -3767,8 +3767,8 @@
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>2052</td><td>对于运行 [ProductName] 内存量不足。</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>2052</td><td>对于运行 [ProductName] 屏幕分辨率不足。</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>ID_STRING1</td><td>2052</td><td/><td>0</td><td/><td>-31271761</td></row>
-		<row><td>ID_STRING2</td><td>2052</td><td>http://www.Lenovo.com</td><td>0</td><td/><td>-31265457</td></row>
-		<row><td>ID_STRING3</td><td>2052</td><td>Lenovo</td><td>0</td><td/><td>-31265457</td></row>
+		<row><td>ID_STRING2</td><td>2052</td><td>http://www.Lenovo.com</td><td>0</td><td/><td>547561586</td></row>
+		<row><td>ID_STRING3</td><td>2052</td><td>Lenovo</td><td>0</td><td/><td>547561586</td></row>
 		<row><td>ID_STRING4</td><td>2052</td><td>Launch |Built</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>ID_STRING5</td><td>2052</td><td>Launch |Built</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>ID_STRING6</td><td>1033</td><td>Lenovo WiFi enables you to start a free Wi-Fi with your laptop.</td><td>0</td><td/><td>-31311248</td></row>
@@ -3881,8 +3881,8 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I2">ISIconIndex</col>
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;VSSolutionFolder&gt;\LenovoWiFiWPFClient\Resources\logo.ico</td><td>0</td></row>
-		<row><td>_Built11_3276A5AD86454D3BA859C86FD6441742.exe</td><td/><td>&lt;VSSolutionFolder&gt;\LenovoWiFiWPFClient\Resources\logo.ico</td><td>0</td></row>
-		<row><td>_Built1_BA6ECE726BD145EB9C0463678A7A3195.exe</td><td/><td>&lt;VSSolutionFolder&gt;\LenovoWiFiWPFClient\Resources\logo.ico</td><td>0</td></row>
+		<row><td>_Built11_D4D8EBDC9D3341728E4631B0647337FD.exe</td><td/><td>&lt;VSSolutionFolder&gt;\LenovoWiFiWPFClient\Resources\logo.ico</td><td>0</td></row>
+		<row><td>_Built1_9A139634D45F4131803EAD6337C650F0.exe</td><td/><td>&lt;VSSolutionFolder&gt;\LenovoWiFiWPFClient\Resources\logo.ico</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -4560,8 +4560,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>_Built1</td><td>lenovo_1_lenovo_wifi</td><td>##IDS_SHORTCUT_DISPLAY_NAME2##</td><td>LenovoWiFiWPFClient.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td>_Built1_BA6ECE726BD145EB9C0463678A7A3195.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>_Built11</td><td>DesktopFolder</td><td>##IDS_SHORTCUT_DISPLAY_NAME2##</td><td>LenovoWiFiWPFClient.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td>_Built11_3276A5AD86454D3BA859C86FD6441742.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>_Built1</td><td>lenovo_1_lenovo_wifi</td><td>##IDS_SHORTCUT_DISPLAY_NAME2##</td><td>LenovoWiFiWPFClient.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td>_Built1_9A139634D45F4131803EAD6337C650F0.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>_Built11</td><td>DesktopFolder</td><td>##IDS_SHORTCUT_DISPLAY_NAME2##</td><td>LenovoWiFiWPFClient.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td>_Built11_D4D8EBDC9D3341728E4631B0647337FD.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">

@@ -14,7 +14,7 @@ namespace Lenovo.WiFi
 
         private string GenerateWiFiName()
         {
-            return "LenovoWiFi" + string.Format("{0:000}", new Random().Next(0, 100));
+            return "LenovoWiFi" + string.Format("{0:000}", new Random().Next(1, 100));
         }
 
         private string GenerateWiFiKey()
