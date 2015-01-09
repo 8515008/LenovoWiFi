@@ -2,10 +2,10 @@
 #include "stdafx.h"
 
 // {23ED1551-904E-4874-BA46-DBE1489D4D34}
-CLSID CONST CLSIDLenovoWiFiDeskBand = 
+CLSID CLSIDLenovoWiFiDeskBand = 
 	{ 0x23ed1551, 0x904e, 0x4874, { 0xba, 0x46, 0xdb, 0xe1, 0x48, 0x9d, 0x4d, 0x34 } };
 
-TCHAR CONST LENOVO_WIFI_DESKBAND_NAME[] = L"Lenovo Wi-Fi Deskband";
+TCHAR CONST LENOVO_WIFI_DESKBAND_NAME[] = _T("Lenovo Wi-Fi Deskband");
 
 HINSTANCE g_hInstance = NULL;
 long g_cDllRef = 0;
@@ -52,7 +52,7 @@ HRESULT RegisterServer()
 	TCHAR szSubkey[MAX_PATH];
 	HKEY hKey;
 
-	HRESULT hResult = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey), L"CLSID\\%s", szCLSID);
+	HRESULT hResult = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey), _T("CLSID\\%s"), szCLSID);
 	if (SUCCEEDED(hResult))
 	{
 		hResult = E_FAIL;
@@ -83,7 +83,7 @@ HRESULT RegisterServer()
 
 	if (SUCCEEDED(hResult))
 	{
-		hResult = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey), L"CLSID\\%s\\InprocServer32", szCLSID);
+		hResult = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey), _T("CLSID\\%s\\InprocServer32"), szCLSID);
 		if (SUCCEEDED(hResult))
 		{
 			hResult = HRESULT_FROM_WIN32(
@@ -116,11 +116,11 @@ HRESULT RegisterServer()
 
 				if (SUCCEEDED(hResult))
 				{
-					WCHAR CONST szModel[] = L"Apartment";
+					TCHAR CONST szModel[] = _T("Apartment");
 					hResult = HRESULT_FROM_WIN32(
 								RegSetValueEx(
 									hKey,
-									L"ThreadingModel",
+									_T("ThreadingModel"),
 									0,
 									REG_SZ,
 									(LPBYTE)szModel,
@@ -165,7 +165,7 @@ STDAPI DllUnregisterServer()
 	StringFromGUID2(CLSIDLenovoWiFiDeskBand, szCLSID, ARRAYSIZE(szCLSID));
 
 	TCHAR szSubkey[MAX_PATH];
-	HRESULT hResult = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey), L"CLSID\\%s", szCLSID);
+	HRESULT hResult = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey), _T("CLSID\\%s"), szCLSID);
 	if (SUCCEEDED(hResult))
 	{
 		if (ERROR_SUCCESS != RegDeleteTree(HKEY_CLASSES_ROOT, szSubkey))

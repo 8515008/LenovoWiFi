@@ -5,7 +5,7 @@ using System.Security;
 namespace Lenovo.WiFi.Wlan
 {
     [SuppressUnmanagedCodeSecurity()]
-    class WlanApi
+    class NativeMethods
     {
         const string WlanApiDll = "Wlanapi.dll";
 

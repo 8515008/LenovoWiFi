@@ -7,25 +7,27 @@ using System.Text;
 using System.Threading;
 using Lenovo.WiFi.ICS;
 using Lenovo.WiFi.Wlan;
+using NETCONLib;
 
 namespace Lenovo.WiFi
 {
     public class HostedNetworkManager : IDisposable
     {
         readonly object _l = new object();
+        private bool _disposed;
 
         private readonly WlanHandle _wlanHandle;
         private WlanHostedNetworkConnectionSettings _connectionSettings;
         private WlanHostedNetworkSecuritySettings _securitySettings;
-        private Guid _hostedNetworkInterfaceGuid;
+        private readonly Guid _hostedNetworkInterfaceGuid;
         private WlanHostedNetworkState _hostedNetworkState;
 
-        private ICSManager _icsManager;
+        private readonly ICSManager _icsManager;
 
+        [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust", Unrestricted = false)]
         public HostedNetworkManager()
         {
             uint returnValue = 0;
-
             
             var enabled = IntPtr.Zero;
             var connectionSettings = IntPtr.Zero;
@@ -39,7 +41,7 @@ namespace Lenovo.WiFi
                 uint negotiatedVersion;
 
                 WlanHandle clientHandle;
-                returnValue = WlanApi.WlanOpenHandle(
+                returnValue = NativeMethods.WlanOpenHandle(
                     WlanApiVersion.Version,
                     IntPtr.Zero,
                     out negotiatedVersion,
@@ -55,7 +57,7 @@ namespace Lenovo.WiFi
                 this._wlanHandle = clientHandle;
 
                 WlanNotificationSource previousNotificationSource;
-                returnValue = WlanApi.WlanRegisterNotification(
+                returnValue = NativeMethods.WlanRegisterNotification(
                     clientHandle,
                     WlanNotificationSource.HostedNetwork,
                     true,
@@ -67,7 +69,7 @@ namespace Lenovo.WiFi
                 Utilities.ThrowOnError(returnValue);
 
                 WlanHostedNetworkReason faileReason;
-                returnValue = WlanApi.WlanHostedNetworkInitSettings(
+                returnValue = NativeMethods.WlanHostedNetworkInitSettings(
                     clientHandle,
                     out faileReason,
                     IntPtr.Zero);
@@ -76,7 +78,7 @@ namespace Lenovo.WiFi
 
                 uint dataSize;
                 WlanOpcodeValueType opcodeValueType;
-                returnValue = WlanApi.WlanHostedNetworkQueryProperty(
+                returnValue = NativeMethods.WlanHostedNetworkQueryProperty(
                     clientHandle,
                     WlanHostedNetworkOpcode.Enable,
                     out dataSize,
@@ -88,7 +90,7 @@ namespace Lenovo.WiFi
 
                 this.IsHostedNetworkAllowed = Convert.ToBoolean(Marshal.ReadInt32(enabled));
 
-                returnValue = WlanApi.WlanHostedNetworkQueryProperty(
+                returnValue = NativeMethods.WlanHostedNetworkQueryProperty(
                     clientHandle,
                     WlanHostedNetworkOpcode.ConnectionSettings,
                     out dataSize,
@@ -108,7 +110,7 @@ namespace Lenovo.WiFi
                     (WlanHostedNetworkConnectionSettings)
                         Marshal.PtrToStructure(connectionSettings, typeof (WlanHostedNetworkConnectionSettings));
 
-                returnValue = WlanApi.WlanHostedNetworkQueryProperty(
+                returnValue = NativeMethods.WlanHostedNetworkQueryProperty(
                     clientHandle,
                     WlanHostedNetworkOpcode.SecuritySettings,
                     out dataSize,
@@ -126,7 +128,7 @@ namespace Lenovo.WiFi
                     (WlanHostedNetworkSecuritySettings)
                         Marshal.PtrToStructure(securitySettings, typeof (WlanHostedNetworkSecuritySettings));
 
-                returnValue = WlanApi.WlanHostedNetworkQueryStatus(
+                returnValue = NativeMethods.WlanHostedNetworkQueryStatus(
                         clientHandle,
                         out status,
                         IntPtr.Zero);
@@ -153,22 +155,22 @@ namespace Lenovo.WiFi
 
                 if (enabled != IntPtr.Zero)
                 {
-                    WlanApi.WlanFreeMemory(enabled);
+                    NativeMethods.WlanFreeMemory(enabled);
                 }
 
                 if (connectionSettings != IntPtr.Zero)
                 {
-                    WlanApi.WlanFreeMemory(connectionSettings);
+                    NativeMethods.WlanFreeMemory(connectionSettings);
                 }
 
                 if (securitySettings != IntPtr.Zero)
                 {
-                    WlanApi.WlanFreeMemory(securitySettings);
+                    NativeMethods.WlanFreeMemory(securitySettings);
                 }
 
                 if (status != IntPtr.Zero)
                 {
-                    WlanApi.WlanFreeMemory(status);
+                    NativeMethods.WlanFreeMemory(status);
                 }
             }
         }
@@ -182,10 +184,22 @@ namespace Lenovo.WiFi
         [SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
         protected virtual void Dispose(bool disposing)
         {
-            if (_wlanHandle != null && !_wlanHandle.IsInvalid)
+            if (_disposed)
             {
-                _wlanHandle.Dispose();
+                return;
             }
+
+            if (disposing)
+            {
+                _icsManager.Dispose();
+
+                if (_wlanHandle != null && !_wlanHandle.IsInvalid)
+                {
+                    _wlanHandle.Dispose();
+                }
+            }
+
+            _disposed = true;
         }
 
         public bool IsHostedNetworkAllowed { get; private set; }
@@ -203,6 +217,7 @@ namespace Lenovo.WiFi
             return this._connectionSettings.HostedNetworkSSID.SSID;
         }
 
+        [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust", Unrestricted = false)]
         public void SetHostedNetworkName(string name)
         {
             const int dot11SSIDMaxLength = 32;
@@ -223,7 +238,7 @@ namespace Lenovo.WiFi
             Marshal.StructureToPtr(newSettings, newSettingPtr, false);
 
             Utilities.ThrowOnError(
-                WlanApi.WlanHostedNetworkSetProperty(
+                NativeMethods.WlanHostedNetworkSetProperty(
                     this._wlanHandle,
                     WlanHostedNetworkOpcode.ConnectionSettings,
                     (uint)Marshal.SizeOf(newSettings),
@@ -234,6 +249,7 @@ namespace Lenovo.WiFi
             this._connectionSettings = newSettings;
         }
 
+        [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust", Unrestricted = false)]
         public string GetHostedNetworkKey()
         {
             string result = string.Empty;
@@ -244,7 +260,7 @@ namespace Lenovo.WiFi
             bool isPersistent;
             WlanHostedNetworkReason failReason;
 
-            uint error = WlanApi.WlanHostedNetworkQuerySecondaryKey(
+            uint error = NativeMethods.WlanHostedNetworkQuerySecondaryKey(
                 this._wlanHandle,
                 out keyLength,
                 out keyData,
@@ -264,7 +280,7 @@ namespace Lenovo.WiFi
                     result = result.Substring(0, (int)keyLength - 1);
                 }
 
-                WlanApi.WlanFreeMemory(keyData);
+                NativeMethods.WlanFreeMemory(keyData);
             }
 
             return result;
@@ -281,7 +297,7 @@ namespace Lenovo.WiFi
 
             WlanHostedNetworkReason failReason;
 
-            uint error = WlanApi.WlanHostedNetworkSetSecondaryKey(
+            uint error = NativeMethods.WlanHostedNetworkSetSecondaryKey(
                 this._wlanHandle,
                 (uint)key.Length + 1,
                 Encoding.ASCII.GetBytes(key),
@@ -309,7 +325,7 @@ namespace Lenovo.WiFi
                 if (_hostedNetworkState == WlanHostedNetworkState.Active)
                 {
                     Utilities.ThrowOnError(
-                    WlanApi.WlanHostedNetworkForceStop(
+                    NativeMethods.WlanHostedNetworkForceStop(
                         this._wlanHandle,
                         out failReason,
                         IntPtr.Zero
@@ -317,7 +333,7 @@ namespace Lenovo.WiFi
                 }
 
                 Utilities.ThrowOnError(
-                    WlanApi.WlanHostedNetworkStartUsing(
+                    NativeMethods.WlanHostedNetworkStartUsing(
                         this._wlanHandle,
                         out failReason,
                         IntPtr.Zero));
@@ -346,7 +362,7 @@ namespace Lenovo.WiFi
             {
                 WlanHostedNetworkReason failReason;
                 Utilities.ThrowOnError(
-                    WlanApi.WlanHostedNetworkStopUsing(
+                    NativeMethods.WlanHostedNetworkStopUsing(
                         this._wlanHandle,
                         out failReason,
                         IntPtr.Zero));
@@ -362,14 +378,10 @@ namespace Lenovo.WiFi
             var nics = NetworkInterface.GetAllNetworkInterfaces();
 
             var nic = nics.FirstOrDefault(n => n.NetworkInterfaceType == NetworkInterfaceType.Ethernet
-                                               && n.OperationalStatus == OperationalStatus.Up);
-
-            if (nic == null)
-            {
-                nic = nics.FirstOrDefault(n => n.NetworkInterfaceType == NetworkInterfaceType.Wireless80211
-                                                && n.OperationalStatus == OperationalStatus.Up
-                                                && new Guid(n.Id) != privateGuid);
-            }
+                                               && n.OperationalStatus == OperationalStatus.Up) ??
+                      nics.FirstOrDefault(n => n.NetworkInterfaceType == NetworkInterfaceType.Wireless80211
+                                               && n.OperationalStatus == OperationalStatus.Up
+                                               && new Guid(n.Id) != privateGuid);
 
             if (nic == null)
             {

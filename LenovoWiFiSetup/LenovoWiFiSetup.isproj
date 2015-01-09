@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Project ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
 		<!-- Select a Product Configuration -->
 		<InstallShieldProductConfiguration>Express</InstallShieldProductConfiguration>
@@ -29,13 +29,13 @@
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath32)\InstallShield\2013Limited\InstallShield.targets"/>
 	<ItemGroup>
-		<ProjectReference Include="..\LenovoWiFiLibrary\LenovoWiFiLibrary.csproj">
-			<Name>LenovoWiFiLibrary</Name>
-			<Project>{5366D6EC-2EA6-443E-8871-475B41021F8B}</Project>
+		<ProjectReference Include="..\LenovoWiFiWCFLibrary\LenovoWiFiWCFLibrary.csproj">
+			<Name>LenovoWiFiWCFLibrary</Name>
+			<Project>{AD8B7992-13A4-4833-AA80-54AC4222A9B6}</Project>
 		</ProjectReference>
-		<ProjectReference Include="..\LenovoWiFiService\LenovoWiFiService.csproj">
-			<Name>LenovoWiFiService</Name>
-			<Project>{00A71A59-AE14-418E-B857-B45189B10584}</Project>
+		<ProjectReference Include="..\LenovoWiFiWCFService\LenovoWiFiWCFService.csproj">
+			<Name>LenovoWiFiWCFService</Name>
+			<Project>{EDCB794C-9143-4352-B22F-1C66A64F8C76}</Project>
 		</ProjectReference>
 		<ProjectReference Include="..\LenovoWiFiWPFClient\LenovoWiFiWPFClient.csproj">
 			<Name>LenovoWiFiWPFClient</Name>

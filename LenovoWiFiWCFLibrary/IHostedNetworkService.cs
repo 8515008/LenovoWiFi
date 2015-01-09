@@ -6,21 +6,21 @@ namespace Lenovo.WiFi
     public interface IHostedNetworkService
     {
         [OperationContract]
-        int GetHostedNetworkName(out string name);
+        string GetHostedNetworkName();
 
         [OperationContract]
-        int SetHostedNetworkName(string name);
+        void SetHostedNetworkName(string name);
 
         [OperationContract]
-        int GetHostedNetworkKey(out string key);
+        string GetHostedNetworkKey();
 
         [OperationContract]
-        int SetHostedNetworkKey(string key);
+        void SetHostedNetworkKey(string key);
 
         [OperationContract]
-        int StartHostedNetwork();
+        void StartHostedNetwork();
 
         [OperationContract]
-        int StopHostedNetwork();
+        void StopHostedNetwork();
     }
 }

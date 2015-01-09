@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
 
+using Lenovo.WiFi.Client.Proxy;
 using Lenovo.WiFi.Client.Windows;
 
 namespace Lenovo.WiFi.Client
@@ -10,11 +11,11 @@ namespace Lenovo.WiFi.Client
     /// </summary>
     public partial class App : Application
     {
-        public HostedNetworkClient Client { get; private set; }
+        public HostedNetworkServiceClient Client { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            this.Client = new HostedNetworkClient();
+            this.Client = new HostedNetworkServiceClient();
 
             var startupWindow = new StartupWindow();
             startupWindow.Show();

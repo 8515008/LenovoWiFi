@@ -1,6 +1,6 @@
 #pragma once
 
-class CDeskBand : public IDeskBand2, public IObjectWithSite, public IPersistStream, public IInputObject, public IContextMenu
+class CDeskBand : public IDeskBand2, public IObjectWithSite, public IPersistStream, public IInputObject
 {
 public:
 	CDeskBand();
@@ -36,16 +36,13 @@ public:
 	STDMETHODIMP TranslateAcceleratorIO(LPMSG lpMsg);
 	STDMETHODIMP UIActivateIO(BOOL fActivate, MSG *pMsg);
 
-	STDMETHODIMP GetCommandString(UINT_PTR idCmd, UINT uFlags, UINT *pwReserved, LPSTR pszName, UINT cchMax);
-	STDMETHODIMP InvokeCommand(LPCMINVOKECOMMANDINFO pici);
-	STDMETHODIMP QueryContextMenu(HMENU hmenu, UINT indexMenu, UINT idCmdFirst, UINT idCmdLast, UINT uFlags);
-
 protected:
 	~CDeskBand();
 
 	 LRESULT static CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	 void OnFocus(const BOOL bFocus);
 	 void OnPaint(const HDC hDeviceContext);
+	 void OnContextMenu(const HWND hWnd, const int xPos, const int yPos);
 
 private:
 	LONG m_cRef;
@@ -54,7 +51,7 @@ private:
 	BOOL m_fFocus;
 	BOOL m_fCompositionEnabled;
 	HICON m_hIcon;
-	UINT m_uFirstCommand;
+	HMENU m_hMenu;
 	IInputObjectSite *m_pSite;
 
 	UINT CONST IDM_CAPTION_RESTART_WIFI = 0;

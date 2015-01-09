@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{00A71A59-AE14-418E-B857-B45189B10584}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{EDCB794C-9143-4352-B22F-1C66A64F8C76}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Lenovo.WiFi</RootNamespace>
-    <AssemblyName>LenovoWiFiService</AssemblyName>
+    <AssemblyName>LenovoWiFiWCFService</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,18 +30,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HostedNetworkService.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -66,12 +61,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LenovoWiFiLibrary\LenovoWiFiLibrary.csproj">
-      <Project>{5366d6ec-2ea6-443e-8871-475b41021f8b}</Project>
-      <Name>LenovoWiFiLibrary</Name>
+    <ProjectReference Include="..\LenovoWiFiWCFLibrary\LenovoWiFiWCFLibrary.csproj">
+      <Project>{ad8b7992-13a4-4833-aa80-54ac4222a9b6}</Project>
+      <Name>LenovoWiFiWCFLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

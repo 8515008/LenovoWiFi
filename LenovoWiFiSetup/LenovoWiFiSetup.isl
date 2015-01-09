@@ -342,10 +342,10 @@
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{288091FD-9CF5-46D5-997E-7E0CD5FF7C0B}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>LenovoWiFiLibrary.Primary_output</td><td>{AE602913-410E-4CD7-814F-5A75F61138A0}</td><td>INSTALLDIR</td><td>2</td><td/><td>lenovowifilibrary.primary_ou</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>LenovoWiFiService.Primary_output</td><td>{D952AF7D-D8FC-4078-AE6C-D35EB6D12836}</td><td>INSTALLDIR</td><td>2</td><td/><td>lenovowifiservice.primary_ou</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>LenovoWiFiWPFClient.Primary_output</td><td>{932B5E5B-F05F-4855-ADE4-45CEDDB9FF88}</td><td>INSTALLDIR</td><td>2</td><td/><td>lenovowifiwpfclient.primary_</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>System.Threading.dll</td><td>{B115F1DD-9EBB-4283-9236-B93B1782A58F}</td><td>INSTALLDIR</td><td>2</td><td/><td>system.threading.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>LenovoWiFiWCFLibrary.Primary_output</td><td>{3B43616E-D6D9-4273-AFD7-75E64E97A6F3}</td><td>INSTALLDIR</td><td>2</td><td/><td>lenovowifiwcflibrary.primary</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>LenovoWiFiWCFService.Primary_output</td><td>{AA044B03-7FAF-4672-8644-59ED78C6C929}</td><td>INSTALLDIR</td><td>2</td><td/><td>lenovowifiwcfservice.primary</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>LenovoWiFiWPFClient.Primary_output</td><td>{04C2EFC9-6522-4130-BB3A-3134CC9448A2}</td><td>INSTALLDIR</td><td>2</td><td/><td>lenovowifiwpfclient.primary_</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>System.Threading.dll</td><td>{511AA554-28E0-497E-AD82-3BCD03C22B94}</td><td>INSTALLDIR</td><td>2</td><td/><td>system.threading.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1871,8 +1871,8 @@
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
-		<row><td>AlwaysInstall</td><td>LenovoWiFiLibrary.Primary_output</td></row>
-		<row><td>AlwaysInstall</td><td>LenovoWiFiService.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>LenovoWiFiWCFLibrary.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>LenovoWiFiWCFService.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>LenovoWiFiWPFClient.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>System.Threading.dll</td></row>
 	</table>
@@ -1889,10 +1889,10 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
-		<row><td>lenovowifilibrary.primary_ou</td><td>LenovoWiFiLibrary.Primary_output</td><td>LenovoWiFiLibrary.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;LenovoWiFiLibrary&gt;|Built</td><td>3</td><td/></row>
-		<row><td>lenovowifiservice.primary_ou</td><td>LenovoWiFiService.Primary_output</td><td>LenovoWiFiService.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;LenovoWiFiService&gt;|Built</td><td>3</td><td/></row>
+		<row><td>lenovowifiwcflibrary.primary</td><td>LenovoWiFiWCFLibrary.Primary_output</td><td>LenovoWiFiWCFLibrary.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;LenovoWiFiWCFLibrary&gt;|Built</td><td>3</td><td/></row>
+		<row><td>lenovowifiwcfservice.primary</td><td>LenovoWiFiWCFService.Primary_output</td><td>LenovoWiFiWCFService.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;LenovoWiFiWCFService&gt;|Built</td><td>3</td><td/></row>
 		<row><td>lenovowifiwpfclient.primary_</td><td>LenovoWiFiWPFClient.Primary_output</td><td>LenovoWiFiWPFClient.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;LenovoWiFiWPFClient&gt;|Built</td><td>3</td><td/></row>
-		<row><td>system.threading.dll</td><td>System.Threading.dll</td><td>SYSTEM~1.DLL|System.Threading.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\Kidd Liu\Documents\GitHub\LenovoWiFi\packages\TaskParallelLibrary.1.0.2856.0\lib\Net35\System.Threading.dll</td><td>1</td><td/></row>
+		<row><td>system.threading.dll</td><td>System.Threading.dll</td><td>SYSTEM~1.DLL|System.Threading.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\Kidd\Documents\GitHub\LenovoWiFi\packages\TaskParallelLibrary.1.0.2856.0\lib\Net35\System.Threading.dll</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -1910,7 +1910,6 @@
 		<col def="S255">Data</col>
 		<row><td>PROJECT_ASSISTANT_DEFAULT_FEATURE</td><td>AlwaysInstall</td></row>
 		<row><td>PROJECT_ASSISTANT_FEATURES</td><td>NonSelectable</td></row>
-		<row><td>_Built</td><td/></row>
 		<row><td>_Built1</td><td/></row>
 	</table>
 
@@ -2039,10 +2038,10 @@
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_9E20F88F_46F5_4809_9183_1DD147118870_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>LenovoWiFiLibrary.Primary_output</td><td/><td/><td>_F195049C_6D62_4160_83E9_C46600A8139F_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>LenovoWiFiService.Primary_output</td><td/><td/><td>_66766333_BA06_4929_87B4_FE06B03715DE_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>LenovoWiFiWPFClient.Primary_output</td><td/><td/><td>_32F3785E_40D0_4392_92C4_6F96AC659022_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>System.Threading.dll</td><td/><td/><td>_DEB11BCE_69F7_4B8C_A53D_8043F240740C_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>LenovoWiFiWCFLibrary.Primary_output</td><td/><td/><td>_15A9B9FD_19AB_49A0_920E_504DDDA526D9_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>LenovoWiFiWCFService.Primary_output</td><td/><td/><td>_DF412A1E_3C89_4608_A33D_B03A035A4767_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>LenovoWiFiWPFClient.Primary_output</td><td/><td/><td>_B31147DD_00A5_4DE9_B08E_3C02858CA400_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>System.Threading.dll</td><td/><td/><td>_31BB8376_0274_49ED_A966_B6C453170B9B_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -2351,6 +2350,8 @@
 		<row><td>ISProjectFolder</td><td/><td/><td>1</td></row>
 		<row><td>LenovoWiFiLibrary</td><td>LenovoWiFiLibrary\LenovoWiFiLibrary.csproj</td><td/><td>2</td></row>
 		<row><td>LenovoWiFiService</td><td>LenovoWiFiService\LenovoWiFiService.csproj</td><td/><td>2</td></row>
+		<row><td>LenovoWiFiWCFLibrary</td><td>LenovoWiFiWCFLibrary\LenovoWiFiWCFLibrary.csproj</td><td/><td>2</td></row>
+		<row><td>LenovoWiFiWCFService</td><td>LenovoWiFiWCFService\LenovoWiFiWCFService.csproj</td><td/><td>2</td></row>
 		<row><td>LenovoWiFiWPFClient</td><td>LenovoWiFiWPFClient\LenovoWiFiWPFClient.csproj</td><td/><td>2</td></row>
 		<row><td>ProgramFilesFolder</td><td/><td/><td>1</td></row>
 		<row><td>SystemFolder</td><td/><td/><td>1</td></row>
@@ -3478,6 +3479,8 @@
 		<row><td>IDS_SETUPEXE_LAUNCH_COND_E</td><td>2052</td><td>本安装程序内建有 InstallShield 的评估版，只能用 setup.exe 文件启动。</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME1</td><td>2052</td><td>Launch |Built</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME2</td><td>2052</td><td>LENOVO~1|Lenovo WiFi</td><td>0</td><td/><td>547599666</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME3</td><td>1033</td><td/><td>0</td><td/><td>1218694090</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME3</td><td>2052</td><td>Lenovo WiFi</td><td>0</td><td/><td>1218651114</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO</td><td>2052</td><td>从以下服务器列表中选择要连接的数据库服务器。</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_DB</td><td>2052</td><td>从以下的编录名称列表中，选择您希望将其作为目标的数据库编录。</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_TEMPLATE</td><td>2052</td><td>[IS_SQLBROWSE_INTRO]</td><td>0</td><td/><td>-31271761</td></row>
@@ -3773,6 +3776,8 @@
 		<row><td>ID_STRING5</td><td>2052</td><td>Launch |Built</td><td>0</td><td/><td>-31271761</td></row>
 		<row><td>ID_STRING6</td><td>1033</td><td>Lenovo WiFi enables you to start a free Wi-Fi with your laptop.</td><td>0</td><td/><td>-31311248</td></row>
 		<row><td>ID_STRING6</td><td>2052</td><td>Lenovo WiFi enables you to start a free Wi-Fi with your laptop.</td><td>0</td><td/><td>-31311248</td></row>
+		<row><td>ID_STRING7</td><td>1033</td><td>Launch |Built</td><td>0</td><td/><td>1218700234</td></row>
+		<row><td>ID_STRING7</td><td>2052</td><td>Launch |Built</td><td>0</td><td/><td>1218700234</td></row>
 		<row><td>IIDS_UITEXT_FeatureUninstalled</td><td>2052</td><td>系统将不安装此功能。</td><td>0</td><td/><td>-31271761</td></row>
 	</table>
 
@@ -4015,7 +4020,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{2D0273D8-2D65-4FCF-95F9-C8C90C844865}</td></row>
 		<row><td>ISUSSignature</td><td>{E0E7E70A-D96A-4015-A7D2-2D0D72EE0D71}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewAppFiles,viewFeatureFiles,viewShortcuts,viewProject,viewRealSetupDesign,viewSetupDesign,viewSetupTypes,viewUpgradePaths,viewUpdateService,viewDependencies,viewObjects,viewRegistry,viewIniFiles,viewTextFiles,viewSQLServer,viewVRoots,viewEnvironmentVariables,viewFileExtensions,viewServices,viewUI,viewBillboards,viewTextMessages,viewSystemSearch,viewInstallScriptStd,viewCustomActions,viewSupportFiles,viewRelease,viewDesignPatches,viewAppV</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewAppFiles,viewFeatureFiles,viewShortcuts,viewProject,viewRealSetupDesign,viewSetupDesign,viewSetupTypes,viewUpgradePaths,viewUpdateService,viewDependencies,viewObjects,viewRegistry,viewIniFiles,viewTextFiles,viewSQLServer,viewVRoots,viewEnvironmentVariables,viewFileExtensions,viewServices,viewUI,viewBillboards,viewTextMessages,viewSystemSearch,viewInstallScriptStd,viewCustomActions,viewSupportFiles,viewRelease,viewDesignPatches,viewAppV,viewISToday</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4470,9 +4475,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="L255">FileName</col>
 		<col def="s72">DirProperty</col>
 		<col def="i2">InstallMode</col>
-		<row><td>FileKey1</td><td>LenovoWiFiWPFClient.Primary_output</td><td/><td>lenovo</td><td>2</td></row>
-		<row><td>FileKey2</td><td>LenovoWiFiWPFClient.Primary_output</td><td/><td>lenovo_1_lenovo_wifi</td><td>2</td></row>
-		<row><td>_Built1</td><td>LenovoWiFiWPFClient.Primary_output</td><td/><td>lenovo_1_lenovo_wifi</td><td>2</td></row>
+		<row><td>_Built</td><td>LenovoWiFiWPFClient.Primary_output</td><td/><td>lenovo_1_lenovo_wifi</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4520,7 +4523,6 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">Arguments</col>
 		<col def="I2">Wait</col>
 		<col def="s72">Component_</col>
-		<row><td>NewEvent1</td><td>Lenovo WiFi</td><td>129</td><td/><td>0</td><td>LenovoWiFiService.Primary_output</td></row>
 	</table>
 
 	<table name="ServiceInstall">
@@ -4537,7 +4539,6 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">Arguments</col>
 		<col def="s72">Component_</col>
 		<col def="L255">Description</col>
-		<row><td>NewServiceInstall1</td><td>Lenovo WiFi</td><td/><td>16</td><td>2</td><td>32771</td><td/><td/><td/><td/><td/><td>LenovoWiFiService.Primary_output</td><td>##ID_STRING6##</td></row>
 	</table>
 
 	<table name="Shortcut">
@@ -4560,8 +4561,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>_Built1</td><td>lenovo_1_lenovo_wifi</td><td>##IDS_SHORTCUT_DISPLAY_NAME2##</td><td>LenovoWiFiWPFClient.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td>_Built1_9A139634D45F4131803EAD6337C650F0.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>_Built11</td><td>DesktopFolder</td><td>##IDS_SHORTCUT_DISPLAY_NAME2##</td><td>LenovoWiFiWPFClient.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td>_Built11_D4D8EBDC9D3341728E4631B0647337FD.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>_Built</td><td>lenovo_1_lenovo_wifi</td><td>##IDS_SHORTCUT_DISPLAY_NAME3##</td><td>LenovoWiFiWPFClient.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>_Built1</td><td>DesktopFolder</td><td>##IDS_SHORTCUT_DISPLAY_NAME3##</td><td>LenovoWiFiWPFClient.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">

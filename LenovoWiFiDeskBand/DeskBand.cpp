@@ -7,13 +7,13 @@ const TCHAR g_szDeskBandClassName[] = L"LenovoWiFiDeskBandWndClass";
 
 CDeskBand::CDeskBand()
 	: m_cRef(1),
-	  m_hWnd(NULL),
-	  m_hParentWnd(NULL),
-	  m_fFocus(FALSE),
-	  m_fCompositionEnabled(FALSE),
-	  m_hIcon(NULL),
-	  m_pSite(NULL),
-	  m_uFirstCommand(0u)
+	m_hWnd(NULL),
+	m_hParentWnd(NULL),
+	m_fFocus(FALSE),
+	m_fCompositionEnabled(FALSE),
+	m_hIcon(NULL),
+	m_hMenu(NULL),
+	m_pSite(NULL)
 {
 }
 
@@ -23,6 +23,11 @@ CDeskBand::~CDeskBand()
 	if (m_hIcon)
 	{
 		DestroyIcon(m_hIcon);
+	}
+
+	if (m_hMenu)
+	{
+		DestroyMenu(m_hMenu);
 	}
 
 	if (m_pSite)
@@ -60,10 +65,6 @@ STDMETHODIMP CDeskBand::QueryInterface(REFIID riid, void **ppvObject)
 	else if (IsEqualIID(IID_IInputObject, riid))
 	{
 		*ppvObject = static_cast<IInputObject *>(this);
-	}
-	else if (IsEqualIID(IID_IContextMenu, riid))
-	{
-		*ppvObject = static_cast<IContextMenu *>(this);
 	}
 	else
 	{
@@ -131,8 +132,8 @@ STDMETHODIMP CDeskBand::GetBandInfo(DWORD dwBandID, DWORD dwViewMode, DESKBANDIN
 	{
 		if (pdbi->dwMask & DBIM_MINSIZE)
 		{
-			pdbi->ptMinSize.x = 30;
-			pdbi->ptMinSize.y = 30;
+			pdbi->ptMinSize.x = 32;
+			pdbi->ptMinSize.y = 32;
 		}
 
 		if (pdbi->dwMask & DBIM_MAXSIZE)
@@ -147,8 +148,8 @@ STDMETHODIMP CDeskBand::GetBandInfo(DWORD dwBandID, DWORD dwViewMode, DESKBANDIN
 
 		if (pdbi->dwMask & DBIM_ACTUAL)
 		{
-			pdbi->ptActual.x = 30;
-			pdbi->ptActual.y = 30;
+			pdbi->ptActual.x = 32;
+			pdbi->ptActual.y = 32;
 		}
 
 		if (pdbi->dwMask & DBIM_TITLE)
@@ -252,6 +253,7 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown *pUnkSite)
 				wndClass.lpfnWndProc = WindowProc;
 				wndClass.lpszClassName = g_szDeskBandClassName;
 				wndClass.hbrBackground = CreateSolidBrush(COLOR_WINDOW);
+				wndClass.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);
 
 				RegisterClassW(&wndClass);
 
@@ -306,6 +308,9 @@ LRESULT CALLBACK CDeskBand::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 	case WM_PRINTCLIENT:
 		pDeskBand->OnPaint(reinterpret_cast<HDC>(wParam));
 		break;
+	case WM_CONTEXTMENU:
+		pDeskBand->OnContextMenu(hWnd, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		break;
 	case WM_ERASEBKGND:
 		if (pDeskBand->m_fCompositionEnabled)
 		{
@@ -314,7 +319,7 @@ LRESULT CALLBACK CDeskBand::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 		break;
 	}
 
-	if (uMsg != WM_ERASEBKGND)
+	if (uMsg != WM_ERASEBKGND || uMsg != WM_CONTEXTMENU)
 	{
 		lResult = DefWindowProc(hWnd, uMsg, wParam, lParam);
 	}
@@ -344,13 +349,49 @@ void CDeskBand::OnPaint(const HDC hDeviceContext)
 
 	if (hdc)
 	{
-		m_hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(103));
+		m_hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(IDI_ICON));
 		DrawIcon(hdc, 0, 0, m_hIcon);
 	}
 
 	if (!hDeviceContext)
 	{
 		EndPaint(m_hWnd, &ps);
+	}
+}
+
+void CDeskBand::OnContextMenu(const HWND hWnd, const int xPos, const int yPos)
+{
+	RECT rect;
+	GetClientRect(hWnd, &rect);
+
+	POINT point = { xPos, yPos };
+	ScreenToClient(hWnd, &point);
+
+	if (PtInRect(&rect, point))
+	{
+		ClientToScreen(hWnd, &point);
+		
+		HMENU hMenu = LoadMenu(g_hInstance, MAKEINTRESOURCE(IDR_MENU1));
+
+		if (hMenu == NULL)
+		{
+			return;
+		}
+
+		HMENU hMenuPopup = GetSubMenu(hMenu, 0);
+
+		if (hMenuPopup == NULL)
+		{
+			return;
+		}
+		
+		m_hMenu = hMenuPopup;
+
+		TrackPopupMenu(hMenuPopup,
+			TPM_LEFTALIGN | TPM_RIGHTBUTTON,
+			point.x, point.y, 0, hWnd, NULL);
+
+		DestroyMenu(hMenu);
 	}
 }
 
@@ -399,92 +440,4 @@ STDMETHODIMP CDeskBand::UIActivateIO(BOOL fActivate, MSG *pMsg)
 	}
 
 	return S_OK;
-}
-
-STDMETHODIMP CDeskBand::GetCommandString(UINT_PTR idCmd, UINT uFlags, UINT *pwReserved, LPSTR pszName, UINT cchMax)
-{
-	return S_OK;
-}
-
-STDMETHODIMP CDeskBand::InvokeCommand(LPCMINVOKECOMMANDINFO pici)
-{
-	if (!pici)
-	{
-		return E_INVALIDARG;
-	}
-
-	if (LOWORD(pici->lpVerb) == m_uFirstCommand + IDM_CAPTION_RESTART_WIFI)
-	{
-		
-	}
-
-	if (LOWORD(pici->lpVerb) == m_uFirstCommand + IDM_CAPTION_STOP_WIFI)
-	{
-
-	}
-
-	if (LOWORD(pici->lpVerb) == m_uFirstCommand + IDM_CAPTION_SETTINGS)
-	{
-
-	}
-
-	if (LOWORD(pici->lpVerb) == m_uFirstCommand + IDM_CAPTION_FEEDBACK)
-	{
-
-	}
-
-	if (LOWORD(pici->lpVerb) == m_uFirstCommand + IDM_CAPTION_HELP)
-	{
-
-	}
-
-	if (LOWORD(pici->lpVerb) == m_uFirstCommand + IDM_CAPTION_EXIT)
-	{
-
-	}
-
-	return S_OK;
-}
-
-STDMETHODIMP CDeskBand::QueryContextMenu(HMENU hmenu, UINT indexMenu, UINT idCmdFirst, UINT idCmdLast, UINT uFlags)
-{
-	if (uFlags & CMF_DEFAULTONLY)
-		return MAKE_HRESULT(SEVERITY_SUCCESS, FACILITY_NULL, 0);
-
-	m_uFirstCommand = idCmdFirst;
-
-	CONST UINT CAPTION_LENGTH = 10;
-	TCHAR pszCaption[CAPTION_LENGTH];
-
-	ZeroMemory(pszCaption, CAPTION_LENGTH);
-	LoadString(g_hInstance, IDS_RESTART_WIFI, pszCaption, CAPTION_LENGTH);
-	InsertMenu(hmenu, indexMenu, MF_STRING | MF_BYPOSITION, idCmdFirst + IDM_CAPTION_RESTART_WIFI, pszCaption);
-
-	ZeroMemory(pszCaption, CAPTION_LENGTH);
-	LoadString(g_hInstance, IDS_STOP_WIFI, pszCaption, sizeof(pszCaption) / sizeof(TCHAR));
-	InsertMenu(hmenu, indexMenu, MF_STRING | MF_BYPOSITION, idCmdFirst + IDM_CAPTION_STOP_WIFI, pszCaption);
-
-	InsertMenu(hmenu, indexMenu, MF_SEPARATOR | MF_BYPOSITION, idCmdFirst + IDM_SEPARATOR_1_OFFSET, 0);
-
-	ZeroMemory(pszCaption, CAPTION_LENGTH);
-	LoadString(g_hInstance, IDS_SETTINGS, pszCaption, sizeof(pszCaption) / sizeof(TCHAR));
-	InsertMenu(hmenu, indexMenu, MF_STRING | MF_BYPOSITION, idCmdFirst + IDM_CAPTION_SETTINGS, pszCaption);
-
-	InsertMenu(hmenu, indexMenu, MF_SEPARATOR | MF_BYPOSITION, idCmdFirst + IDM_SEPARATOR_2_OFFSET, 0);
-
-	ZeroMemory(pszCaption, CAPTION_LENGTH);
-	LoadString(g_hInstance, IDS_FEEDBACK, pszCaption, sizeof(pszCaption) / sizeof(TCHAR));
-	InsertMenu(hmenu, indexMenu, MF_STRING | MF_BYPOSITION, idCmdFirst + IDM_CAPTION_FEEDBACK, pszCaption);
-
-	ZeroMemory(pszCaption, CAPTION_LENGTH);
-	LoadString(g_hInstance, IDS_HELP, pszCaption, sizeof(pszCaption) / sizeof(TCHAR));
-	InsertMenu(hmenu, indexMenu, MF_STRING | MF_BYPOSITION, idCmdFirst + IDM_CAPTION_HELP, pszCaption);
-
-	InsertMenu(hmenu, indexMenu, MF_SEPARATOR | MF_BYPOSITION, idCmdFirst + IDM_SEPARATOR_3_OFFSET, 0);
-
-	ZeroMemory(pszCaption, CAPTION_LENGTH);
-	LoadString(g_hInstance, IDS_EXIT, pszCaption, sizeof(pszCaption) / sizeof(TCHAR));
-	InsertMenu(hmenu, indexMenu, MF_STRING | MF_BYPOSITION, idCmdFirst + IDM_CAPTION_EXIT, pszCaption);
-
-	return MAKE_HRESULT(SEVERITY_SUCCESS, FACILITY_NULL, IDM_CAPTION_EXIT + 1);
 }

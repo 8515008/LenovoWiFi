@@ -16,7 +16,7 @@ namespace Lenovo.WiFi.Wlan
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
         protected override bool ReleaseHandle()
         {
-            return Convert.ToBoolean(WlanApi.WlanCloseHandle(handle, IntPtr.Zero));
+            return Convert.ToBoolean(NativeMethods.WlanCloseHandle(handle, IntPtr.Zero));
         }
     }
 }

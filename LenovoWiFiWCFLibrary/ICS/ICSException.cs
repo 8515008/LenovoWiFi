@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Lenovo.WiFi.ICS
 {
+    [Serializable]
     public class ICSException : ApplicationException
     {
         public ICSException()

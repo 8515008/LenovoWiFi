@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Lenovo.WiFi.Wlan
 {
+    [Serializable]
     public class WlanException : ApplicationException
     {
         public WlanException()

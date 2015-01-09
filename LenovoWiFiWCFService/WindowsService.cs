@@ -20,23 +20,21 @@ namespace Lenovo.WiFi
                 _serviceHost.Close();
             }
 
-            _serviceHost = new ServiceHost(typeof(HostedNetworkService), new Uri("net.pipe://localhost/LenovoWiFiService/HostedNetworkService"));
-            _serviceHost.AddServiceEndpoint(typeof (IHostedNetworkService), new NetNamedPipeBinding(), "Pipe");
-
+            _serviceHost = new ServiceHost(typeof(HostedNetworkService));
             _serviceHost.Open();
         }
 
         protected override void OnStop()
         {
-            CloseDaemonService();
+            StopService();
         }
 
         protected override void OnShutdown()
         {
-            CloseDaemonService();
+            StopService();
         }
 
-        private void CloseDaemonService()
+        private void StopService()
         {
             if (_serviceHost != null)
             {

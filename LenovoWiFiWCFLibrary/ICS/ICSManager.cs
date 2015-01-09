@@ -5,7 +5,7 @@ using NETCONLib;
 
 namespace Lenovo.WiFi.ICS
 {
-    internal class ICSManager
+    internal class ICSManager : IDisposable
     {
         private readonly INetSharingManager _netSharingManager;
         private readonly ServiceController _icsService;
@@ -20,6 +20,11 @@ namespace Lenovo.WiFi.ICS
             }
 
             _icsService = new ServiceController("SharedAccess");
+        }
+
+        public void Dispose()
+        {
+            _icsService.Dispose();
         }
 
         public Dictionary<Guid, ICSConnection> Connections

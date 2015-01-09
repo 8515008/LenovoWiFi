@@ -55,18 +55,24 @@
   <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Gma.QrCodeNet.Encoding">
       <HintPath>..\packages\QrCode.Net.0.4.0.0\lib\net35\Gma.QrCodeNet.Encoding.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Threading">
       <HintPath>..\packages\TaskParallelLibrary.1.0.2856.0\lib\Net35\System.Threading.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -76,11 +82,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Service References\Proxy\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Windows\BottomRightWindow.cs" />
     <Compile Include="Windows\PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="HostedNetworkClient.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -136,6 +146,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -143,15 +154,16 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Service References\Proxy\service.wsdl" />
+    <None Include="Service References\Proxy\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Proxy\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LenovoWiFiLibrary\LenovoWiFiLibrary.csproj">
-      <Project>{5366d6ec-2ea6-443e-8871-475b41021f8b}</Project>
-      <Name>LenovoWiFiLibrary</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\exit.ico" />
@@ -167,6 +179,27 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\Proxy\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Proxy\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Proxy\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Proxy\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="logo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

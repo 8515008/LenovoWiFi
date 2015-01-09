@@ -4,13 +4,18 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5366D6EC-2EA6-443E-8871-475B41021F8B}</ProjectGuid>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AD8B7992-13A4-4833-AA80-54AC4222A9B6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Lenovo.WiFi</RootNamespace>
-    <AssemblyName>LenovoWiFiLibrary</AssemblyName>
+    <AssemblyName>LenovoWiFiWCFLibrary</AssemblyName>
+    <ProjectTypeGuids>{3D9AD99F-2412-4246-B90B-4EAA41C64699};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <StartArguments>/client:"WcfTestClient.exe"</StartArguments>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <XsdCodeGenEnabled>True</XsdCodeGenEnabled>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -21,6 +26,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <RegisterForComInterop>true</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,10 +36,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <RegisterForComInterop>true</RegisterForComInterop>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -40,14 +45,15 @@
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HostedNetworkManager.cs" />
+    <Compile Include="HostedNetworkService.cs" />
     <Compile Include="ICS\ICSConnection.cs" />
     <Compile Include="ICS\ICSException.cs" />
     <Compile Include="ICS\ICSManager.cs" />
     <Compile Include="IHostedNetworkService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities.cs" />
-    <Compile Include="Wlan\WlanApi.cs" />
-    <Compile Include="HostedNetworkManager.cs" />
+    <Compile Include="Wlan\NativeMethods.cs" />
     <Compile Include="Wlan\WlanEnums.cs" />
     <Compile Include="Wlan\WlanEventArgs.cs" />
     <Compile Include="Wlan\WlanException.cs" />
@@ -65,7 +71,28 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VSToolsPath Condition="'$(VSToolsPath)' == '' and '$(VisualStudioVersion)' != '' and '$(VisualStudioVersion)' != '11.0'">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio</VSToolsPath>
+    <WcfServiceModelTargetPath>$(VSToolsPath)\WCF</WcfServiceModelTargetPath>
+  </PropertyGroup>
+  <Import Project="$(WcfServiceModelTargetPath)\Microsoft.VisualStudio.ServiceModel.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{3D9AD99F-2412-4246-B90B-4EAA41C64699}">
+        <WcfProjectProperties>
+          <AutoStart>True</AutoStart>
+        </WcfProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
