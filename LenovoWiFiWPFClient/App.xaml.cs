@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 
 using Lenovo.WiFi.Client.Proxy;
@@ -11,10 +13,15 @@ namespace Lenovo.WiFi.Client
     /// </summary>
     public partial class App : Application
     {
+        // {23ED1551-904E-4874-BA46-DBE1489D4D34}
+        public static Guid CLSIDLenovoWiFiDeskBand = new Guid("{23ED1551-904E-4874-BA46-DBE1489D4D34}");
         public HostedNetworkServiceClient Client { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            var trayDeskBand = (ITrayDeskBand)new TrayDesktopBand();
+            trayDeskBand.ShowDeskBand(CLSIDLenovoWiFiDeskBand);
+
             this.Client = new HostedNetworkServiceClient();
 
             var startupWindow = new StartupWindow();

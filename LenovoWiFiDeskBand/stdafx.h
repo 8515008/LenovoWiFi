@@ -20,5 +20,8 @@
 
 // TODO: reference additional headers your program requires here
 #include "resource.h"
+#include "common.h"
 #include "ClassFactory.h"
+#include "HostedNetworkClient.h"
 #include "DeskBand.h"
+#include "NTService.h"

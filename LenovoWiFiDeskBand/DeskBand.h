@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ShObjIdl.h>
+
 class CDeskBand : public IDeskBand2, public IObjectWithSite, public IPersistStream, public IInputObject
 {
 public:
@@ -53,15 +55,7 @@ private:
 	HICON m_hIcon;
 	HMENU m_hMenu;
 	IInputObjectSite *m_pSite;
-
-	UINT CONST IDM_CAPTION_RESTART_WIFI = 0;
-	UINT CONST IDM_CAPTION_STOP_WIFI = 1;
-	UINT CONST IDM_SEPARATOR_1_OFFSET = 2;
-	UINT CONST IDM_CAPTION_SETTINGS = 3;
-	UINT CONST IDM_SEPARATOR_2_OFFSET = 4;
-	UINT CONST IDM_CAPTION_FEEDBACK = 5;
-	UINT CONST IDM_CAPTION_HELP = 6;
-	UINT CONST IDM_SEPARATOR_3_OFFSET = 7;
-	UINT CONST IDM_CAPTION_EXIT = 8;
+	BOOL m_fServiceRunning;
+	CHostedNetworkClient *m_pClient;
 };
 

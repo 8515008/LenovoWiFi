@@ -100,6 +100,7 @@
     <Compile Include="Windows\SuccessWindow.xaml.cs">
       <DependentUpon>SuccessWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\TrayDesktopBand.cs" />
     <Page Include="Windows\PopupWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

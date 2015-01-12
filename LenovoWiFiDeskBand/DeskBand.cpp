@@ -3,7 +3,8 @@
 extern HINSTANCE g_hInstance;
 extern CLSID CLSIDLenovoWiFiDeskBand;
 
-const TCHAR g_szDeskBandClassName[] = L"LenovoWiFiDeskBandWndClass";
+CONST TCHAR g_szLenovoWiFiServiceName[] = _T("LenovoWiFi");
+CONST TCHAR g_szDeskBandClassName[]		= _T("LenovoWiFiDeskBandWndClass");
 
 CDeskBand::CDeskBand()
 	: m_cRef(1),
@@ -13,8 +14,15 @@ CDeskBand::CDeskBand()
 	m_fCompositionEnabled(FALSE),
 	m_hIcon(NULL),
 	m_hMenu(NULL),
-	m_pSite(NULL)
+	m_pSite(NULL),
+	m_fServiceRunning(FALSE)
 {
+	CNTService *pService = new CNTService(g_szLenovoWiFiServiceName);
+	if (pService->Exists() && pService->GetCurrentState() == SERVICE_RUNNING)
+	{
+		m_fServiceRunning = TRUE;
+		m_pClient = new CHostedNetworkClient();
+	}
 }
 
 
@@ -253,9 +261,9 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown *pUnkSite)
 				wndClass.lpfnWndProc = WindowProc;
 				wndClass.lpszClassName = g_szDeskBandClassName;
 				wndClass.hbrBackground = CreateSolidBrush(COLOR_WINDOW);
-				wndClass.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);
+				wndClass.lpszMenuName = MAKEINTRESOURCE(IDR_MENU);
 
-				RegisterClassW(&wndClass);
+				RegisterClass(&wndClass);
 
 				CreateWindowEx(
 					WS_EX_LEFT,
@@ -319,7 +327,7 @@ LRESULT CALLBACK CDeskBand::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 		break;
 	}
 
-	if (uMsg != WM_ERASEBKGND || uMsg != WM_CONTEXTMENU)
+	if (uMsg != WM_ERASEBKGND && uMsg != WM_CONTEXTMENU)
 	{
 		lResult = DefWindowProc(hWnd, uMsg, wParam, lParam);
 	}
@@ -349,7 +357,7 @@ void CDeskBand::OnPaint(const HDC hDeviceContext)
 
 	if (hdc)
 	{
-		m_hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(IDI_ICON));
+		m_hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(IDI_ICON2));
 		DrawIcon(hdc, 0, 0, m_hIcon);
 	}
 
@@ -371,7 +379,7 @@ void CDeskBand::OnContextMenu(const HWND hWnd, const int xPos, const int yPos)
 	{
 		ClientToScreen(hWnd, &point);
 		
-		HMENU hMenu = LoadMenu(g_hInstance, MAKEINTRESOURCE(IDR_MENU1));
+		HMENU hMenu = LoadMenu(g_hInstance, MAKEINTRESOURCE(IDR_MENU));
 
 		if (hMenu == NULL)
 		{
@@ -387,9 +395,30 @@ void CDeskBand::OnContextMenu(const HWND hWnd, const int xPos, const int yPos)
 		
 		m_hMenu = hMenuPopup;
 
-		TrackPopupMenu(hMenuPopup,
-			TPM_LEFTALIGN | TPM_RIGHTBUTTON,
+		UINT uMenuItemID = TrackPopupMenu(hMenuPopup,
+			TPM_LEFTALIGN | TPM_RIGHTBUTTON | TPM_RETURNCMD,
 			point.x, point.y, 0, hWnd, NULL);
+
+		switch (uMenuItemID)
+		{
+		case ID_RESTART_WIFI:
+			m_pClient->RestartHostedNetwork();
+			break;
+		case ID_STOP_WIFI:
+			m_pClient->StopHostedNetwork();
+			break;
+		case ID_SETTINGS:
+			break;
+		case ID_FEEDBACK:
+			break;
+		case ID_HELP:
+			break;
+		case ID_EXIT:
+			// TODO: HIDE THE DESKBAND
+			break;
+		default:
+			break;
+		}
 
 		DestroyMenu(hMenu);
 	}
