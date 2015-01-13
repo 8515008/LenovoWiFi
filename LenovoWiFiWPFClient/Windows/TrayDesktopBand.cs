@@ -18,7 +18,7 @@ namespace Lenovo.WiFi.Client.Windows
 
         void HideDeskBand(Guid clsid);
 
-        void IsDeskBandShown(Guid clsid);
+        bool IsDeskBandShown(Guid clsid);
 
         void DeskBandRegistrationChanged();
     }

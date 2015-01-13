@@ -3,8 +3,8 @@
 extern HINSTANCE g_hInstance;
 extern CLSID CLSIDLenovoWiFiDeskBand;
 
-CONST TCHAR g_szLenovoWiFiServiceName[] = _T("LenovoWiFi");
-CONST TCHAR g_szDeskBandClassName[]		= _T("LenovoWiFiDeskBandWndClass");
+CONST TCHAR g_szLenovoWiFiServiceName[] = TEXT("LenovoWiFi");
+CONST TCHAR g_szDeskBandClassName[]		= TEXT("LenovoWiFiDeskBandWndClass");
 
 CDeskBand::CDeskBand()
 	: m_cRef(1),
@@ -21,7 +21,7 @@ CDeskBand::CDeskBand()
 	if (pService->Exists() && pService->GetCurrentState() == SERVICE_RUNNING)
 	{
 		m_fServiceRunning = TRUE;
-		m_pClient = new CHostedNetworkClient();
+		m_pServiceClient = new CHostedNetworkClient();
 	}
 }
 
@@ -402,10 +402,10 @@ void CDeskBand::OnContextMenu(const HWND hWnd, const int xPos, const int yPos)
 		switch (uMenuItemID)
 		{
 		case ID_RESTART_WIFI:
-			m_pClient->RestartHostedNetwork();
+			m_pServiceClient->RestartHostedNetwork();
 			break;
 		case ID_STOP_WIFI:
-			m_pClient->StopHostedNetwork();
+			m_pServiceClient->StopHostedNetwork();
 			break;
 		case ID_SETTINGS:
 			break;

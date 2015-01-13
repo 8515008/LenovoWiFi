@@ -1,5 +1,9 @@
 ﻿using System;
+using System.IO;
+using System.IO.Pipes;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -15,12 +19,69 @@ namespace Lenovo.WiFi.Client
     {
         // {23ED1551-904E-4874-BA46-DBE1489D4D34}
         public static Guid CLSIDLenovoWiFiDeskBand = new Guid("{23ED1551-904E-4874-BA46-DBE1489D4D34}");
+
+        private Thread _pipeServerThread = new Thread(ListeningPipeServer);
         public HostedNetworkServiceClient Client { get; private set; }
+
+        private static void ListeningPipeServer()
+        {
+            using (var pipe = new NamedPipeServerStream(@"\\.\pipe\LenovoWiFi", PipeDirection.InOut, 1, PipeTransmissionMode.Message))
+            {
+                var reader = new StreamReader(pipe);
+                var writer = new StreamWriter(pipe);
+
+                try
+                {
+                    pipe.WaitForConnection();
+
+                    writer.WriteLine("connected");
+                    writer.Flush();
+                    pipe.WaitForPipeDrain();
+
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        bool exit = false;
+                        switch (line)
+                        {
+                            case "mouseenter":
+                                break;
+                            case "mouseleave":
+                                break;
+                            case "lbuttonclick":
+                                break;
+                            case "exit":
+                                exit = true;
+                                break;
+                        }
+
+                        if (exit)
+                        {
+                            break;
+                        }
+                    }
+                }
+                finally
+                {
+                    pipe.WaitForPipeDrain();
+                    if (pipe.IsConnected)
+                    {
+                        pipe.Disconnect();
+                    }
+                }
+            }
+        }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            var trayDeskBand = (ITrayDeskBand)new TrayDesktopBand();
-            trayDeskBand.ShowDeskBand(CLSIDLenovoWiFiDeskBand);
+            _pipeServerThread.Start();
+
+            //var trayDeskBand = (ITrayDeskBand)new TrayDesktopBand();
+
+            //if (!trayDeskBand.IsDeskBandShown(CLSIDLenovoWiFiDeskBand))
+            //{
+            //    trayDeskBand.ShowDeskBand(CLSIDLenovoWiFiDeskBand);
+            //}
 
             this.Client = new HostedNetworkServiceClient();
 

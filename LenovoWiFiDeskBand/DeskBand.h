@@ -56,6 +56,6 @@ private:
 	HMENU m_hMenu;
 	IInputObjectSite *m_pSite;
 	BOOL m_fServiceRunning;
-	CHostedNetworkClient *m_pClient;
+	CHostedNetworkClient *m_pServiceClient;
 };
 

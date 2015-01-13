@@ -22,7 +22,7 @@ CHostedNetworkClient::CHostedNetworkClient()
 	}
 
 	DISPID dispId;
-	BSTR szFunc = SysAllocString(_T("StartHostedNetwork"));
+	BSTR szFunc = SysAllocString(TEXT("StartHostedNetwork"));
 
 	hr = m_pProxy->GetIDsOfNames(
 		IID_NULL,
@@ -34,7 +34,7 @@ CHostedNetworkClient::CHostedNetworkClient()
 	BAIL_ON_FAILURE(hr)
 	m_lStartFuncID = dispId;
 
-	szFunc = SysAllocString(_T("StopHostedNetwork"));
+	szFunc = SysAllocString(TEXT("StopHostedNetwork"));
 
 	hr = m_pProxy->GetIDsOfNames(
 		IID_NULL,
