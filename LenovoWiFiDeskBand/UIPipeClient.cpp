@@ -59,14 +59,14 @@ CUIPipeClient::~CUIPipeClient()
 	}
 }
 
-DWORD CUIPipeClient::PostMessage(LPCTSTR lpvMessage)
+DWORD CUIPipeClient::Send(LPCTSTR lpvMessage)
 {
 	if (!lpvMessage || !m_hPipe)
 	{
 		return ERROR_INVALID_HANDLE;
 	}
 
-	DWORD dwError, cbMessageLength, cbWritten, cbRead;
+	DWORD cbMessageLength, cbWritten;
 	cbMessageLength = (lstrlen(lpvMessage) + 1) * sizeof(TCHAR);
 
 	BOOL fSuccess = WriteFile(
@@ -76,28 +76,5 @@ DWORD CUIPipeClient::PostMessage(LPCTSTR lpvMessage)
 		&cbWritten,
 		NULL);
 
-	if (!fSuccess)
-	{
-		return GetLastError();
-	}
-
-	TCHAR chBuf[BUFFER_SIZE];
-	dwError = ERROR_SUCCESS;
-
-	do
-	{
-		fSuccess = ReadFile(
-			m_hPipe,
-			chBuf,
-			BUFFER_SIZE * sizeof(TCHAR),
-			&cbRead,
-			NULL);
-
-		if (!fSuccess)
-		{
-			dwError = GetLastError();
-		}
-	} while (!fSuccess && dwError == ERROR_MORE_DATA);
-
-	return dwError;
+	return fSuccess ? ERROR_SUCCESS : GetLastError();
 }

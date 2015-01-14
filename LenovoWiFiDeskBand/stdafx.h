@@ -25,3 +25,4 @@
 #include "HostedNetworkClient.h"
 #include "DeskBand.h"
 #include "NTService.h"
+#include "UIPipeClient.h"

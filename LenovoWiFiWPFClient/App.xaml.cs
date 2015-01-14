@@ -1,12 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.IO.Pipes;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-
 using Lenovo.WiFi.Client.Proxy;
 using Lenovo.WiFi.Client.Windows;
 
@@ -17,16 +15,44 @@ namespace Lenovo.WiFi.Client
     /// </summary>
     public partial class App : Application
     {
-        // {23ED1551-904E-4874-BA46-DBE1489D4D34}
-        public static Guid CLSIDLenovoWiFiDeskBand = new Guid("{23ED1551-904E-4874-BA46-DBE1489D4D34}");
+        private readonly BackgroundWorker _pipeServerWorker = new BackgroundWorker();
+        private readonly Semaphore _workerSemaphore = new Semaphore(0, 1);
 
-        private Thread _pipeServerThread = new Thread(ListeningPipeServer);
         public HostedNetworkServiceClient Client { get; private set; }
 
-        private static void ListeningPipeServer()
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            _pipeServerWorker.DoWork += (sender, args) => ListeningPipe();
+            _pipeServerWorker.RunWorkerAsync();
+
+            this.Client = new HostedNetworkServiceClient();
+
+            var startupWindow = new StartupWindow();
+            startupWindow.Show();
+
+            var startupTask = new Task(() =>
+            {
+                this.Client.StartHostedNetwork();
+            });
+
+            startupTask.ContinueWith(task =>
+            {
+                var successWindow = new SuccessWindow();
+                successWindow.Loaded += (sender, args) => startupWindow.Close();
+                successWindow.Closed += (sender, args) => this.Client.StopHostedNetwork();
+                this.MainWindow = successWindow;
+                this.MainWindow.Show();
+            });
+
+            startupTask.Start();
+        }
+
+        private void ListeningPipe()
         {
             using (var pipe = new NamedPipeServerStream(@"\\.\pipe\LenovoWiFi", PipeDirection.InOut, 1, PipeTransmissionMode.Message))
             {
+                ShowDeskband();
+
                 var reader = new StreamReader(pipe);
                 var writer = new StreamWriter(pipe);
 
@@ -41,7 +67,7 @@ namespace Lenovo.WiFi.Client
                     string line;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        bool exit = false;
+                        var exit = false;
                         switch (line)
                         {
                             case "mouseenter":
@@ -70,39 +96,26 @@ namespace Lenovo.WiFi.Client
                     }
                 }
             }
+
+            _workerSemaphore.Release();
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+        private void ShowDeskband()
         {
-            _pipeServerThread.Start();
+            var clsidLenovoWiFiDeskBand = new Guid("{23ED1551-904E-4874-BA46-DBE1489D4D34}");
 
-            //var trayDeskBand = (ITrayDeskBand)new TrayDesktopBand();
+            var trayDeskBand = (ITrayDeskBand)new TrayDesktopBand();
 
-            //if (!trayDeskBand.IsDeskBandShown(CLSIDLenovoWiFiDeskBand))
-            //{
-            //    trayDeskBand.ShowDeskBand(CLSIDLenovoWiFiDeskBand);
-            //}
-
-            this.Client = new HostedNetworkServiceClient();
-
-            var startupWindow = new StartupWindow();
-            startupWindow.Show();
-
-            var startupTask = new Task(() =>
+            if (!trayDeskBand.IsDeskBandShown(clsidLenovoWiFiDeskBand))
             {
-                this.Client.StartHostedNetwork();
-            });
+                trayDeskBand.ShowDeskBand(clsidLenovoWiFiDeskBand);
+            }
+        }
 
-            startupTask.ContinueWith(task =>
-            {
-                var successWindow = new SuccessWindow();
-                successWindow.Loaded += (sender, args) => startupWindow.Close();
-                successWindow.Closed += (sender, args) => this.Client.StopHostedNetwork();
-                this.MainWindow = successWindow;
-                this.MainWindow.Show();
-            }, TaskScheduler.FromCurrentSynchronizationContext());
-
-            startupTask.Start();
+        protected override void OnExit(ExitEventArgs e)
+        {
+            _workerSemaphore.WaitOne();
+            base.OnExit(e);
         }
     }
 }

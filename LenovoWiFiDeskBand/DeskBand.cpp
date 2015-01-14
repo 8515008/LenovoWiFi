@@ -15,7 +15,8 @@ CDeskBand::CDeskBand()
 	m_hIcon(NULL),
 	m_hMenu(NULL),
 	m_pSite(NULL),
-	m_fServiceRunning(FALSE)
+	m_fServiceRunning(FALSE),
+	m_fMouseEnter(FALSE)
 {
 	CNTService *pService = new CNTService(g_szLenovoWiFiServiceName);
 	if (pService->Exists() && pService->GetCurrentState() == SERVICE_RUNNING)
@@ -295,35 +296,57 @@ LRESULT CALLBACK CDeskBand::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 {
 	LRESULT lResult = 0;
 
-	CDeskBand *pDeskBand = reinterpret_cast<CDeskBand *>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+	CDeskBand *pDeskband = reinterpret_cast<CDeskBand *>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
 	switch (uMsg)
 	{
 	case WM_CREATE:
-		pDeskBand = reinterpret_cast<CDeskBand *>(reinterpret_cast<CREATESTRUCT *>(lParam)->lpCreateParams);
-		pDeskBand->m_hWnd = hWnd;
-		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pDeskBand));
+		pDeskband = reinterpret_cast<CDeskBand *>(reinterpret_cast<CREATESTRUCT *>(lParam)->lpCreateParams);
+		pDeskband->m_hWnd = hWnd;
+		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pDeskband));
 		break;
 	case WM_SETFOCUS:
-		pDeskBand->OnFocus(TRUE);
+		pDeskband->OnFocus(TRUE);
 		break;
 	case WM_KILLFOCUS:
-		pDeskBand->OnFocus(FALSE);
+		pDeskband->OnFocus(FALSE);
 		break;
 	case WM_PAINT:
-		pDeskBand->OnPaint(NULL);
+		pDeskband->OnPaint(NULL);
 		break;
 	case WM_PRINTCLIENT:
-		pDeskBand->OnPaint(reinterpret_cast<HDC>(wParam));
+		pDeskband->OnPaint(reinterpret_cast<HDC>(wParam));
 		break;
 	case WM_CONTEXTMENU:
-		pDeskBand->OnContextMenu(hWnd, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		pDeskband->OnContextMenu(hWnd, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		break;
 	case WM_ERASEBKGND:
-		if (pDeskBand->m_fCompositionEnabled)
+		if (pDeskband->m_fCompositionEnabled)
 		{
 			lResult = 1;
 		}
+		break;
+	case WM_MOUSEMOVE:
+		if (!pDeskband->m_fMouseEnter)
+		{
+			TRACKMOUSEEVENT eventTrack;
+			ZeroMemory(&eventTrack, sizeof(TRACKMOUSEEVENT));
+			eventTrack.cbSize = sizeof(TRACKMOUSEEVENT);
+			eventTrack.dwFlags = TME_LEAVE;
+			eventTrack.hwndTrack = hWnd;
+
+			TrackMouseEvent(&eventTrack);
+
+			pDeskband->m_fMouseEnter = TRUE;
+			pDeskband->OnMouseEnter();
+		}
+		break;
+	case WM_MOUSELEAVE:
+		pDeskband->m_fMouseEnter = FALSE;
+		pDeskband->OnMouseLeave();
+		break;
+	case WM_LBUTTONDOWN:
+		pDeskband->OnLeftButtonClick();
 		break;
 	}
 
@@ -422,6 +445,21 @@ void CDeskBand::OnContextMenu(const HWND hWnd, const int xPos, const int yPos)
 
 		DestroyMenu(hMenu);
 	}
+}
+
+void CDeskBand::OnMouseEnter()
+{
+	m_pUIPipeClient->Send(TEXT("mouseenter"));
+}
+
+void CDeskBand::OnLeftButtonClick()
+{
+	m_pUIPipeClient->Send(TEXT("lbuttonclick"));
+}
+
+void CDeskBand::OnMouseLeave()
+{
+	m_pUIPipeClient->Send(TEXT("mouseleave"));
 }
 
 STDMETHODIMP CDeskBand::GetClassID(CLSID *pClassID)

@@ -45,6 +45,9 @@ protected:
 	 void OnFocus(const BOOL bFocus);
 	 void OnPaint(const HDC hDeviceContext);
 	 void OnContextMenu(const HWND hWnd, const int xPos, const int yPos);
+	 void OnMouseEnter();
+	 void OnLeftButtonClick();
+	 void OnMouseLeave();
 
 private:
 	LONG m_cRef;
@@ -57,5 +60,7 @@ private:
 	IInputObjectSite *m_pSite;
 	BOOL m_fServiceRunning;
 	CHostedNetworkClient *m_pServiceClient;
+	CUIPipeClient *m_pUIPipeClient;
+	BOOL m_fMouseEnter;
 };
 

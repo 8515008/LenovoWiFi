@@ -5,7 +5,7 @@ public:
 	CUIPipeClient();
 	~CUIPipeClient();
 
-	DWORD PostMessage(LPCTSTR lpszMessage);
+	DWORD Send(LPCTSTR lpszMessage);
 
 private:
 	HANDLE m_hPipe;

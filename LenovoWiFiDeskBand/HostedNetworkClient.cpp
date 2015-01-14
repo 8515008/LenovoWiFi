@@ -59,8 +59,6 @@ CHostedNetworkClient::~CHostedNetworkClient()
 
 STDMETHODIMP CHostedNetworkClient::StartHostedNetwork()
 {
-	HRESULT hResult = S_OK;
-
 	DISPPARAMS dispparamsNoArgs = { NULL, NULL, 0, 0 };
 	EXCEPINFO excepInfo;
 	memset(&excepInfo, 0, sizeof(EXCEPINFO));
@@ -79,8 +77,6 @@ STDMETHODIMP CHostedNetworkClient::StartHostedNetwork()
 
 STDMETHODIMP CHostedNetworkClient::StopHostedNetwork()
 {
-	HRESULT hResult;
-
 	DISPPARAMS dispparamsNoArgs = { NULL, NULL, 0, 0 };
 	EXCEPINFO excepInfo;
 	memset(&excepInfo, 0, sizeof(EXCEPINFO));
