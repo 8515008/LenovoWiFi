@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.IO;
 using System.IO.Pipes;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,81 +10,73 @@ using Lenovo.WiFi.Client.Windows;
 
 namespace Lenovo.WiFi.Client
 {
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
     public partial class App : Application
     {
-        private static readonly Guid CLSIDLenovoWiFiDeskBand = new Guid("{23ED1551-904E-4874-BA46-DBE1489D4D34}");
-
         private readonly BackgroundWorker _pipeServerWorker = new BackgroundWorker();
-
-        private Window _currentWindow;
+        private readonly Semaphore _workerSemaphore = new Semaphore(0, 1);
 
         public HostedNetworkServiceClient Client { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            ShowDeskband();
-
-            this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-
-            this.Client = new HostedNetworkServiceClient();
-
             _pipeServerWorker.DoWork += (sender, args) => ListeningPipe();
             _pipeServerWorker.RunWorkerAsync();
 
-            //var startupWindow = new StartupWindow();
-            //startupWindow.Show();
+            this.Client = new HostedNetworkServiceClient();
 
-            //var startupTask = new Task(() =>
-            //{
-            //    this.Client.StartHostedNetwork();
-            //});
+            var startupWindow = new StartupWindow();
+            startupWindow.Show();
 
-            //startupTask.ContinueWith(task =>
-            //{
-            //    var successWindow = new SuccessWindow();
-            //    successWindow.Loaded += (sender, args) => startupWindow.Close();
-            //    successWindow.Closed += (sender, args) => this.Client.StopHostedNetwork();
-            //    this.MainWindow = successWindow;
-            //    this.MainWindow.Show();
-            //}, TaskScheduler.FromCurrentSynchronizationContext());
+            var startupTask = new Task(() =>
+            {
+                this.Client.StartHostedNetwork();
+            });
 
-            //startupTask.Start();
+            startupTask.ContinueWith(task =>
+            {
+                var successWindow = new SuccessWindow();
+                successWindow.Loaded += (sender, args) => startupWindow.Close();
+                successWindow.Closed += (sender, args) => this.Client.StopHostedNetwork();
+                this.MainWindow = successWindow;
+                this.MainWindow.Show();
+            });
+
+            startupTask.Start();
         }
 
         private void ListeningPipe()
         {
-            using (var pipe = new NamedPipeServerStream("LenovoWiFi", PipeDirection.In, 1, PipeTransmissionMode.Message))
+            using (var pipe = new NamedPipeServerStream(@"\\.\pipe\LenovoWiFi", PipeDirection.InOut, 1, PipeTransmissionMode.Message))
             {
-                // ShowDeskband();
+                ShowDeskband();
 
-                var reader = new StreamReader(pipe, Encoding.Unicode);
-                // var writer = new StreamWriter(pipe);
+                var reader = new StreamReader(pipe);
+                var writer = new StreamWriter(pipe);
 
                 try
                 {
                     pipe.WaitForConnection();
 
+                    writer.WriteLine("connected");
+                    writer.Flush();
+                    pipe.WaitForPipeDrain();
+
                     string line;
-                    while (!string.IsNullOrEmpty(line = reader.ReadLine()))
+                    while ((line = reader.ReadLine()) != null)
                     {
                         var exit = false;
                         switch (line)
                         {
                             case "mouseenter":
-                                this.Dispatcher.BeginInvoke(new Action(ShowStatusWindow));
                                 break;
                             case "mouseleave":
-                                this.Dispatcher.BeginInvoke(new Action(CloseCurrentWindow));
                                 break;
                             case "lbuttonclick":
-                                this.Dispatcher.BeginInvoke(new Action(ShowMainWindow));
-                                break;
-                            case "rbuttonclick":
-                                this.Dispatcher.BeginInvoke(new Action(CloseCurrentWindow));
                                 break;
                             case "exit":
-                                this.Dispatcher.BeginInvoke(new Action(HideDeskband));
-
                                 exit = true;
                                 break;
                         }
@@ -98,6 +89,7 @@ namespace Lenovo.WiFi.Client
                 }
                 finally
                 {
+                    pipe.WaitForPipeDrain();
                     if (pipe.IsConnected)
                     {
                         pipe.Disconnect();
@@ -105,46 +97,25 @@ namespace Lenovo.WiFi.Client
                 }
             }
 
-            this.Dispatcher.BeginInvoke(new Action(Shutdown));
-        }
-
-        private void CloseCurrentWindow()
-        {
-            if (_currentWindow != null)
-            {
-                _currentWindow.Close();
-            }
-        }
-
-        private void ShowStatusWindow()
-        {
-            CloseCurrentWindow();
-
-            _currentWindow = new StatusWindow();
-            _currentWindow.Show();
-        }
-
-        private void ShowMainWindow()
-        {
-            if (_currentWindow != null)
-            {
-                _currentWindow.Close();
-            }
-
-            _currentWindow = new MainWindow();
-            _currentWindow.Show();
+            _workerSemaphore.Release();
         }
 
         private void ShowDeskband()
         {
+            var clsidLenovoWiFiDeskBand = new Guid("{23ED1551-904E-4874-BA46-DBE1489D4D34}");
+
             var trayDeskBand = (ITrayDeskBand)new TrayDesktopBand();
-            trayDeskBand.ShowDeskBand(CLSIDLenovoWiFiDeskBand);
+
+            if (!trayDeskBand.IsDeskBandShown(clsidLenovoWiFiDeskBand))
+            {
+                trayDeskBand.ShowDeskBand(clsidLenovoWiFiDeskBand);
+            }
         }
 
-        private void HideDeskband()
+        protected override void OnExit(ExitEventArgs e)
         {
-            var trayDeskBand = (ITrayDeskBand)new TrayDesktopBand();
-            trayDeskBand.HideDeskBand(CLSIDLenovoWiFiDeskBand);
+            _workerSemaphore.WaitOne();
+            base.OnExit(e);
         }
     }
 }

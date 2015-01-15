@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ShObjIdl.h>
+
 class CDeskBand : public IDeskBand2, public IObjectWithSite, public IPersistStream, public IInputObject
 {
 public:
@@ -56,6 +58,7 @@ private:
 	HICON m_hIcon;
 	HMENU m_hMenu;
 	IInputObjectSite *m_pSite;
+	BOOL m_fServiceRunning;
 	CHostedNetworkClient *m_pServiceClient;
 	CUIPipeClient *m_pUIPipeClient;
 	BOOL m_fMouseEnter;

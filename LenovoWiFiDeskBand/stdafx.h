@@ -23,6 +23,6 @@
 #include "common.h"
 #include "ClassFactory.h"
 #include "HostedNetworkClient.h"
-#include "UIPipeClient.h"
-#include "NTService.h"
 #include "DeskBand.h"
+#include "NTService.h"
+#include "UIPipeClient.h"

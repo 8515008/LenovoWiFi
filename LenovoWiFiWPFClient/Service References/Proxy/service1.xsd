@@ -48,18 +48,6 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetHostedNetworkAuthAlgorithm">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetHostedNetworkAuthAlgorithmResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="GetHostedNetworkAuthAlgorithmResult" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="StartHostedNetwork">
     <xs:complexType>
       <xs:sequence />
