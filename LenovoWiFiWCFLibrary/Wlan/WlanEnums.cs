@@ -4,8 +4,8 @@ namespace Lenovo.WiFi.Wlan
 {
     enum Dot11AuthAlgorithm : uint
     {
-        Open = 1,
-        SharedKey = 2,
+        WEPOpen = 1,
+        WEPSharedKey = 2,
         WPA = 3,
         WPAPSK = 4,
         WPANone = 5,

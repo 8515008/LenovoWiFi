@@ -12,7 +12,7 @@ namespace Lenovo.WiFi.ICS
 
         internal ICSManager()
         {
-            _netSharingManager = new NetSharingManagerClass();
+            _netSharingManager = new NetSharingManager();
 
             if (!_netSharingManager.SharingInstalled)
             {

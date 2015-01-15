@@ -309,6 +309,25 @@ namespace Lenovo.WiFi
             Utilities.ThrowOnError(error);
         }
 
+        public string GetHostedNetworkAuthAlgorithm()
+        {
+            switch (_securitySettings.Dot11AuthAlgo)
+            {
+                case Dot11AuthAlgorithm.WEPOpen:
+                case Dot11AuthAlgorithm.WPANone:
+                    return "NONE";
+                case Dot11AuthAlgorithm.WEPSharedKey:
+                    return "WEP";
+                case Dot11AuthAlgorithm.WPA:
+                case Dot11AuthAlgorithm.WPAPSK:
+                case Dot11AuthAlgorithm.RSNA:
+                case Dot11AuthAlgorithm.RSNAPSK:
+                    return "WPA";
+                default:
+                    return "UNKNOWN";
+            }
+        }
+
         public void StartHostedNetwork()
         {
             if (!_icsManager.IsServiceStatusValid)

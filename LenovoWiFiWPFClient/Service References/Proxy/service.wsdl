@@ -63,6 +63,12 @@
   <wsdl:message name="IHostedNetworkService_SetHostedNetworkKey_OutputMessage">
     <wsdl:part name="parameters" element="tns:SetHostedNetworkKeyResponse" />
   </wsdl:message>
+  <wsdl:message name="IHostedNetworkService_GetHostedNetworkAuthAlgorithm_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetHostedNetworkAuthAlgorithm" />
+  </wsdl:message>
+  <wsdl:message name="IHostedNetworkService_GetHostedNetworkAuthAlgorithm_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetHostedNetworkAuthAlgorithmResponse" />
+  </wsdl:message>
   <wsdl:message name="IHostedNetworkService_StartHostedNetwork_InputMessage">
     <wsdl:part name="parameters" element="tns:StartHostedNetwork" />
   </wsdl:message>
@@ -91,6 +97,10 @@
     <wsdl:operation name="SetHostedNetworkKey">
       <wsdl:input wsaw:Action="http://tempuri.org/IHostedNetworkService/SetHostedNetworkKey" message="tns:IHostedNetworkService_SetHostedNetworkKey_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IHostedNetworkService/SetHostedNetworkKeyResponse" message="tns:IHostedNetworkService_SetHostedNetworkKey_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHostedNetworkAuthAlgorithm">
+      <wsdl:input wsaw:Action="http://tempuri.org/IHostedNetworkService/GetHostedNetworkAuthAlgorithm" message="tns:IHostedNetworkService_GetHostedNetworkAuthAlgorithm_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IHostedNetworkService/GetHostedNetworkAuthAlgorithmResponse" message="tns:IHostedNetworkService_GetHostedNetworkAuthAlgorithm_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="StartHostedNetwork">
       <wsdl:input wsaw:Action="http://tempuri.org/IHostedNetworkService/StartHostedNetwork" message="tns:IHostedNetworkService_StartHostedNetwork_InputMessage" />
@@ -134,6 +144,15 @@
     </wsdl:operation>
     <wsdl:operation name="SetHostedNetworkKey">
       <soap12:operation soapAction="http://tempuri.org/IHostedNetworkService/SetHostedNetworkKey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHostedNetworkAuthAlgorithm">
+      <soap12:operation soapAction="http://tempuri.org/IHostedNetworkService/GetHostedNetworkAuthAlgorithm" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

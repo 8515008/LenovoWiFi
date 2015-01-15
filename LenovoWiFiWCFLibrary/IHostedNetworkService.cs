@@ -18,6 +18,9 @@ namespace Lenovo.WiFi
         void SetHostedNetworkKey(string key);
 
         [OperationContract]
+        string GetHostedNetworkAuthAlgorithm();
+
+        [OperationContract]
         void StartHostedNetwork();
 
         [OperationContract]
