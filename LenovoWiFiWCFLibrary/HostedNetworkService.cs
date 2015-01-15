@@ -66,6 +66,11 @@ namespace Lenovo.WiFi
             _hostedNetworkManager.SetHostedNetworkKey(key);
         }
 
+        public string GetHostedNetworkAuthAlgorithm()
+        {
+            return _hostedNetworkManager.GetHostedNetworkAuthAlgorithm();
+        }
+
         public void StartHostedNetwork()
         {
             if (_hostedNetworkManager.IsHostedNetworkAllowed)

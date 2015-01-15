@@ -1,7 +1,6 @@
 ﻿<windows:BottomRightWindow
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:WPF="clr-namespace:Gma.QrCodeNet.Encoding.Windows.WPF;assembly=Gma.QrCodeNet.Encoding"
         xmlns:windows="clr-namespace:Lenovo.WiFi.Client.Windows"
         x:Class="Lenovo.WiFi.Client.Windows.MainWindow"
         Width="300" Height="300" WindowStyle="None">
@@ -10,8 +9,8 @@
 			Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0" Source="{DynamicResource AppLogo}" />
         <Label x:Name="LabelCaption" Content="{DynamicResource AppName}"
 			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="42,5,0,0" FontWeight="Bold"/>
-        <WPF:QrCodeGeoControl x:Name="QRCode"
-            Width="120" Height="120" VerticalAlignment="Top" Margin="0,60,0,0" Text="SampleText" />
+        <Image x:Name="QRCode"
+            Width="120" Height="120" VerticalAlignment="Top" Margin="0,60,0,0" />
         <Label Content="扫描此二维码进行连接" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,179,0,0"/>
         <Label x:Name="LabelWiFiName" Content="{DynamicResource WiFiName}"
         	Width="65" Margin="40,218,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
