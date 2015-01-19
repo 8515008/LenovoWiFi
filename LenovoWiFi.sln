@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LenovoWiFiWCFService", "Len
 		{AD8B7992-13A4-4833-AA80-54AC4222A9B6} = {AD8B7992-13A4-4833-AA80-54AC4222A9B6}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LenovoWiFiDeskBand", "LenovoWiFiDeskBand\LenovoWiFiDeskBand.vcxproj", "{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CD_ROM|Any CPU = CD_ROM|Any CPU
@@ -176,6 +178,41 @@ Global
 		{EDCB794C-9143-4352-B22F-1C66A64F8C76}.SingleImage|Mixed Platforms.Build.0 = Release|Any CPU
 		{EDCB794C-9143-4352-B22F-1C66A64F8C76}.SingleImage|Win32.ActiveCfg = Release|Any CPU
 		{EDCB794C-9143-4352-B22F-1C66A64F8C76}.SingleImage|x64.ActiveCfg = Release|Any CPU
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.CD_ROM|Any CPU.ActiveCfg = Release|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.CD_ROM|Mixed Platforms.ActiveCfg = Release|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.CD_ROM|Mixed Platforms.Build.0 = Release|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.CD_ROM|Win32.ActiveCfg = Release|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.CD_ROM|Win32.Build.0 = Release|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.CD_ROM|x64.ActiveCfg = Release|x64
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.CD_ROM|x64.Build.0 = Release|x64
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Debug|Win32.Build.0 = Debug|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Debug|x64.ActiveCfg = Debug|x64
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Debug|x64.Build.0 = Debug|x64
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.DVD-5|Any CPU.ActiveCfg = Debug|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.DVD-5|Mixed Platforms.ActiveCfg = Debug|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.DVD-5|Mixed Platforms.Build.0 = Debug|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.DVD-5|Win32.ActiveCfg = Debug|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.DVD-5|Win32.Build.0 = Debug|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.DVD-5|x64.ActiveCfg = Debug|x64
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.DVD-5|x64.Build.0 = Debug|x64
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Release|Any CPU.ActiveCfg = Release|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Release|Win32.ActiveCfg = Release|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Release|Win32.Build.0 = Release|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Release|x64.ActiveCfg = Release|x64
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Release|x64.Build.0 = Release|x64
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.SingleImage|Any CPU.ActiveCfg = Release|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.SingleImage|Mixed Platforms.ActiveCfg = Release|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.SingleImage|Mixed Platforms.Build.0 = Release|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.SingleImage|Win32.ActiveCfg = Release|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.SingleImage|Win32.Build.0 = Release|Win32
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.SingleImage|x64.ActiveCfg = Release|x64
+		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.SingleImage|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

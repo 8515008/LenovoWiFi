@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading;
 using Lenovo.WiFi.ICS;
 using Lenovo.WiFi.Wlan;
-using NETCONLib;
 
 namespace Lenovo.WiFi
 {
@@ -203,6 +202,7 @@ namespace Lenovo.WiFi
         }
 
         public bool IsHostedNetworkAllowed { get; private set; }
+        public int ConnectedDeviceCount { get; private set; }
 
         public event EventHandler HostedNetworkEnabled;
         public event EventHandler HostedNetworkStarted;
@@ -524,6 +524,8 @@ namespace Lenovo.WiFi
 
         void OnDeviceConnected(WlanHostedNetworkPeerState peerState)
         {
+            this.ConnectedDeviceCount++;
+
             if (DeviceConnected != null)
             {
                 var args = new DeviceConnectedEventArgs(peerState.PeerMacAddress,
@@ -534,6 +536,8 @@ namespace Lenovo.WiFi
 
         void OnDeviceDisconnected(byte[] deviceMacAddress)
         {
+            this.ConnectedDeviceCount--;
+
             if (DeviceDisconnected != null)
             {
                 var args = new DeviceDisconnectedEventArgs(deviceMacAddress);

@@ -6,9 +6,9 @@ public:
 	CUIPipeClient();
 	~CUIPipeClient();
 
-	BOOL IsAvailable();
 	DWORD Connect();
 	DWORD Send(LPCTSTR lpszMessage);
+	VOID Disconnect();
 
 private:
 	HANDLE m_hPipe;

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.ServiceModel;
 
 namespace Lenovo.WiFi
@@ -6,13 +8,15 @@ namespace Lenovo.WiFi
     [ServiceBehavior]
     public class HostedNetworkService : IHostedNetworkService, IDisposable
     {
-        private bool disposed;
+        bool _disposed;
         readonly HostedNetworkManager _hostedNetworkManager = new HostedNetworkManager();
+        readonly NameValueCollection _appSettings = ConfigurationManager.AppSettings;
 
         public HostedNetworkService()
         {
-            SetHostedNetworkName(GenerateWiFiName());
-            SetHostedNetworkKey(GenerateWiFiKey());
+            Settings.Load();
+            SetHostedNetworkName(Settings.HostedNetworkName);
+            SetHostedNetworkKey(Settings.HostedNetworkKey);
         }
 
         public void Dispose()
@@ -23,7 +27,7 @@ namespace Lenovo.WiFi
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
+            if (_disposed)
             {
                 return;
             }
@@ -33,17 +37,7 @@ namespace Lenovo.WiFi
                 _hostedNetworkManager.Dispose();
             }
 
-            disposed = true;
-        }
-
-        private string GenerateWiFiName()
-        {
-            return "LenovoWiFi" + string.Format("{0:000}", new Random().Next(1, 100));
-        }
-
-        private string GenerateWiFiKey()
-        {
-            return "1234567890";
+            _disposed = true;
         }
 
         public string GetHostedNetworkName()
@@ -53,6 +47,7 @@ namespace Lenovo.WiFi
 
         public void SetHostedNetworkName(string name)
         {
+            Settings.HostedNetworkName = name;
             _hostedNetworkManager.SetHostedNetworkName(name);
         }
 
@@ -63,6 +58,7 @@ namespace Lenovo.WiFi
 
         public void SetHostedNetworkKey(string key)
         {
+            Settings.HostedNetworkKey = key;
             _hostedNetworkManager.SetHostedNetworkKey(key);
         }
 
@@ -77,6 +73,11 @@ namespace Lenovo.WiFi
             {
                 _hostedNetworkManager.StartHostedNetwork();
             }
+        }
+
+        public int GetHostedNetworkConnectedDeviceCount()
+        {
+            return _hostedNetworkManager.ConnectedDeviceCount;
         }
 
         public void StopHostedNetwork()

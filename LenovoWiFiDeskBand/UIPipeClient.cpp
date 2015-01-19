@@ -5,15 +5,8 @@ CONST UINT		DEFAULT_PIPE_TIMEOUT = 20000u;
 CONST INT		BUFFER_SIZE = 8;
 
 CUIPipeClient::CUIPipeClient()
-	: m_fAvailable(FALSE), m_hPipe(NULL)
+	:m_hPipe(NULL)
 {
-	try
-	{
-		Connect();
-	}
-	catch (...)
-	{
-	}
 }
 
 CUIPipeClient::~CUIPipeClient()
@@ -22,16 +15,6 @@ CUIPipeClient::~CUIPipeClient()
 	{
 		CloseHandle(m_hPipe);
 	}
-}
-
-BOOL CUIPipeClient::IsAvailable()
-{
-	if (!m_fAvailable)
-	{
-		Connect();
-	}
-
-	return m_fAvailable;
 }
 
 DWORD CUIPipeClient::Connect()
@@ -52,7 +35,7 @@ DWORD CUIPipeClient::Connect()
 
 		if (hPipe != INVALID_HANDLE_VALUE)
 		{
-			m_fAvailable = TRUE;
+			m_hPipe = hPipe;
 			break;
 		}
 
@@ -68,20 +51,22 @@ DWORD CUIPipeClient::Connect()
 		}
 	}
 
-	m_hPipe = hPipe;
-
-	if (m_fAvailable)
+	if (hPipe == INVALID_HANDLE_VALUE)
 	{
-		DWORD dwMode = PIPE_READMODE_MESSAGE;
-		if (!SetNamedPipeHandleState(
-			m_hPipe,
-			&dwMode,
-			NULL,
-			NULL))
-		{
-			throw GetLastError();
-		}
+		return dwError;
 	}
+
+	DWORD dwMode = PIPE_READMODE_MESSAGE;
+	if (!SetNamedPipeHandleState(
+		m_hPipe,
+		&dwMode,
+		NULL,
+		NULL))
+	{
+		return GetLastError();
+	}
+
+	return ERROR_SUCCESS;
 }
 
 DWORD CUIPipeClient::Send(LPCTSTR lpvMessage)
@@ -91,9 +76,11 @@ DWORD CUIPipeClient::Send(LPCTSTR lpvMessage)
 		return ERROR_INVALID_HANDLE;
 	}
 
-	if (!m_fAvailable)
+	DWORD dwError = Connect();
+
+	if (dwError != ERROR_SUCCESS)
 	{
-		return ERROR_INVALID_STATE;
+		return dwError;
 	}
 
 	DWORD cbMessageLength, cbWritten;
@@ -106,5 +93,17 @@ DWORD CUIPipeClient::Send(LPCTSTR lpvMessage)
 		&cbWritten,
 		NULL);
 
-	return fSuccess ? ERROR_SUCCESS : GetLastError();
+	dwError = fSuccess ? ERROR_SUCCESS : GetLastError();
+
+	Disconnect();
+
+	return dwError;
+}
+
+VOID CUIPipeClient::Disconnect()
+{
+	if (m_hPipe)
+	{
+		CloseHandle(m_hPipe);
+	}
 }

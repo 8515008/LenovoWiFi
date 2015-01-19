@@ -24,6 +24,9 @@ namespace Lenovo.WiFi
         void StartHostedNetwork();
 
         [OperationContract]
+        int GetHostedNetworkConnectedDeviceCount();
+
+        [OperationContract]
         void StopHostedNetwork();
     }
 }

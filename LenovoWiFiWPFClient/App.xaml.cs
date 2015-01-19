@@ -2,11 +2,10 @@
 using System.ComponentModel;
 using System.IO;
 using System.IO.Pipes;
+using System.ServiceModel;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Lenovo.WiFi.Client.Proxy;
 using Lenovo.WiFi.Client.Windows;
 
 namespace Lenovo.WiFi.Client
@@ -18,73 +17,73 @@ namespace Lenovo.WiFi.Client
         private readonly BackgroundWorker _pipeServerWorker = new BackgroundWorker();
 
         private Window _currentWindow;
+        private bool _mainWindowsShowing;
 
-        public HostedNetworkServiceClient Client { get; private set; }
+        internal HostedNetworkClient Client { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            ShowDeskband();
-
             this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
-            this.Client = new HostedNetworkServiceClient();
+            this.Client = new HostedNetworkClient();
 
             _pipeServerWorker.DoWork += (sender, args) => ListeningPipe();
             _pipeServerWorker.RunWorkerAsync();
 
-            //var startupWindow = new StartupWindow();
-            //startupWindow.Show();
+            var startupWindow = new StartupWindow();
+            startupWindow.Show();
 
-            //var startupTask = new Task(() =>
-            //{
-            //    this.Client.StartHostedNetwork();
-            //});
+            var startupTask = new Task(() =>
+            {
+                this.Client.StartHostedNetwork();
+            });
 
-            //startupTask.ContinueWith(task =>
-            //{
-            //    var successWindow = new SuccessWindow();
-            //    successWindow.Loaded += (sender, args) => startupWindow.Close();
-            //    successWindow.Closed += (sender, args) => this.Client.StopHostedNetwork();
-            //    this.MainWindow = successWindow;
-            //    this.MainWindow.Show();
-            //}, TaskScheduler.FromCurrentSynchronizationContext());
+            startupTask.ContinueWith(task =>
+            {
+                ShowDeskband();
 
-            //startupTask.Start();
+                var successWindow = new SuccessWindow();
+                successWindow.Loaded += (sender, args) => startupWindow.Close();
+                successWindow.Closed += (sender, args) => this.Client.StopHostedNetwork();
+                _currentWindow = successWindow;
+                this.MainWindow = successWindow;
+                this.MainWindow.Show();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+
+            startupTask.Start();
         }
 
         private void ListeningPipe()
         {
             using (var pipe = new NamedPipeServerStream("LenovoWiFi", PipeDirection.In, 1, PipeTransmissionMode.Message))
             {
-                // ShowDeskband();
-
                 var reader = new StreamReader(pipe, Encoding.Unicode);
                 // var writer = new StreamWriter(pipe);
 
-                try
+                while (true)
                 {
-                    pipe.WaitForConnection();
-
-                    string line;
-                    while (!string.IsNullOrEmpty(line = reader.ReadLine()))
+                    try
                     {
+                        pipe.WaitForConnection();
+
+                        var line = reader.ReadLine();
                         var exit = false;
                         switch (line)
                         {
                             case "mouseenter":
-                                this.Dispatcher.BeginInvoke(new Action(ShowStatusWindow));
+                                this.Dispatcher.BeginInvoke(new Action(OnMouseEnter));
                                 break;
                             case "mouseleave":
-                                this.Dispatcher.BeginInvoke(new Action(CloseCurrentWindow));
+                                this.Dispatcher.BeginInvoke(new Action(OnMouseLeave));
                                 break;
                             case "lbuttonclick":
-                                this.Dispatcher.BeginInvoke(new Action(ShowMainWindow));
+                                this.Dispatcher.BeginInvoke(new Action(OnLeftButtonDown));
                                 break;
                             case "rbuttonclick":
-                                this.Dispatcher.BeginInvoke(new Action(CloseCurrentWindow));
+                                this.Dispatcher.BeginInvoke(new Action(OnRightButtonDown));
                                 break;
                             case "exit":
-                                this.Dispatcher.BeginInvoke(new Action(HideDeskband));
+                                this.Dispatcher.BeginInvoke(new Action(OnExit));
 
                                 exit = true;
                                 break;
@@ -95,12 +94,12 @@ namespace Lenovo.WiFi.Client
                             break;
                         }
                     }
-                }
-                finally
-                {
-                    if (pipe.IsConnected)
+                    finally
                     {
-                        pipe.Disconnect();
+                        if (pipe.IsConnected)
+                        {
+                            pipe.Disconnect();
+                        }
                     }
                 }
             }
@@ -108,23 +107,31 @@ namespace Lenovo.WiFi.Client
             this.Dispatcher.BeginInvoke(new Action(Shutdown));
         }
 
-        private void CloseCurrentWindow()
+        private void OnMouseEnter()
         {
-            if (_currentWindow != null)
+            if (_currentWindow != null && !(_currentWindow is MainWindow))
             {
                 _currentWindow.Close();
+                _currentWindow = null;
+            }
+
+            if (_currentWindow == null)
+            {
+                _currentWindow = new StatusWindow();
+                _currentWindow.Show();
             }
         }
 
-        private void ShowStatusWindow()
+        private void OnMouseLeave()
         {
-            CloseCurrentWindow();
-
-            _currentWindow = new StatusWindow();
-            _currentWindow.Show();
+            if (_currentWindow != null && !(_currentWindow is MainWindow))
+            {
+                _currentWindow.Close();
+                _currentWindow = null;
+            }
         }
 
-        private void ShowMainWindow()
+        private void OnLeftButtonDown()
         {
             if (_currentWindow != null)
             {
@@ -132,7 +139,22 @@ namespace Lenovo.WiFi.Client
             }
 
             _currentWindow = new MainWindow();
+            this.MainWindow = _currentWindow;
             _currentWindow.Show();
+        }
+
+        private void OnRightButtonDown()
+        {
+            if (_currentWindow != null)
+            {
+                _currentWindow.Close();
+                _currentWindow = null;
+            }
+        }
+
+        private void OnExit()
+        {
+            HideDeskband();
         }
 
         private void ShowDeskband()

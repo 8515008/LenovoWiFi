@@ -391,10 +391,7 @@ void CDeskBand::OnPaint(const HDC hDeviceContext)
 
 void CDeskBand::OnContextMenu(const HWND hWnd, const int xPos, const int yPos)
 {
-	if (m_pUIPipeClient->IsAvailable())
-	{
-		m_pUIPipeClient->Send(TEXT("rmouseclick\r\n"));
-	}
+	m_pUIPipeClient->Send(TEXT("rbuttonclick\r\n"));
 
 	RECT rect;
 	GetClientRect(hWnd, &rect);
@@ -441,10 +438,7 @@ void CDeskBand::OnContextMenu(const HWND hWnd, const int xPos, const int yPos)
 		case ID_HELP:
 			break;
 		case ID_EXIT:
-			if (m_pUIPipeClient->IsAvailable())
-			{
-				m_pUIPipeClient->Send(TEXT("exit\r\n"));
-			}
+			m_pUIPipeClient->Send(TEXT("exit\r\n"));
 			break;
 		default:
 			break;
@@ -456,26 +450,17 @@ void CDeskBand::OnContextMenu(const HWND hWnd, const int xPos, const int yPos)
 
 void CDeskBand::OnMouseEnter()
 {
-	if (m_pUIPipeClient->IsAvailable())
-	{
-		m_pUIPipeClient->Send(TEXT("mouseenter\r\n"));
-	}
+	m_pUIPipeClient->Send(TEXT("mouseenter\r\n"));
 }
 
 void CDeskBand::OnLeftButtonClick()
 {
-	if (m_pUIPipeClient->IsAvailable())
-	{
-		m_pUIPipeClient->Send(TEXT("lbuttonclick\r\n"));
-	}
+	m_pUIPipeClient->Send(TEXT("lbuttonclick\r\n"));
 }
 
 void CDeskBand::OnMouseLeave()
 {
-	if (m_pUIPipeClient->IsAvailable())
-	{
-		m_pUIPipeClient->Send(TEXT("mouseleave\r\n"));
-	}
+	m_pUIPipeClient->Send(TEXT("mouseleave\r\n"));
 }
 
 STDMETHODIMP CDeskBand::GetClassID(CLSID *pClassID)
