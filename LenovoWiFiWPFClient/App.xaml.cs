@@ -2,24 +2,39 @@
 using System.ComponentModel;
 using System.IO;
 using System.IO.Pipes;
-using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+
 using Lenovo.WiFi.Client.Windows;
 
 namespace Lenovo.WiFi.Client
 {
-    public partial class App : Application
+    public partial class App : Application, IDisposable
     {
         private static readonly Guid CLSIDLenovoWiFiDeskBand = new Guid("{23ED1551-904E-4874-BA46-DBE1489D4D34}");
 
         private readonly BackgroundWorker _pipeServerWorker = new BackgroundWorker();
 
+        private bool _disposing;
         private Window _currentWindow;
         private bool _mainWindowsShowing;
 
         internal HostedNetworkClient Client { get; private set; }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _pipeServerWorker.Dispose();
+            }
+        }
 
         protected override void OnStartup(StartupEventArgs e)
         {
