@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <Uxtheme.h>
 
 extern HINSTANCE g_hInstance;
 extern CLSID CLSIDLenovoWiFiDeskBand;
@@ -379,6 +380,10 @@ void CDeskBand::OnPaint(const HDC hDeviceContext)
 
 	if (hdc)
 	{
+		RECT rc;
+		GetClientRect(m_hWnd, &rc);
+		DrawThemeParentBackground(m_hWnd, ps.hdc, &rc);
+
 		m_hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(IDI_ICON2));
 		DrawIcon(hdc, 0, 0, m_hIcon);
 	}
