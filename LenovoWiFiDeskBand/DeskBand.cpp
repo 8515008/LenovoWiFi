@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <Uxtheme.h>
 
 extern HINSTANCE g_hInstance;
 extern CLSID CLSIDLenovoWiFiDeskBand;
