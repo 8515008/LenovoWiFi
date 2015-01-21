@@ -46,6 +46,7 @@ protected:
 	 void OnMouseEnter();
 	 void OnLeftButtonClick();
 	 void OnMouseLeave();
+	 void DynamicContextMenu(const HWND hWnd, POINT point);
 
 private:
 	LONG m_cRef;

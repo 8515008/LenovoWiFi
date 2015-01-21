@@ -322,6 +322,7 @@ LRESULT CALLBACK CDeskBand::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 	case WM_ERASEBKGND:
 		if (pDeskband->m_fCompositionEnabled)
 		{
+			
 			lResult = 1;
 		}
 		break;
@@ -379,6 +380,10 @@ void CDeskBand::OnPaint(const HDC hDeviceContext)
 
 	if (hdc)
 	{
+		RECT rc;
+		GetClientRect(m_hWnd, &rc);
+		DrawThemeParentBackground(m_hWnd, ps.hdc, &rc);
+
 		m_hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(IDI_ICON2));
 		DrawIcon(hdc, 0, 0, m_hIcon);
 	}
@@ -388,7 +393,49 @@ void CDeskBand::OnPaint(const HDC hDeviceContext)
 		EndPaint(m_hWnd, &ps);
 	}
 }
+void CDeskBand::DynamicContextMenu(const HWND hWnd, POINT point)
+{
+	HMENU hmenu = CreateMenu();
+	HMENU hMenuPopup = CreateMenu();
 
+	//Todo: 根据条件动态添加子项
+	AppendMenu(hMenuPopup, MF_STRING, ID_RESTART_WIFI, TEXT("重启WIFI"));
+	AppendMenu(hMenuPopup, MF_STRING, ID_EXIT, TEXT("退出"));
+
+
+
+	AppendMenu(hmenu, MF_POPUP, (UINT_PTR)hMenuPopup, TEXT("弹出菜单"));
+
+	UINT uMenuItemID = TrackPopupMenu(hMenuPopup,
+		TPM_LEFTALIGN | TPM_RIGHTBUTTON | TPM_RETURNCMD,
+		point.x, point.y, 0, hWnd, NULL);
+
+	switch (uMenuItemID)
+	{
+	case ID_RESTART_WIFI:
+		m_pServiceClient->RestartHostedNetwork();
+		break;
+	case ID_STOP_WIFI:
+		m_pServiceClient->StopHostedNetwork();
+		break;
+	case ID_SETTINGS:
+		break;
+	case ID_FEEDBACK:
+		break;
+	case ID_HELP:
+		break;
+	case ID_EXIT:
+		if (m_pUIPipeClient->IsAvailable())
+		{
+			m_pUIPipeClient->Send(TEXT("exit\r\n"));
+		}
+		break;
+	default:
+		break;
+	}
+
+	DestroyMenu(hmenu);
+}
 void CDeskBand::OnContextMenu(const HWND hWnd, const int xPos, const int yPos)
 {
 	m_pUIPipeClient->Send(TEXT("rbuttonclick\r\n"));
@@ -403,6 +450,8 @@ void CDeskBand::OnContextMenu(const HWND hWnd, const int xPos, const int yPos)
 	{
 		ClientToScreen(hWnd, &point);
 		
+		DynamicContextMenu(hWnd, point);
+/*
 		HMENU hMenu = LoadMenu(g_hInstance, MAKEINTRESOURCE(IDR_MENU));
 
 		if (hMenu == NULL)
@@ -445,6 +494,7 @@ void CDeskBand::OnContextMenu(const HWND hWnd, const int xPos, const int yPos)
 		}
 
 		DestroyMenu(hMenu);
+*/
 	}
 }
 
