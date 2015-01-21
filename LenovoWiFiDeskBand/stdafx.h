@@ -17,6 +17,7 @@
 #include <strsafe.h>
 #include <ShlGuid.h>
 #include <Windowsx.h>
+#include <Uxtheme.h>
 
 // TODO: reference additional headers your program requires here
 #include "resource.h"
