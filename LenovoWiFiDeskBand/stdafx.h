@@ -27,4 +27,3 @@
 #include "NTService.h"
 #include "DeskBand.h"
 
-#pragma comment(lib, "UxTheme.lib")

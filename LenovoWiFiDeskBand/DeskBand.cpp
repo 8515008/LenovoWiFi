@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include <Uxtheme.h>
 
+#pragma comment(lib, "UxTheme.lib")
+
 extern HINSTANCE g_hInstance;
 extern CLSID CLSIDLenovoWiFiDeskBand;
 
