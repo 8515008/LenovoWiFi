@@ -43,6 +43,8 @@ CDeskBand::~CDeskBand()
 	{
 		m_pSite->Release();
 	}
+
+	UnregisterClass(g_szDeskBandClassName, g_hInstance);
 }
 
 STDMETHODIMP_(ULONG) CDeskBand::AddRef()
@@ -426,10 +428,7 @@ void CDeskBand::DynamicContextMenu(const HWND hWnd, POINT point)
 	case ID_HELP:
 		break;
 	case ID_EXIT:
-		if (m_pUIPipeClient->IsAvailable())
-		{
-			m_pUIPipeClient->Send(TEXT("exit\r\n"));
-		}
+		m_pUIPipeClient->Send(TEXT("exit\r\n"));
 		break;
 	default:
 		break;
