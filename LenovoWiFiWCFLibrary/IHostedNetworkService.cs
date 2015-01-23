@@ -2,7 +2,7 @@
 
 namespace Lenovo.WiFi
 {
-    [ServiceContract]
+    [ServiceContract(CallbackContract = typeof(IHostedNetworkServiceCallback), SessionMode = SessionMode.Required)]
     public interface IHostedNetworkService
     {
         [OperationContract]
@@ -25,6 +25,12 @@ namespace Lenovo.WiFi
 
         [OperationContract]
         int GetHostedNetworkConnectedDeviceCount();
+
+        [OperationContract]
+        void RegisterForNewConnectedDevice();
+
+        [OperationContract]
+        void UnregisterForNewConnectedDevice();
 
         [OperationContract]
         void StopHostedNetwork();

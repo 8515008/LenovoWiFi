@@ -3,57 +3,82 @@ using System.ServiceModel.Channels;
 
 namespace Lenovo.WiFi.Client
 {
-    class HostedNetworkClient : ClientBase<IHostedNetworkService>, IHostedNetworkService
+    public class HostedNetworkClient : DuplexClientBase<IHostedNetworkService>, IHostedNetworkService
     {
-        public HostedNetworkClient() {
-        }
-        
-        public HostedNetworkClient(string endpointConfigurationName) : 
-                base(endpointConfigurationName) {
-        }
-        
-        public HostedNetworkClient(string endpointConfigurationName, string remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
-        }
-        
-        public HostedNetworkClient(string endpointConfigurationName, EndpointAddress remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+
+        public HostedNetworkClient(InstanceContext callbackInstance) :
+            base(callbackInstance)
+        {
         }
 
-        public HostedNetworkClient(Binding binding, EndpointAddress remoteAddress) : 
-                base(binding, remoteAddress) {
+        public HostedNetworkClient(InstanceContext callbackInstance, string endpointConfigurationName) :
+            base(callbackInstance, endpointConfigurationName)
+        {
         }
-        
-        public string GetHostedNetworkName() {
-            return base.Channel.GetHostedNetworkName();
+
+        public HostedNetworkClient(InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) :
+            base(callbackInstance, endpointConfigurationName, remoteAddress)
+        {
         }
-        
-        public void SetHostedNetworkName(string name) {
-            base.Channel.SetHostedNetworkName(name);
+
+        public HostedNetworkClient(InstanceContext callbackInstance, string endpointConfigurationName, EndpointAddress remoteAddress) :
+            base(callbackInstance, endpointConfigurationName, remoteAddress)
+        {
         }
-        
-        public string GetHostedNetworkKey() {
-            return base.Channel.GetHostedNetworkKey();
+
+        public HostedNetworkClient(InstanceContext callbackInstance, Binding binding, EndpointAddress remoteAddress) :
+            base(callbackInstance, binding, remoteAddress)
+        {
         }
-        
-        public void SetHostedNetworkKey(string key) {
-            base.Channel.SetHostedNetworkKey(key);
+
+        public string GetHostedNetworkName()
+        {
+            return Channel.GetHostedNetworkName();
         }
-        
-        public string GetHostedNetworkAuthAlgorithm() {
-            return base.Channel.GetHostedNetworkAuthAlgorithm();
+
+        public void SetHostedNetworkName(string name)
+        {
+            Channel.SetHostedNetworkName(name);
         }
-        
-        public void StartHostedNetwork() {
-            base.Channel.StartHostedNetwork();
+
+        public string GetHostedNetworkKey()
+        {
+            return Channel.GetHostedNetworkKey();
         }
-        
-        public int GetHostedNetworkConnectedDeviceCount() {
-            return base.Channel.GetHostedNetworkConnectedDeviceCount();
+
+        public void SetHostedNetworkKey(string key)
+        {
+            Channel.SetHostedNetworkKey(key);
         }
-        
-        public void StopHostedNetwork() {
-            base.Channel.StopHostedNetwork();
+
+        public string GetHostedNetworkAuthAlgorithm()
+        {
+            return Channel.GetHostedNetworkAuthAlgorithm();
+        }
+
+        public void StartHostedNetwork()
+        {
+            Channel.StartHostedNetwork();
+        }
+
+        public int GetHostedNetworkConnectedDeviceCount()
+        {
+            return Channel.GetHostedNetworkConnectedDeviceCount();
+        }
+
+        public void RegisterForNewConnectedDevice()
+        {
+            Channel.RegisterForNewConnectedDevice();
+        }
+
+        public void UnregisterForNewConnectedDevice()
+        {
+            Channel.UnregisterForNewConnectedDevice();
+        }
+
+        public void StopHostedNetwork()
+        {
+            Channel.StopHostedNetwork();
         }
     }
 }

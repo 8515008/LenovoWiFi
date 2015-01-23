@@ -2,15 +2,15 @@
 using System.ComponentModel;
 using System.IO;
 using System.IO.Pipes;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
-using Lenovo.WiFi.Client.Windows;
+using Lenovo.WiFi.Client.View;
 
 namespace Lenovo.WiFi.Client
 {
-    public partial class App : Application, IDisposable
+    public partial class App : Application, IDisposable, IHostedNetworkServiceCallback
     {
         private static readonly Guid CLSIDLenovoWiFiDeskBand = new Guid("{23ED1551-904E-4874-BA46-DBE1489D4D34}");
 
@@ -40,7 +40,7 @@ namespace Lenovo.WiFi.Client
         {
             this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
-            this.Client = new HostedNetworkClient();
+            this.Client = new HostedNetworkClient(new InstanceContext(this));
 
             _pipeServerWorker.DoWork += (sender, args) => ListeningPipe();
             _pipeServerWorker.RunWorkerAsync();
@@ -51,6 +51,7 @@ namespace Lenovo.WiFi.Client
             var startupTask = new Task(() =>
             {
                 this.Client.StartHostedNetwork();
+                this.Client.RegisterForNewConnectedDevice();
             });
 
             startupTask.ContinueWith(task =>
@@ -59,7 +60,11 @@ namespace Lenovo.WiFi.Client
 
                 var successWindow = new SuccessWindow();
                 successWindow.Loaded += (sender, args) => startupWindow.Close();
-                successWindow.Closed += (sender, args) => this.Client.StopHostedNetwork();
+                this.Exit += (sender, args) =>
+                {
+                    this.Client.UnregisterForNewConnectedDevice();
+                    this.Client.StopHostedNetwork();
+                };
                 _currentWindow = successWindow;
                 this.MainWindow = successWindow;
                 this.MainWindow.Show();
@@ -182,6 +187,11 @@ namespace Lenovo.WiFi.Client
         {
             var trayDeskBand = (ITrayDeskBand)new TrayDesktopBand();
             trayDeskBand.HideDeskBand(CLSIDLenovoWiFiDeskBand);
+        }
+
+        public void DeviceConnected(byte[] macAddress)
+        {
+            throw new NotImplementedException();
         }
     }
 }

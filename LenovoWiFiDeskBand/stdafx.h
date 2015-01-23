@@ -26,4 +26,3 @@
 #include "UIPipeClient.h"
 #include "NTService.h"
 #include "DeskBand.h"
-

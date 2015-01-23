@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace Lenovo.WiFi.Client.Windows
+namespace Lenovo.WiFi.Client.View
 {
     public partial class SuccessWindow : BottomRightWindow
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Lenovo.WiFi.Client.Windows
+namespace Lenovo.WiFi.Client.View
 {
     [ComImport, Guid("E6442437-6C68-4f52-94DD-2CFED267EFB9")]
     class TrayDesktopBand

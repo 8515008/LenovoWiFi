@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace Lenovo.WiFi.Client.Windows
+namespace Lenovo.WiFi.Client.View
 {
     public class BottomRightWindow : Window
     {

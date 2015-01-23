@@ -1,7 +1,6 @@
 ﻿using System.Windows;
-using System.Xml.Schema;
 
-namespace Lenovo.WiFi.Client.Windows
+namespace Lenovo.WiFi.Client.View
 {
     /// <summary>
     /// Interaction logic for WiFiDetails.xaml

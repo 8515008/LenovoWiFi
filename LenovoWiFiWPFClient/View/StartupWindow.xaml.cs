@@ -1,4 +1,4 @@
-﻿namespace Lenovo.WiFi.Client.Windows
+﻿namespace Lenovo.WiFi.Client.View
 {
     /// <summary>
     /// Interaction logic for InitPage.xaml

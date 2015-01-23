@@ -7,11 +7,11 @@ namespace Lenovo.WiFi.Wlan
     {
         public DeviceConnectedEventArgs(byte[] macAddress, bool authenticated)
         {
-            this.PhysicalAddress = new PhysicalAddress(macAddress);
+            this.PhysicalAddress = macAddress;
             this.IsAuthenticated = authenticated;
         }
 
-        public PhysicalAddress PhysicalAddress { get; private set; }
+        public byte[] PhysicalAddress { get; private set; }
         public bool IsAuthenticated { get; private set; }
     }
 

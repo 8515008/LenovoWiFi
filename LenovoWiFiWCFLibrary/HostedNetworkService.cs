@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Specialized;
-using System.Configuration;
+using System.Collections.Generic;
 using System.ServiceModel;
 
 namespace Lenovo.WiFi
@@ -10,13 +9,22 @@ namespace Lenovo.WiFi
     {
         bool _disposed;
         readonly HostedNetworkManager _hostedNetworkManager = new HostedNetworkManager();
-        readonly NameValueCollection _appSettings = ConfigurationManager.AppSettings;
+        readonly IList<IHostedNetworkServiceCallback> _clients = new List<IHostedNetworkServiceCallback>();
 
         public HostedNetworkService()
         {
             Settings.Load();
+
             SetHostedNetworkName(Settings.HostedNetworkName);
             SetHostedNetworkKey(Settings.HostedNetworkKey);
+
+            _hostedNetworkManager.DeviceConnected += (sender, args) =>
+            {
+                foreach (var client in _clients)
+                {
+                    client.DeviceConnected(args.PhysicalAddress);
+                }
+            };
         }
 
         public void Dispose()
@@ -78,6 +86,26 @@ namespace Lenovo.WiFi
         public int GetHostedNetworkConnectedDeviceCount()
         {
             return _hostedNetworkManager.ConnectedDeviceCount;
+        }
+
+        public void RegisterForNewConnectedDevice()
+        {
+            var client = OperationContext.Current.GetCallbackChannel<IHostedNetworkServiceCallback>();
+
+            if (client != null)
+            {
+                this._clients.Add(client);
+            }
+        }
+
+        public void UnregisterForNewConnectedDevice()
+        {
+            var client = OperationContext.Current.GetCallbackChannel<IHostedNetworkServiceCallback>();
+
+            if (client != null && this._clients.Contains(client))
+            {
+                this._clients.Remove(client);
+            }
         }
 
         public void StopHostedNetwork()
