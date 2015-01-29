@@ -2,11 +2,13 @@
 using System.ComponentModel;
 using System.IO;
 using System.IO.Pipes;
-using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Autofac;
 using Lenovo.WiFi.Client.View;
+using Lenovo.WiFi.Client.ViewModel;
+using IContainer = Autofac.IContainer;
 
 namespace Lenovo.WiFi.Client
 {
@@ -14,13 +16,15 @@ namespace Lenovo.WiFi.Client
     {
         private static readonly Guid CLSIDLenovoWiFiDeskBand = new Guid("{23ED1551-904E-4874-BA46-DBE1489D4D34}");
 
+        private bool _disposing;
+        private readonly IContainer _container = new Bootstrapper().Build();
         private readonly BackgroundWorker _pipeServerWorker = new BackgroundWorker();
 
-        private bool _disposing;
+        private MainWindow _mainWindow;
+        private StatusWindow _statusWindow;
+
         private Window _currentWindow;
         private bool _mainWindowsShowing;
-
-        internal HostedNetworkClient Client { get; private set; }
 
         public void Dispose()
         {
@@ -38,39 +42,36 @@ namespace Lenovo.WiFi.Client
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-
-            this.Client = new HostedNetworkClient(new InstanceContext(this));
-
             _pipeServerWorker.DoWork += (sender, args) => ListeningPipe();
             _pipeServerWorker.RunWorkerAsync();
 
-            var startupWindow = new StartupWindow();
-            startupWindow.Show();
+            var splashWindow = _container.Resolve<SplashWindow>();
+            splashWindow.Show();
 
-            var startupTask = new Task(() =>
+            Task.Factory.StartNew(() =>
             {
-                this.Client.StartHostedNetwork();
-                this.Client.RegisterForNewConnectedDevice();
-            });
+                _container.Resolve<ISplashViewModel>().Start();
+            }).ContinueWith(t =>
+            {
+                this.Dispatcher.BeginInvoke(new Action(() => splashWindow.Close()));
 
-            startupTask.ContinueWith(task =>
-            {
                 ShowDeskband();
 
-                var successWindow = new SuccessWindow();
-                successWindow.Loaded += (sender, args) => startupWindow.Close();
-                this.Exit += (sender, args) =>
+                this.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    this.Client.UnregisterForNewConnectedDevice();
-                    this.Client.StopHostedNetwork();
-                };
-                _currentWindow = successWindow;
-                this.MainWindow = successWindow;
-                this.MainWindow.Show();
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+                    var successWindow = _container.Resolve<SuccessWindow>();
+                    successWindow.DataContext = _container.Resolve<ISuccessViewModel>();
+                    successWindow.Show();
 
-            startupTask.Start();
+                    _currentWindow = successWindow;
+                }));
+            });
+
+            _mainWindow = _container.Resolve<MainWindow>();
+            _mainWindow.DataContext = _container.Resolve<IMainViewModel>();
+
+            _statusWindow = _container.Resolve<StatusWindow>();
+            _statusWindow.DataContext = _container.Resolve<IStatusViewModel>();
         }
 
         private void ListeningPipe()
@@ -131,13 +132,13 @@ namespace Lenovo.WiFi.Client
         {
             if (_currentWindow != null && !(_currentWindow is MainWindow))
             {
-                _currentWindow.Close();
+                _currentWindow.Hide();
                 _currentWindow = null;
             }
 
             if (_currentWindow == null)
             {
-                _currentWindow = new StatusWindow();
+                _currentWindow = _statusWindow;
                 _currentWindow.Show();
             }
         }
@@ -146,7 +147,7 @@ namespace Lenovo.WiFi.Client
         {
             if (_currentWindow != null && !(_currentWindow is MainWindow))
             {
-                _currentWindow.Close();
+                _currentWindow.Hide();
                 _currentWindow = null;
             }
         }
@@ -155,11 +156,10 @@ namespace Lenovo.WiFi.Client
         {
             if (_currentWindow != null)
             {
-                _currentWindow.Close();
+                _currentWindow.Hide();
             }
 
-            _currentWindow = new MainWindow();
-            this.MainWindow = _currentWindow;
+            _currentWindow = _mainWindow;
             _currentWindow.Show();
         }
 
@@ -167,7 +167,7 @@ namespace Lenovo.WiFi.Client
         {
             if (_currentWindow != null)
             {
-                _currentWindow.Close();
+                _currentWindow.Hide();
                 _currentWindow = null;
             }
         }
@@ -191,7 +191,18 @@ namespace Lenovo.WiFi.Client
 
         public void DeviceConnected(byte[] macAddress)
         {
-            throw new NotImplementedException();
+            this.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (_currentWindow != null)
+                {
+                    _currentWindow.Hide();
+                }
+
+                var notification = _container.Resolve<NotificationWindow>();
+                notification.DataContext = new NotificationViewModel { Message = BitConverter.ToString(macAddress) };
+
+                notification.Show();
+            }));
         }
     }
 }

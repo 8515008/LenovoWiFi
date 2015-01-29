@@ -1,7 +1,7 @@
 ﻿using System.ServiceModel;
 using System.ServiceModel.Channels;
 
-namespace Lenovo.WiFi.Client
+namespace Lenovo.WiFi.Client.Model
 {
     public class HostedNetworkClient : DuplexClientBase<IHostedNetworkService>, IHostedNetworkService
     {

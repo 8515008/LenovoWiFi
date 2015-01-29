@@ -9,14 +9,14 @@
         <Label x:Name="LabelCaption" Content="{DynamicResource AppName}"
         	HorizontalAlignment="Left" VerticalAlignment="Top" Margin="42,5,0,0" FontWeight="Bold"/>
         <Label x:Name="LabelWiFiName" Content="{DynamicResource WiFiName}"
-        	Width="65" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,50,0,0" />
-        <Label x:Name="LabelWiFiNameValue" Content="LenovoWiFi"
-        	Width="147" Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,50,0,0" />
+        	Width="65" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,50,0,0" />
+        <Label x:Name="LabelWiFiNameValue" Content="{Binding SSID}"
+        	Width="127" Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="125,50,0,0" />
         <Label x:Name="LabelWiFiKey" Content="{DynamicResource WiFiKey}"
-        	Width="65" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,80,0,0" />
-        <Label x:Name="LabelWiFiKeyValue" Content="12345678"
-        	Width="147" Height="23" Margin="105,80,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Label x:Name="LabelStatus" Content="当前连接数: 3"
+        	Width="65" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,80,0,0" />
+        <Label x:Name="LabelWiFiKeyValue" Content="{Binding PresharedKey}"
+        	Width="127" Height="23" Margin="125,80,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Label x:Name="LabelStatus" Content="{Binding Status}"
             HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20"/>
     </Grid>
 </view:BottomRightWindow>

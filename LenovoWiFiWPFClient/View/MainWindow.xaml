@@ -9,16 +9,16 @@
 			Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0" Source="{DynamicResource AppLogo}" />
         <Label x:Name="LabelCaption" Content="{DynamicResource AppName}"
 			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="42,5,0,0" FontWeight="Bold"/>
-        <Image x:Name="QRCode"
+        <Image x:Name="QRCode" Source="{Binding QRCode, Mode=OneWay}"
             Width="120" Height="120" VerticalAlignment="Top" Margin="0,60,0,0" />
         <Label Content="扫描此二维码进行连接" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,180,0,0"/>
         <Label x:Name="LabelWiFiName" Content="{DynamicResource WiFiName}"
         	Width="65" Margin="40,218,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox x:Name="TextBoxWiFiName"
+        <TextBox x:Name="TextBoxWiFiName" Text="{Binding SSID, Mode=OneWay}"
         	Width="143" Height="23" Margin="110,220,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <Label x:Name="LabelWiFiKey" Content="{DynamicResource WiFiKey}"
         	Width="65" Margin="40,251,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <TextBox x:Name="TextBoxWiFiKey"
+        <TextBox x:Name="TextBoxWiFiKey" Text="{Binding PresharedKey, Mode=OneWay}"
         	Width="143" Height="23" Margin="110,252,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
     </Grid>

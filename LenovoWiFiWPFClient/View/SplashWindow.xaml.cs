@@ -3,9 +3,9 @@
     /// <summary>
     /// Interaction logic for InitPage.xaml
     /// </summary>
-    public partial class StartupWindow : BottomRightWindow
+    public partial class SplashWindow : BottomRightWindow
     {
-        public StartupWindow()
+        public SplashWindow()
         {
             InitializeComponent();
         }

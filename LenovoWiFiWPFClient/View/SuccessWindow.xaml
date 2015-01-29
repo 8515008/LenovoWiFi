@@ -11,18 +11,18 @@
         	HorizontalAlignment="Left" Margin="42,5,0,0" VerticalAlignment="Top" FontWeight="Bold" />
         <Image x:Name="ImgExit" Source="{DynamicResource AppExit}"
         	Width="32" Height="32" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,5,0"
-            MouseLeftButtonDown="WindowClose" />
+            MouseLeftButtonDown="CloseWindow" />
         <Image x:Name="ImgSuccess"
                 Width="292" Height="100" Margin="0,42,0,0" VerticalAlignment="Top" />
         <Label x:Name="LabelWiFiName" Content="{DynamicResource WiFiName}"
                 Width="65" Margin="40,160,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <TextBox x:Name="TextBoxWiFiName" IsEnabled="False"
+        <TextBox x:Name="TextBoxWiFiName" Text="{Binding SSID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Width="143" Height="23" Margin="110,162,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <Label x:Name="LabelWiFiKey" Content="{DynamicResource WiFiKey}"
                Width="65" Margin="40,193,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <TextBox x:Name="TextBoxWiFiKey" IsEnabled="False"
+        <TextBox x:Name="TextBoxWiFiKey" Text="{Binding PresharedKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Width="143" Height="23" Margin="110,194,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Button x:Name="ButtonModify" Content="{DynamicResource Modify}"
-                Width="75" Margin="0,240,0,0" VerticalAlignment="Top" Click="Modify" />
+        <Button x:Name="ButtonModify" Content="{DynamicResource Modify}" IsEnabled="{Binding IsModified}" Command="{Binding AcceptChanges}"
+                Width="75" Margin="0,240,0,0" VerticalAlignment="Top"/>
     </Grid>
 </view:BottomRightWindow>
