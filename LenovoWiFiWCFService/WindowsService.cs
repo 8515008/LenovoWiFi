@@ -83,13 +83,7 @@ namespace Lenovo.WiFi
 
         public static void Main()
         {
-#if !DEBUG
-            var service = new WindowsService();
-            service.OnStart(null);
-            service.OnStop();
-#else
             Run(new WindowsService());
-#endif
         }
     }
 }

@@ -1,5 +1,6 @@
-EXPORTS
-    DllGetClassObject   PRIVATE
-    DllCanUnloadNow     PRIVATE
-    DllRegisterServer   PRIVATE
-    DllUnregisterServer PRIVATE
+LIBRARY	LENOVOWIFIDESKBAND
+EXPORTS 
+    DllGetClassObject		PRIVATE
+    DllCanUnloadNow			PRIVATE
+    DllRegisterServer		PRIVATE
+    DllUnregisterServer		PRIVATE

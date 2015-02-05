@@ -6,6 +6,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Automation;
@@ -198,7 +199,14 @@ namespace Lenovo.WiFi.Client
             var trayDeskBand = (ITrayDeskBand)new TrayDesktopBand();
             trayDeskBand.ShowDeskBand(CLSIDLenovoWiFiDeskBand);
 
-            _dialogHook.StopHook();
+            // TODO: Stop Hooking by receiving pipe message
+
+            Task.Run(() =>
+            {
+                Thread.Sleep(1000);
+
+                _dialogHook.StopHook();
+            });
         }
 
         private void HideDeskband()

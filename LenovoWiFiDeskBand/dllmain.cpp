@@ -5,7 +5,7 @@
 CLSID CLSIDLenovoWiFiDeskBand = 
 	{ 0x23ed1551, 0x904e, 0x4874, { 0xba, 0x46, 0xdb, 0xe1, 0x48, 0x9d, 0x4d, 0x34 } };
 
-TCHAR CONST LENOVO_WIFI_DESKBAND_NAME[] = TEXT("Lenovo Wi-Fi Deskband");
+TCHAR CONST LENOVO_WIFI_DESKBAND_NAME[] = TEXT("Lenovo WiFi");
 
 HINSTANCE g_hInstance = NULL;
 long g_cDllRef = 0;
