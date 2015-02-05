@@ -9,10 +9,11 @@ using Autofac;
 using Lenovo.WiFi.Client.View;
 using Lenovo.WiFi.Client.ViewModel;
 using IContainer = Autofac.IContainer;
+using Lenovo.WiFi.Client.Model;
 
 namespace Lenovo.WiFi.Client
 {
-    public partial class App : Application, IDisposable, IHostedNetworkServiceCallback
+    public partial class App : Application, IDisposable, IHostedNetworkServiceCallback, IDeskbandPipeListener
     {
         private static readonly Guid CLSIDLenovoWiFiDeskBand = new Guid("{23ED1551-904E-4874-BA46-DBE1489D4D34}");
 
@@ -25,6 +26,8 @@ namespace Lenovo.WiFi.Client
 
         private Window _currentWindow;
         private bool _mainWindowsShowing;
+
+        private DeskbandPipe pipeWorker = null;
 
         public void Dispose()
         {
@@ -42,7 +45,11 @@ namespace Lenovo.WiFi.Client
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            _pipeServerWorker.DoWork += (sender, args) => ListeningPipe();
+            pipeWorker = new DeskbandPipe();
+            pipeWorker.RegisterListener(this);
+
+            // _pipeServerWorker.DoWork += (sender, args) => ListeningPipe();
+            _pipeServerWorker.DoWork += (sender, args) => pipeWorker.Start();
             _pipeServerWorker.RunWorkerAsync();
 
             var splashWindow = _container.Resolve<SplashWindow>();
@@ -98,10 +105,10 @@ namespace Lenovo.WiFi.Client
                                 this.Dispatcher.BeginInvoke(new Action(OnMouseLeave));
                                 break;
                             case "lbuttonclick":
-                                this.Dispatcher.BeginInvoke(new Action(OnLeftButtonDown));
+                                this.Dispatcher.BeginInvoke(new Action(OnLButtonClick));
                                 break;
                             case "rbuttonclick":
-                                this.Dispatcher.BeginInvoke(new Action(OnRightButtonDown));
+                                this.Dispatcher.BeginInvoke(new Action(OnRButtonClick));
                                 break;
                             case "exit":
                                 this.Dispatcher.BeginInvoke(new Action(OnExit));
@@ -128,7 +135,7 @@ namespace Lenovo.WiFi.Client
             this.Dispatcher.BeginInvoke(new Action(Shutdown));
         }
 
-        private void OnMouseEnter()
+        public void OnMouseEnter()
         {
             if (_currentWindow != null && !(_currentWindow is MainWindow))
             {
@@ -143,7 +150,7 @@ namespace Lenovo.WiFi.Client
             }
         }
 
-        private void OnMouseLeave()
+        public void OnMouseLeave()
         {
             if (_currentWindow != null && !(_currentWindow is MainWindow))
             {
@@ -152,7 +159,7 @@ namespace Lenovo.WiFi.Client
             }
         }
 
-        private void OnLeftButtonDown()
+        public void OnLButtonClick()
         {
             if (_currentWindow != null)
             {
@@ -163,7 +170,7 @@ namespace Lenovo.WiFi.Client
             _currentWindow.Show();
         }
 
-        private void OnRightButtonDown()
+        public void OnRButtonClick()
         {
             if (_currentWindow != null)
             {
@@ -172,7 +179,7 @@ namespace Lenovo.WiFi.Client
             }
         }
 
-        private void OnExit()
+        public void OnExit()
         {
             HideDeskband();
         }

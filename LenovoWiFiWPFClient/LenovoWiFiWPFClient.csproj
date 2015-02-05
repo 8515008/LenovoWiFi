@@ -115,8 +115,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Model\DeskbandPipe.cs" />
     <Compile Include="Model\HostedNetworkClient.cs" />
     <Compile Include="Model\HostedNetwork.cs" />
+    <Compile Include="Model\IDeskbandPipeListener.cs" />
     <Compile Include="Model\IHotspot.cs" />
     <Compile Include="ViewModel\IMainViewModel.cs" />
     <Compile Include="ViewModel\INotificationViewModel.cs" />

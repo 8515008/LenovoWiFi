@@ -104,3 +104,4 @@ STDMETHODIMP CHostedNetworkClient::RestartHostedNetwork()
 ERROR_LABEL:
 	return hResult;
 }
+

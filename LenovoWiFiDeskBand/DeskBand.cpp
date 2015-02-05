@@ -308,6 +308,16 @@ LRESULT CALLBACK CDeskBand::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 		pDeskband = reinterpret_cast<CDeskBand *>(reinterpret_cast<CREATESTRUCT *>(lParam)->lpCreateParams);
 		pDeskband->m_hWnd = hWnd;
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pDeskband));
+
+		pDeskband->m_pUIPipeClient->Connect();
+
+			//DWORD dwError = Connect();
+
+			//if (dwError != ERROR_SUCCESS)
+			//{
+			//	return dwError;
+			//}
+
 		break;
 	case WM_SETFOCUS:
 		pDeskband->OnFocus(TRUE);
