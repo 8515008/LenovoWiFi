@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.ServiceModel;
 using System.ServiceProcess;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace Lenovo.WiFi
 {
@@ -26,8 +26,9 @@ namespace Lenovo.WiFi
                 _serviceHost.Close();
             }
 
-            var rootDirectory = Environment.CurrentDirectory;
+            Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
+#if !DEBUG
             var latestVersion = new Version(0, 0);
             foreach (var subDirectory in new DirectoryInfo(rootDirectory).GetDirectories())
             {
@@ -44,16 +45,20 @@ namespace Lenovo.WiFi
                 // TODO: DOWNLOAD NEW VERSION IF NECESSARY
             });
 
-            if (Environment.CurrentDirectory != rootDirectory)
+            if (Environment.CurrentDirectory == rootDirectory)
             {
-                var assembly = Assembly.LoadFrom(ServiceLibrary);
-                var service = assembly.GetType(ServiceType);
+                return;
+            }
+#endif
 
-                if (service != null)
-                {
-                    _serviceHost = new ServiceHost(service);
-                    _serviceHost.Open();
-                }
+            var assembly = Assembly.LoadFrom(ServiceLibrary);
+            var service = assembly.GetType(ServiceType);
+
+
+            if (service != null)
+            {
+                _serviceHost = new ServiceHost(service);
+                _serviceHost.Open();
             }
         }
 
@@ -78,7 +83,7 @@ namespace Lenovo.WiFi
 
         public static void Main()
         {
-#if DEBUG
+#if !DEBUG
             var service = new WindowsService();
             service.OnStart(null);
             service.OnStop();
