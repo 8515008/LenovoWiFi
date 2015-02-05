@@ -1,10 +1,15 @@
 ﻿using System;
+using System.CodeDom;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation;
+using System.Windows.Controls;
 using Autofac;
 using Lenovo.WiFi.Client.View;
 using Lenovo.WiFi.Client.ViewModel;
@@ -14,7 +19,12 @@ namespace Lenovo.WiFi.Client
 {
     public partial class App : Application, IDisposable, IHostedNetworkServiceCallback
     {
+#if DEBUG
+        private static readonly Guid CLSIDLenovoWiFiDeskBand = new Guid("{01E04581-4EEE-11d0-BFE9-00AA005B4383}");
+#else
         private static readonly Guid CLSIDLenovoWiFiDeskBand = new Guid("{23ED1551-904E-4874-BA46-DBE1489D4D34}");
+#endif
+
 
         private bool _disposing;
         private readonly IContainer _container = new Bootstrapper().Build();
@@ -25,6 +35,8 @@ namespace Lenovo.WiFi.Client
 
         private Window _currentWindow;
         private bool _mainWindowsShowing;
+
+        private DeskbandWarningDialogHook _dialogHook = new DeskbandWarningDialogHook();
 
         public void Dispose()
         {
@@ -42,36 +54,38 @@ namespace Lenovo.WiFi.Client
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            _pipeServerWorker.DoWork += (sender, args) => ListeningPipe();
-            _pipeServerWorker.RunWorkerAsync();
+            ShowDeskband();
 
-            var splashWindow = _container.Resolve<SplashWindow>();
-            splashWindow.Show();
+            //_pipeServerWorker.DoWork += (sender, args) => ListeningPipe();
+            //_pipeServerWorker.RunWorkerAsync();
 
-            Task.Factory.StartNew(() =>
-            {
-                _container.Resolve<ISplashViewModel>().Start();
-            }).ContinueWith(t =>
-            {
-                this.Dispatcher.BeginInvoke(new Action(() => splashWindow.Close()));
+            //var splashWindow = _container.Resolve<SplashWindow>();
+            //splashWindow.Show();
 
-                ShowDeskband();
+            //Task.Factory.StartNew(() =>
+            //{
+            //    _container.Resolve<ISplashViewModel>().Start();
+            //}).ContinueWith(t =>
+            //{
+            //    this.Dispatcher.BeginInvoke(new Action(() => splashWindow.Close()));
 
-                this.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    var successWindow = _container.Resolve<SuccessWindow>();
-                    successWindow.DataContext = _container.Resolve<ISuccessViewModel>();
-                    successWindow.Show();
+            //    ShowDeskband();
 
-                    _currentWindow = successWindow;
-                }));
-            });
+            //    this.Dispatcher.BeginInvoke(new Action(() =>
+            //    {
+            //        var successWindow = _container.Resolve<SuccessWindow>();
+            //        successWindow.DataContext = _container.Resolve<ISuccessViewModel>();
+            //        successWindow.Show();
 
-            _mainWindow = _container.Resolve<MainWindow>();
-            _mainWindow.DataContext = _container.Resolve<IMainViewModel>();
+            //        _currentWindow = successWindow;
+            //    }));
+            //});
 
-            _statusWindow = _container.Resolve<StatusWindow>();
-            _statusWindow.DataContext = _container.Resolve<IStatusViewModel>();
+            //_mainWindow = _container.Resolve<MainWindow>();
+            //_mainWindow.DataContext = _container.Resolve<IMainViewModel>();
+
+            //_statusWindow = _container.Resolve<StatusWindow>();
+            //_statusWindow.DataContext = _container.Resolve<IStatusViewModel>();
         }
 
         private void ListeningPipe()
@@ -179,8 +193,12 @@ namespace Lenovo.WiFi.Client
 
         private void ShowDeskband()
         {
+            _dialogHook.StartHook();
+
             var trayDeskBand = (ITrayDeskBand)new TrayDesktopBand();
             trayDeskBand.ShowDeskBand(CLSIDLenovoWiFiDeskBand);
+
+            _dialogHook.StopHook();
         }
 
         private void HideDeskband()

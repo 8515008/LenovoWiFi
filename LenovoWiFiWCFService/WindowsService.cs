@@ -9,7 +9,7 @@ namespace Lenovo.WiFi
 {
     partial class WindowsService : ServiceBase
     {
-        private const string ServiceLibrary = "LenovoWiFiWCFLibrary";
+        private const string ServiceLibrary = "LenovoWiFiWCFLibrary.dll";
         private const string ServiceType = "Lenovo.WiFi.HostedNetworkService";
 
         private ServiceHost _serviceHost;
@@ -28,7 +28,7 @@ namespace Lenovo.WiFi
 
             var rootDirectory = Environment.CurrentDirectory;
 
-            var latestVersion = new Version(-1, 0);
+            var latestVersion = new Version(0, 0);
             foreach (var subDirectory in new DirectoryInfo(rootDirectory).GetDirectories())
             {
                 var version = new Version(subDirectory.Name);
@@ -78,7 +78,13 @@ namespace Lenovo.WiFi
 
         public static void Main()
         {
+#if DEBUG
+            var service = new WindowsService();
+            service.OnStart(null);
+            service.OnStop();
+#else
             Run(new WindowsService());
+#endif
         }
     }
 }

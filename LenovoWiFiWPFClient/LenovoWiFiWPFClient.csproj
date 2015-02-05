@@ -35,7 +35,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -115,9 +115,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="DeskbandWarningDialogHook.cs" />
     <Compile Include="Model\HostedNetworkClient.cs" />
     <Compile Include="Model\HostedNetwork.cs" />
     <Compile Include="Model\IHotspot.cs" />
+    <Compile Include="Native\ModuleSafeHandle.cs" />
+    <Compile Include="Native\NativeMethods.cs" />
     <Compile Include="ViewModel\IMainViewModel.cs" />
     <Compile Include="ViewModel\INotificationViewModel.cs" />
     <Compile Include="ViewModel\ISplashViewModel.cs" />
