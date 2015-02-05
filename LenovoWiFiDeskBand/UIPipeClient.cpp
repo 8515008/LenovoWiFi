@@ -127,7 +127,7 @@ DWORD CUIPipeClient::Connect()
 
 DWORD CUIPipeClient::Send(LPCTSTR lpvMessage)
 {
-	if (!lpvMessage || m_hPipe)
+	if (!lpvMessage || !m_hPipe)
 	{
 		return ERROR_INVALID_HANDLE;
 	}

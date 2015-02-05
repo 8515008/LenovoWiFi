@@ -27,7 +27,20 @@ namespace Lenovo.WiFi.Client
         private Window _currentWindow;
         private bool _mainWindowsShowing;
 
-        private DeskbandPipe pipeWorker = null;
+        private static DeskbandPipe pipeWorker = null;
+
+        static public DeskbandPipe DeskBandPipe
+        {
+            get
+            {
+                if(null == pipeWorker)
+                {
+                    pipeWorker = new DeskbandPipe();
+                }
+
+                return pipeWorker;
+            }
+        }
 
         public void Dispose()
         {
@@ -45,12 +58,13 @@ namespace Lenovo.WiFi.Client
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            pipeWorker = new DeskbandPipe();
-            pipeWorker.RegisterListener(this);
+            DeskBandPipe.RegisterListener(this);
 
             // _pipeServerWorker.DoWork += (sender, args) => ListeningPipe();
-            _pipeServerWorker.DoWork += (sender, args) => pipeWorker.Start();
+            _pipeServerWorker.DoWork += (sender, args) => DeskBandPipe.Start();
             _pipeServerWorker.RunWorkerAsync();
+
+            ShowDeskband();
 
             var splashWindow = _container.Resolve<SplashWindow>();
             splashWindow.Show();
@@ -62,7 +76,7 @@ namespace Lenovo.WiFi.Client
             {
                 this.Dispatcher.BeginInvoke(new Action(() => splashWindow.Close()));
 
-                ShowDeskband();
+                //ShowDeskband();
 
                 this.Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -137,51 +151,65 @@ namespace Lenovo.WiFi.Client
 
         public void OnMouseEnter()
         {
-            if (_currentWindow != null && !(_currentWindow is MainWindow))
-            {
-                _currentWindow.Hide();
-                _currentWindow = null;
-            }
+            this.Dispatcher.BeginInvoke(new Action(()=> {
+                if (_currentWindow != null && !(_currentWindow is MainWindow))
+                {
+                    _currentWindow.Hide();
+                    _currentWindow = null;
+                }
 
-            if (_currentWindow == null)
-            {
-                _currentWindow = _statusWindow;
-                _currentWindow.Show();
-            }
+                if (_currentWindow == null)
+                {
+                    _currentWindow = _statusWindow;
+                    _currentWindow.Show();
+                }
+            }));
         }
 
         public void OnMouseLeave()
         {
-            if (_currentWindow != null && !(_currentWindow is MainWindow))
+            this.Dispatcher.BeginInvoke(new Action(() =>
             {
-                _currentWindow.Hide();
-                _currentWindow = null;
-            }
+                if (_currentWindow != null && !(_currentWindow is MainWindow))
+                {
+                    _currentWindow.Hide();
+                    _currentWindow = null;
+                }
+            }));
         }
 
         public void OnLButtonClick()
         {
-            if (_currentWindow != null)
+            this.Dispatcher.BeginInvoke(new Action(() =>
             {
-                _currentWindow.Hide();
-            }
+                if (_currentWindow != null)
+                {
+                    _currentWindow.Hide();
+                }
 
-            _currentWindow = _mainWindow;
-            _currentWindow.Show();
+                _currentWindow = _mainWindow;
+                _currentWindow.Show();
+            }));
         }
 
         public void OnRButtonClick()
         {
-            if (_currentWindow != null)
+            this.Dispatcher.BeginInvoke(new Action(() =>
             {
-                _currentWindow.Hide();
-                _currentWindow = null;
-            }
+                if (_currentWindow != null)
+                {
+                    _currentWindow.Hide();
+                    _currentWindow = null;
+                }
+            }));
         }
 
         public void OnExit()
         {
-            HideDeskband();
+            this.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                HideDeskband();
+            }));
         }
 
         private void ShowDeskband()

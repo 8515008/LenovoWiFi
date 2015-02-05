@@ -132,6 +132,17 @@ STDMETHODIMP CDeskBand::ShowDW(BOOL bShow)
 	if (m_hWnd)
 	{
 		ShowWindow(m_hWnd, bShow ? SW_SHOW : SW_HIDE);
+
+
+		m_pUIPipeClient->Connect();
+
+		//DWORD dwError = Connect();
+
+		//if (dwError != ERROR_SUCCESS)
+		//{
+		//	return dwError;
+		//}
+
 	}
 
 	return S_OK;
@@ -270,6 +281,7 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown *pUnkSite)
 
 				RegisterClass(&wndClass);
 
+				HWND hWnd = 
 				CreateWindowEx(
 					WS_EX_LEFT,
 					g_szDeskBandClassName,
@@ -281,9 +293,13 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown *pUnkSite)
 					g_hInstance,
 					this);
 
-				if (!m_hWnd)
+				if (!hWnd)
 				{
 					hResult = E_FAIL;
+				}
+				else
+				{
+					ShowWindow(hWnd, SW_SHOW);
 				}
 			}
 
@@ -308,15 +324,6 @@ LRESULT CALLBACK CDeskBand::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 		pDeskband = reinterpret_cast<CDeskBand *>(reinterpret_cast<CREATESTRUCT *>(lParam)->lpCreateParams);
 		pDeskband->m_hWnd = hWnd;
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pDeskband));
-
-		pDeskband->m_pUIPipeClient->Connect();
-
-			//DWORD dwError = Connect();
-
-			//if (dwError != ERROR_SUCCESS)
-			//{
-			//	return dwError;
-			//}
 
 		break;
 	case WM_SETFOCUS:
@@ -523,6 +530,24 @@ void CDeskBand::OnLeftButtonClick()
 void CDeskBand::OnMouseLeave()
 {
 	m_pUIPipeClient->Send(TEXT("mouseleave\r\n"));
+}
+
+void CDeskBand::OnICS_Loading()
+{
+
+}
+void CDeskBand::OnICS_On()
+{
+
+}
+void CDeskBand::OnICS_Off()
+{
+
+}
+
+void CDeskBand::OnICS_ClientConnected()
+{
+
 }
 
 STDMETHODIMP CDeskBand::GetClassID(CLSID *pClassID)

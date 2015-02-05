@@ -1,6 +1,6 @@
 #pragma once
 
-class CDeskBand : public IDeskBand2, public IObjectWithSite, public IPersistStream, public IInputObject
+class CDeskBand : public IDeskBand2, public IObjectWithSite, public IPersistStream, public IInputObject, public IDeskbandListener
 {
 public:
 	CDeskBand();
@@ -48,6 +48,10 @@ protected:
 	 void OnMouseLeave();
 	 void DynamicContextMenu(const HWND hWnd, POINT point);
 
+	 virtual void OnICS_Loading();
+	 virtual void OnICS_On();
+	 virtual void OnICS_Off();
+	 virtual void OnICS_ClientConnected();
 private:
 	LONG m_cRef;
 	HWND m_hWnd;

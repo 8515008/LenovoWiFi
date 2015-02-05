@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Lenovo.WiFi.Client.Model
 {
-    enum DeskbandCommand { ICS_Loading, ICS_on, ICS_off, ICS_clientconnected }
+    public enum DeskbandCommand { ICS_Loading, ICS_on, ICS_off, ICS_clientconnected }
 
-    class DeskbandPipe
+    public class DeskbandPipe
     {
         private const string PIPENAME = "LenovoWiFi";
         private NamedPipeServerStream PipeSvrStream = null;
@@ -24,10 +24,13 @@ namespace Lenovo.WiFi.Client.Model
 
         public void Dispose()
         {
-
+            if (PipeStream.IsConnected)
+            {
+                PipeStream.Disconnect();
+            }
         }
 
-        public NamedPipeServerStream PipeStream
+        protected NamedPipeServerStream PipeStream
         {
 
             get
@@ -41,7 +44,7 @@ namespace Lenovo.WiFi.Client.Model
             }
         }
 
-        public StreamReader Reader
+        protected StreamReader Reader
         {
             get
             {
@@ -54,7 +57,7 @@ namespace Lenovo.WiFi.Client.Model
             }
         }
 
-        public StreamWriter Writer
+        protected StreamWriter Writer
         {
             get
             {
@@ -78,12 +81,12 @@ namespace Lenovo.WiFi.Client.Model
 
             bool exit = false;
 
+            PipeStream.WaitForConnection();
+
             while (true)
             {
                 try
                 {
-                    PipeStream.WaitForConnection();
-
                     var line = Reader.ReadLine();
                     switch (line)
                     {
@@ -118,20 +121,20 @@ namespace Lenovo.WiFi.Client.Model
                     //log ex.string.
                     return false;
                 }
-                finally
-                {
-                    if (PipeStream.IsConnected)
-                    {
-                        PipeStream.Disconnect();
-                    }
-                }
+                //finally
+                //{
+                //    if (PipeStream.IsConnected)
+                //    {
+                //        PipeStream.Disconnect();
+                //    }
+                //}
             }
 
             return true;
         }
 
 
-        bool SendCommandToDeskband(DeskbandCommand cmd)
+        public bool SendCommandToDeskband(DeskbandCommand cmd)
         {
 
             try
