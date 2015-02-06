@@ -2,13 +2,12 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:view="clr-namespace:Lenovo.WiFi.Client.View"
-        Height="150" Width="300" WindowStyle="None">
+        Height="150" Width="300" 
+                        Style="{StaticResource WindowSize}">
     <Grid>
-        <Image x:Name="ImgIcon" Source="{DynamicResource AppLogo}"
-        	Width="32" Height="32" Margin="5,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Label x:Name="LabelCaption" Content="{DynamicResource AppName}"
-        	HorizontalAlignment="Left" Margin="42,5,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
-        <Label x:Name="LabelMessage" Content="{DynamicResource StartupMessage}"
+        <Image Style="{StaticResource AppIconStyle}" />
+        <Label x:Name="LabelCaption" Style="{StaticResource LabelTitle}"  Margin="37,0,0,0" />
+        <Label x:Name="LabelMessage" Content="{DynamicResource StartupMessage}" Style="{StaticResource LabelTitle}"
             HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </view:BottomRightWindow>

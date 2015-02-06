@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
@@ -16,16 +17,9 @@ namespace Lenovo.WiFi.Client.View
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void CloseWindow(object sender, MouseButtonEventArgs e)
         {
-            if(Count++%2 == 0)
-            {
-                App.DeskBandPipe.SendCommandToDeskband(DeskbandCommand.ICS_off);
-            }else
-            {
-                App.DeskBandPipe.SendCommandToDeskband(DeskbandCommand.ICS_on);
-            }
-
+            this.Close();
         }
     }
 }
