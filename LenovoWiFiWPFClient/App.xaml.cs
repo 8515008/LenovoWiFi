@@ -69,8 +69,6 @@ namespace Lenovo.WiFi.Client
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            _pipeServerWorker.DoWork += (sender, args) => ListeningPipe();
-            _pipeServerWorker.RunWorkerAsync();
             DeskBandPipe.RegisterListener(this);
 
             _pipeServerWorker.DoWork += (sender, args) => DeskBandPipe.Start();
