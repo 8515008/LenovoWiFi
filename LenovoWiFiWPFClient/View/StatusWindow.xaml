@@ -2,21 +2,19 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:view="clr-namespace:Lenovo.WiFi.Client.View"
-        Height="170" Width="300" WindowStyle="None">
+        Height="170" Width="300" Style="{StaticResource WindowSize}">
     <Grid>
-        <Image x:Name="ImgIcon"
-        	Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0" Source="{DynamicResource AppLogo}" />
-        <Label x:Name="LabelCaption" Content="{DynamicResource AppName}"
-        	HorizontalAlignment="Left" VerticalAlignment="Top" Margin="42,5,0,0" FontWeight="Bold"/>
         <Label x:Name="LabelWiFiName" Content="{DynamicResource WiFiName}"
-        	Width="65" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,50,0,0" />
+        	Width="78" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,51,0,0" Style="{StaticResource LabelTitle}"/>
         <Label x:Name="LabelWiFiNameValue" Content="{Binding SSID}"
-        	Width="127" Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="125,50,0,0" />
+        	Width="137" Height="29" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="125,51,0,0"  Style="{StaticResource LabelTitle}"/>
         <Label x:Name="LabelWiFiKey" Content="{DynamicResource WiFiKey}"
-        	Width="65" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,80,0,0" />
+        	Width="78" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,93,0,0"  Style="{StaticResource LabelTitle}"/>
         <Label x:Name="LabelWiFiKeyValue" Content="{Binding PresharedKey}"
-        	Width="127" Height="23" Margin="125,80,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        	Width="137" Height="34" Margin="125,93,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <Label x:Name="LabelStatus" Content="{Binding Status}"
             HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20"/>
+        <Image Style="{StaticResource AppIconStyle}" />
+        <Label x:Name="LabelCaption" Style="{StaticResource LabelTitle}"  Margin="37,0,0,0" />
     </Grid>
 </view:BottomRightWindow>
