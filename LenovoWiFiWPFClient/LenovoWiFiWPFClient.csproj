@@ -217,7 +217,18 @@
   <ItemGroup>
     <Resource Include="logo.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\close_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\wifi_512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="wifi_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\mywifi_32.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
