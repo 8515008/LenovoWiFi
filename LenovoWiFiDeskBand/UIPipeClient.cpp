@@ -1,11 +1,19 @@
 #include "stdafx.h"
+#include <iostream>
 
 CONST LPTSTR	PIPE_NAME = TEXT("\\\\.\\pipe\\LenovoWiFi");
 CONST UINT		DEFAULT_PIPE_TIMEOUT = 20000u;
 CONST INT		BUFFER_SIZE = 8;
 
+#define BUFSIZE 512
+
+#define ICS_LOADING L"ics_loading"
+#define ICS_ON L"ics_on"
+#define ICS_OFF L"ics_off"
+#define ICS_CLIENTCONNECTED L"ics_clientconnected"
+
 CUIPipeClient::CUIPipeClient()
-	:m_hPipe(NULL)
+:m_hPipe(NULL), m_pDeskbandListener(NULL)
 {
 }
 
@@ -26,7 +34,7 @@ DWORD CUIPipeClient::Connect()
 	{
 		hPipe = CreateFile(
 			PIPE_NAME,
-			GENERIC_WRITE,
+			GENERIC_READ | GENERIC_WRITE,
 			0,
 			NULL,
 			OPEN_EXISTING,
@@ -66,22 +74,70 @@ DWORD CUIPipeClient::Connect()
 		return GetLastError();
 	}
 
+
+	BOOL   fSuccess = FALSE;
+	DWORD  cbRead;
+	TCHAR  chBuf[BUFSIZE];
+	do
+	{
+		// Read from the pipe. 
+
+		if (!m_pDeskbandListener) break;
+
+		fSuccess = ReadFile(
+			hPipe,    // pipe handle 
+			chBuf,    // buffer to receive reply 
+			BUFSIZE*sizeof(TCHAR),  // size of buffer 
+			&cbRead,  // number of bytes read 
+			NULL);    // not overlapped 
+
+		if (!fSuccess && GetLastError() != ERROR_MORE_DATA)
+			break;
+
+		_tprintf(TEXT("\"%s\"\n"), chBuf);
+
+		std::wstring strRead = chBuf;
+
+		if (ICS_LOADING == strRead)
+		{
+			m_pDeskbandListener->OnICS_Loading();
+		}
+		else if (ICS_ON == strRead)
+		{
+			m_pDeskbandListener->OnICS_On();
+		}
+		else if (ICS_OFF == strRead)
+		{
+			m_pDeskbandListener->OnICS_Off();
+		}
+		else if (ICS_CLIENTCONNECTED == strRead)
+		{
+			m_pDeskbandListener->OnICS_ClientConnected();
+		}
+	} while (!fSuccess);  // repeat loop if ERROR_MORE_DATA 
+
+	if (!fSuccess)
+	{
+		_tprintf(TEXT("ReadFile from pipe failed. GLE=%d\n"), GetLastError());
+		return -1;
+	}
+
 	return ERROR_SUCCESS;
 }
 
 DWORD CUIPipeClient::Send(LPCTSTR lpvMessage)
 {
-	if (!lpvMessage)
+	if (!lpvMessage || !m_hPipe)
 	{
 		return ERROR_INVALID_HANDLE;
 	}
 
-	DWORD dwError = Connect();
+	//DWORD dwError = Connect();
 
-	if (dwError != ERROR_SUCCESS)
-	{
-		return dwError;
-	}
+	//if (dwError != ERROR_SUCCESS)
+	//{
+	//	return dwError;
+	//}
 
 	DWORD cbMessageLength, cbWritten;
 	cbMessageLength = lstrlen(lpvMessage) * sizeof(TCHAR);
@@ -93,9 +149,9 @@ DWORD CUIPipeClient::Send(LPCTSTR lpvMessage)
 		&cbWritten,
 		NULL);
 
-	dwError = fSuccess ? ERROR_SUCCESS : GetLastError();
+	DWORD dwError = fSuccess ? ERROR_SUCCESS : GetLastError();
 
-	Disconnect();
+	//Disconnect();
 
 	return dwError;
 }

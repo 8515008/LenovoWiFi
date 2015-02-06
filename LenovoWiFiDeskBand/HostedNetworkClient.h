@@ -9,6 +9,7 @@ public:
 	STDMETHODIMP StartHostedNetwork();
 	STDMETHODIMP StopHostedNetwork();
 	STDMETHODIMP RestartHostedNetwork();
+	STDMETHODIMP QueryHostedNetworkState();
 
 private:
 	IDispatch *m_pProxy;

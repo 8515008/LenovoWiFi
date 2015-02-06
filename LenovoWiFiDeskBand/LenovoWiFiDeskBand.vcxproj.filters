@@ -78,9 +78,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\WiFi.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="Resources\logo_round_pure.ico">
       <Filter>Resource Files</Filter>
     </Image>

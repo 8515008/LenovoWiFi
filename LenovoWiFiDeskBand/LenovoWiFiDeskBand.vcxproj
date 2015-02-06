@@ -213,7 +213,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\logo_round_pure.ico" />
-    <Image Include="Resources\WiFi.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="export.def" />

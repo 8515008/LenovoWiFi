@@ -65,7 +65,7 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup>
-    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
@@ -120,8 +120,10 @@
     </ApplicationDefinition>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="DeskbandWarningDialogHook.cs" />
+    <Compile Include="Model\DeskbandPipe.cs" />
     <Compile Include="Model\HostedNetworkClient.cs" />
     <Compile Include="Model\HostedNetwork.cs" />
+    <Compile Include="Model\IDeskbandPipeListener.cs" />
     <Compile Include="Model\IHotspot.cs" />
     <Compile Include="Native\ModuleSafeHandle.cs" />
     <Compile Include="Native\NativeMethods.cs" />
@@ -201,9 +203,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\exit.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -227,7 +226,12 @@
   <ItemGroup>
     <Resource Include="logo.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="exit.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
