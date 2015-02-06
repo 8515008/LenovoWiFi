@@ -29,26 +29,26 @@ namespace Lenovo.WiFi
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
 #if !DEBUG
-            var latestVersion = new Version(0, 0);
-            foreach (var subDirectory in new DirectoryInfo(rootDirectory).GetDirectories())
-            {
-                var version = new Version(subDirectory.Name);
-                if (version > latestVersion)
-                {
-                    Environment.CurrentDirectory = subDirectory.FullName;
-                }
-            }
+            //var latestVersion = new Version(0, 0);
+            //foreach (var subDirectory in new DirectoryInfo(rootDirectory).GetDirectories())
+            //{
+            //    var version = new Version(subDirectory.Name);
+            //    if (version > latestVersion)
+            //    {
+            //        Environment.CurrentDirectory = subDirectory.FullName;
+            //    }
+            //}
 
-            Task.Run(() =>
-            {
-                // TODO: CHECK FOR NEW VERSION
-                // TODO: DOWNLOAD NEW VERSION IF NECESSARY
-            });
+            //Task.Run(() =>
+            //{
+            //    // TODO: CHECK FOR NEW VERSION
+            //    // TODO: DOWNLOAD NEW VERSION IF NECESSARY
+            //});
 
-            if (Environment.CurrentDirectory == rootDirectory)
-            {
-                return;
-            }
+            //if (Environment.CurrentDirectory == rootDirectory)
+            //{
+            //    return;
+            //}
 #endif
 
             var assembly = Assembly.LoadFrom(ServiceLibrary);
