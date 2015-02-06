@@ -3,23 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:view="clr-namespace:Lenovo.WiFi.Client.View"
         x:Class="Lenovo.WiFi.Client.View.MainWindow"
-        Width="300" Height="300" WindowStyle="None">
+        Height="400" Width="400"
+        
+        Style="{StaticResource WindowSize}"
+    >
     <Grid>
-        <Image x:Name="ImgIcon"
-			Width="32" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,5,0,0" Source="{DynamicResource AppLogo}" />
-        <Label x:Name="LabelCaption" Content="{DynamicResource AppName}"
-			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="42,5,0,0" FontWeight="Bold"/>
-        <Image x:Name="QRCode" Source="{Binding QRCode, Mode=OneWay}"
-            Width="120" Height="120" VerticalAlignment="Top" Margin="0,60,0,0" />
-        <Label Content="扫描此二维码进行连接" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,180,0,0"/>
+        <Image Style="{StaticResource AppIconStyle}" />
+        <Label x:Name="LabelCaption" Style="{StaticResource LabelTitle}"  Margin="37,0,0,0" />
+
+        <Image x:Name="QRCode" Source="{Binding QRCode, Mode=OneWay}" Height="142" VerticalAlignment="Top" Margin="111,60,121,0" />
+        <Label Content="扫描此二维码进行连接" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="111,223,111,0" Style="{StaticResource LabelTitle}"/>
         <Label x:Name="LabelWiFiName" Content="{DynamicResource WiFiName}"
-        	Width="65" Margin="40,218,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        	Width="93" Margin="63,273,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource LabelTitle}"/>
         <TextBox x:Name="TextBoxWiFiName" Text="{Binding SSID, Mode=OneWay}"
-        	Width="143" Height="23" Margin="110,220,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        	Width="143" Height="23" Margin="174,277,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <Label x:Name="LabelWiFiKey" Content="{DynamicResource WiFiKey}"
-        	Width="65" Margin="40,251,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        	Width="93" Margin="63,315,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource LabelTitle}"/>
         <TextBox x:Name="TextBoxWiFiKey" Text="{Binding PresharedKey, Mode=OneWay}"
-        	Width="143" Height="23" Margin="110,252,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        	Width="143" Height="23" Margin="174,320,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
 
     </Grid>
 </view:BottomRightWindow>
