@@ -21,6 +21,17 @@
         	Width="93" Margin="63,315,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource LabelTitle}"/>
         <TextBox x:Name="TextBoxWiFiKey" Text="{Binding PresharedKey, Mode=OneWay}"
         	Width="143" Height="23" Margin="174,320,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Button x:Name="ButtonClose"
+        	Height="32"
+        	MaxWidth="250"
+        	Margin="360,0,0,0"
+        	VerticalAlignment="Top"
+        
+        	Background="Transparent"
+        	Cursor="Hand"
+        	Visibility="Visible"
+        	MouseLeftButtonDown="CloseWindow" RenderTransformOrigin="1.375,0.524" Width="32" Template="{DynamicResource ButtonCloseTemplate}"
+		/>
 
     </Grid>
 </view:BottomRightWindow>

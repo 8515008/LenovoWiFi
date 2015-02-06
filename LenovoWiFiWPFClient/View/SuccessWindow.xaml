@@ -21,7 +21,7 @@
         <Button x:Name="ButtonClose"
         Height="32"
         MaxWidth="250"
-        Margin="363,0,0,0"
+        Margin="360,0,0,0"
         VerticalAlignment="Top"
         
         Background="Transparent"
