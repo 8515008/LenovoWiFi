@@ -25,7 +25,7 @@ DisableProgramGroupPage=yes
 LicenseFile=.\EULA.txt
 OutputDir=.\
 OutputBaseFilename=LenovoWifiSetup
-SetupIconFile=.\wifi.ico
+SetupIconFile=.\logo.ico
 Compression=lzma
 SolidCompression=yes
 

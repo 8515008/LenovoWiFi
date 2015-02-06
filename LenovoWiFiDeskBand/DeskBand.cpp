@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#include <thread>
+#include <functional>
 #include <Uxtheme.h>
 
 #pragma comment(lib, "UxTheme.lib")
@@ -25,7 +27,10 @@ CDeskBand::CDeskBand()
 	{
 		m_pServiceClient = new CHostedNetworkClient();
 	}
+
+	m_dwIconID = IDI_ICON1;
 	m_pUIPipeClient = new CUIPipeClient();
+	m_pUIPipeClient->RegisterListener(this);
 }
 
 
@@ -132,16 +137,6 @@ STDMETHODIMP CDeskBand::ShowDW(BOOL bShow)
 	if (m_hWnd)
 	{
 		ShowWindow(m_hWnd, bShow ? SW_SHOW : SW_HIDE);
-
-
-		m_pUIPipeClient->Connect();
-
-		//DWORD dwError = Connect();
-
-		//if (dwError != ERROR_SUCCESS)
-		//{
-		//	return dwError;
-		//}
 
 	}
 
@@ -325,6 +320,8 @@ LRESULT CALLBACK CDeskBand::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 		pDeskband->m_hWnd = hWnd;
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pDeskband));
 
+		pDeskband->OnThreadSetupPipe();
+
 		break;
 	case WM_SETFOCUS:
 		pDeskband->OnFocus(TRUE);
@@ -406,7 +403,7 @@ void CDeskBand::OnPaint(const HDC hDeviceContext)
 		GetClientRect(m_hWnd, &rc);
 		DrawThemeParentBackground(m_hWnd, ps.hdc, &rc);
 
-		m_hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(IDI_ICON2));
+		m_hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(m_dwIconID));
 		DrawIcon(hdc, 0, 0, m_hIcon);
 	}
 
@@ -532,17 +529,41 @@ void CDeskBand::OnMouseLeave()
 	m_pUIPipeClient->Send(TEXT("mouseleave\r\n"));
 }
 
+
+void CDeskBand::OnThreadSetupPipe()
+{
+
+	std::thread thread(std::bind(&CDeskBand::OnThreadSetupPipe2, this));
+	thread.detach();
+
+
+}
+
+void CDeskBand::OnThreadSetupPipe2()
+{
+
+	m_pUIPipeClient->Connect();
+
+	//DWORD dwError = Connect();
+
+	//if (dwError != ERROR_SUCCESS)
+	//{
+	//	return dwError;
+	//}
+}
+
+
 void CDeskBand::OnICS_Loading()
 {
 
 }
 void CDeskBand::OnICS_On()
 {
-
+	m_dwIconID = IDI_ICON2;
 }
 void CDeskBand::OnICS_Off()
 {
-
+	m_dwIconID = IDI_ICON3;
 }
 
 void CDeskBand::OnICS_ClientConnected()

@@ -7,7 +7,6 @@ namespace Lenovo.WiFi.Client.View
 {
     public partial class SuccessWindow : BottomRightWindow
     {
-        private int Count = 0;
         public SuccessWindow()
         {
             InitializeComponent();
@@ -20,14 +19,7 @@ namespace Lenovo.WiFi.Client.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (Count++ % 2 == 0)
-            {
-                App.DeskBandPipe.SendCommandToDeskband(DeskbandCommand.ICS_off);
-            }
-            else
-            {
-                App.DeskBandPipe.SendCommandToDeskband(DeskbandCommand.ICS_on);
-            }
+
         }
     }
 }

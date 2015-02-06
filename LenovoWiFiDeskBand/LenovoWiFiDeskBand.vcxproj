@@ -212,10 +212,13 @@
     <ResourceCompile Include="LenovoWiFiDeskBand.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\logo_round_pure.ico" />
+    <None Include="export.def" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="export.def" />
+    <Image Include="icon1.ico" />
+    <Image Include="Resources\logo_ICS_loading1.ico" />
+    <Image Include="Resources\logo_ICS_loading2.ico" />
+    <Image Include="Resources\logo_ICS_loading3.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

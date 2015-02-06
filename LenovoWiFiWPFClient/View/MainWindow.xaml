@@ -20,6 +20,7 @@
         	Width="65" Margin="40,251,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <TextBox x:Name="TextBoxWiFiKey" Text="{Binding PresharedKey, Mode=OneWay}"
         	Width="143" Height="23" Margin="110,252,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Button Content="Button" HorizontalAlignment="Left" Margin="10,199,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
 
     </Grid>
 </view:BottomRightWindow>

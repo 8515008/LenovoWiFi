@@ -16,16 +16,16 @@ namespace Lenovo.WiFi.Client.View
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if(Count++%2 == 0)
+            if (Count++ % 2 == 0)
             {
                 App.DeskBandPipe.SendCommandToDeskband(DeskbandCommand.ICS_off);
-            }else
+            }
+            else
             {
                 App.DeskBandPipe.SendCommandToDeskband(DeskbandCommand.ICS_on);
             }
-
         }
     }
 }

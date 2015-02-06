@@ -24,6 +24,6 @@
                  Width="143" Height="23" Margin="110,194,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <Button x:Name="ButtonModify" Content="{DynamicResource Modify}" IsEnabled="{Binding IsModified}" Command="{Binding AcceptChanges}"
                 Width="75" Margin="0,240,0,0" VerticalAlignment="Top"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="28,263,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click"/>
+        <Button Content="测试图标改变" HorizontalAlignment="Left" Margin="28,263,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click"/>
     </Grid>
 </view:BottomRightWindow>

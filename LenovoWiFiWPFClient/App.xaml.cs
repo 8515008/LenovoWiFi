@@ -95,59 +95,59 @@ namespace Lenovo.WiFi.Client
             _statusWindow.DataContext = _container.Resolve<IStatusViewModel>();
         }
 
-        private void ListeningPipe()
-        {
-            using (var pipe = new NamedPipeServerStream("LenovoWiFi", PipeDirection.In, 1, PipeTransmissionMode.Message))
-            {
-                var reader = new StreamReader(pipe, Encoding.Unicode);
-                // var writer = new StreamWriter(pipe);
+        //private void ListeningPipe()
+        //{
+        //    using (var pipe = new NamedPipeServerStream("LenovoWiFi", PipeDirection.In, 1, PipeTransmissionMode.Message))
+        //    {
+        //        var reader = new StreamReader(pipe, Encoding.Unicode);
+        //        // var writer = new StreamWriter(pipe);
 
-                while (true)
-                {
-                    try
-                    {
-                        pipe.WaitForConnection();
+        //        while (true)
+        //        {
+        //            try
+        //            {
+        //                pipe.WaitForConnection();
 
-                        var line = reader.ReadLine();
-                        var exit = false;
-                        switch (line)
-                        {
-                            case "mouseenter":
-                                this.Dispatcher.BeginInvoke(new Action(OnMouseEnter));
-                                break;
-                            case "mouseleave":
-                                this.Dispatcher.BeginInvoke(new Action(OnMouseLeave));
-                                break;
-                            case "lbuttonclick":
-                                this.Dispatcher.BeginInvoke(new Action(OnLButtonClick));
-                                break;
-                            case "rbuttonclick":
-                                this.Dispatcher.BeginInvoke(new Action(OnRButtonClick));
-                                break;
-                            case "exit":
-                                this.Dispatcher.BeginInvoke(new Action(OnExit));
+        //                var line = reader.ReadLine();
+        //                var exit = false;
+        //                switch (line)
+        //                {
+        //                    case "mouseenter":
+        //                        this.Dispatcher.BeginInvoke(new Action(OnMouseEnter));
+        //                        break;
+        //                    case "mouseleave":
+        //                        this.Dispatcher.BeginInvoke(new Action(OnMouseLeave));
+        //                        break;
+        //                    case "lbuttonclick":
+        //                        this.Dispatcher.BeginInvoke(new Action(OnLButtonClick));
+        //                        break;
+        //                    case "rbuttonclick":
+        //                        this.Dispatcher.BeginInvoke(new Action(OnRButtonClick));
+        //                        break;
+        //                    case "exit":
+        //                        this.Dispatcher.BeginInvoke(new Action(OnExit));
 
-                                exit = true;
-                                break;
-                        }
+        //                        exit = true;
+        //                        break;
+        //                }
 
-                        if (exit)
-                        {
-                            break;
-                        }
-                    }
-                    finally
-                    {
-                        if (pipe.IsConnected)
-                        {
-                            pipe.Disconnect();
-                        }
-                    }
-                }
-            }
+        //                if (exit)
+        //                {
+        //                    break;
+        //                }
+        //            }
+        //            finally
+        //            {
+        //                if (pipe.IsConnected)
+        //                {
+        //                    pipe.Disconnect();
+        //                }
+        //            }
+        //        }
+        //    }
 
-            this.Dispatcher.BeginInvoke(new Action(Shutdown));
-        }
+        //    this.Dispatcher.BeginInvoke(new Action(Shutdown));
+        //}
 
         public void OnMouseEnter()
         {

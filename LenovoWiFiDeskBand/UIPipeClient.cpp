@@ -38,7 +38,7 @@ DWORD CUIPipeClient::Connect()
 			0,
 			NULL,
 			OPEN_EXISTING,
-			0,
+			FILE_FLAG_OVERLAPPED,
 			NULL);
 
 		if (hPipe != INVALID_HANDLE_VALUE)
@@ -114,7 +114,9 @@ DWORD CUIPipeClient::Connect()
 		{
 			m_pDeskbandListener->OnICS_ClientConnected();
 		}
-	} while (!fSuccess);  // repeat loop if ERROR_MORE_DATA 
+
+		Sleep(200);
+	} while (fSuccess);  // repeat loop if ERROR_MORE_DATA 
 
 	if (!fSuccess)
 	{
