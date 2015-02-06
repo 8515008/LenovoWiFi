@@ -30,7 +30,7 @@
         	Background="Transparent"
         	Cursor="Hand"
         	Visibility="Visible"
-        	MouseLeftButtonDown="CloseWindow" RenderTransformOrigin="1.375,0.524" Width="32" Template="{DynamicResource ButtonCloseTemplate}"
+        	MouseLeftButtonDown="CloseWindow"  RenderTransformOrigin="1.375,0.524" Width="32" Template="{DynamicResource ButtonCloseTemplate}"
 		/>
 
     </Grid>

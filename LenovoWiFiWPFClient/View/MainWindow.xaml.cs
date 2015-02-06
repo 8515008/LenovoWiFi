@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
@@ -12,6 +13,12 @@ namespace Lenovo.WiFi.Client.View
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+
+        private void CloseWindow(object sender, MouseButtonEventArgs e)
+        {
+            this.Close();
         }
     }
 }
