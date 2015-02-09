@@ -1,0 +1,4 @@
+﻿<ViewModel:StatusViewModel xmlns:ViewModel="clr-namespace:Lenovo.WiFi.Client.ViewModel"
+	SSID="LenovoWiFi001"
+	PresharedKey="Aa1234567890"
+	Status="当前已连接设备数：3"/>

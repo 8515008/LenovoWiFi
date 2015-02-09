@@ -1,0 +1,4 @@
+﻿<ViewModel:MainViewModel 
+	xmlns:ViewModel="clr-namespace:Lenovo.WiFi.Client.ViewModel"
+	SSID="LenovoWiFi001"
+	PresharedKey="Aa1234567890" />

@@ -1,0 +1,6 @@
+﻿<ViewModel:SuccessViewModel xmlns:ViewModel="clr-namespace:Lenovo.WiFi.Client.ViewModel"
+	CurrentSSID="Aliquam maecenas praesent"
+	CurrentPresharedKey="Accumsan nam curabitur sed cras"
+	IsModified="True"
+	SSID="LenovoWiFi001"
+	PresharedKey="Aa1234567890"/>

@@ -1,0 +1,3 @@
+﻿<ViewModel:NotificationViewModel 
+	xmlns:ViewModel="clr-namespace:Lenovo.WiFi.Client.ViewModel" 
+	Message="Nam aliquam aenean"/>

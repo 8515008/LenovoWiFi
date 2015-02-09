@@ -15,6 +15,7 @@
         <System:String x:Key="Cancel">取消</System:String>
         <BitmapImage x:Key="AppLogo" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="Resources\logo.ico"/>
         <System:String x:Key="StartupMessage">正在创建WiFi热点，请稍候...</System:String>
+		<System:String x:Key="ScanQRCodeString">扫描此二维码进行连接</System:String>
         <BitmapImage x:Key="AppExit" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="Resources\exit.ico"/>
         <ControlTemplate x:Key="ButtonClose" TargetType="{x:Type Button}">
             <StackPanel>
@@ -40,7 +41,7 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-        <LinearGradientBrush x:Key="Brush_background" EndPoint="1.105,1.101" MappingMode="RelativeToBoundingBox" StartPoint="0.551,0.106">
+        <LinearGradientBrush x:Key="WindowBackgroundBrush" EndPoint="1.105,1.101" MappingMode="RelativeToBoundingBox" StartPoint="0.551,0.106">
             <GradientStop Color="#FFFFBE00" Offset="0.799"/>
             <GradientStop Color="White" Offset="0.081"/>
         </LinearGradientBrush>
@@ -62,16 +63,6 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-
-        <Style TargetType="Image" x:Key="AppIconStyle">
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="Width" Value="25"/>
-            <Setter Property="Height" Value="25"/>
-            
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Margin" Value="5,0,0,0"/>
-            <Setter Property="Source" Value="/LenovoWiFiWPFClient;component/Resources/mywifi_32.png"/>
-        </Style>
 
         <Style TargetType="Label" x:Key="LabelTitle">
             <Setter Property="Height" Value="37"/>
