@@ -1,3 +1,4 @@
+//#include <windows.h>
 #include "stdafx.h"
 #include <thread>
 #include <functional>
@@ -10,6 +11,10 @@ extern CLSID CLSIDLenovoWiFiDeskBand;
 
 CONST TCHAR g_szLenovoWiFiServiceName[] = TEXT("LenovoWiFi");
 CONST TCHAR g_szDeskBandClassName[]		= TEXT("LenovoWiFiDeskBandWndClass");
+
+
+#define RECTWIDTH(x)   ((x).right - (x).left)
+#define RECTHEIGHT(x)  ((x).bottom - (x).top)
 
 CDeskBand::CDeskBand()
 	: m_cRef(1),
@@ -28,9 +33,9 @@ CDeskBand::CDeskBand()
 		m_pServiceClient = new CHostedNetworkClient();
 	}
 
-	m_dwIconID = IDI_ICON1;
+	m_dwIconID = IDI_ICON2;
 	m_pUIPipeClient = new CUIPipeClient();
-	//pUIPipeClient->RegisterListener(this);
+	m_pUIPipeClient->RegisterListener(this);
 }
 
 
@@ -138,7 +143,7 @@ STDMETHODIMP CDeskBand::ShowDW(BOOL bShow)
 	{
 		ShowWindow(m_hWnd, bShow ? SW_SHOW : SW_HIDE);
 
-		m_pUIPipeClient->Connect();
+		//m_pUIPipeClient->Connect();
 
 	}
 
@@ -322,7 +327,7 @@ LRESULT CALLBACK CDeskBand::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 		pDeskband->m_hWnd = hWnd;
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pDeskband));
 
-		//pDeskband->OnThreadSetupPipe();
+		pDeskband->OnThreadSetupPipe();
 
 		break;
 	case WM_SETFOCUS:
@@ -393,27 +398,105 @@ void CDeskBand::OnPaint(const HDC hDeviceContext)
 {
 	HDC hdc = hDeviceContext;
 	PAINTSTRUCT ps;
+	//static WCHAR szContent[] = L"xxxxxxxxxxxxx";
+	//static WCHAR szContentGlass[] = L"DeskBand Sample (Glass)";
 
 	if (!hdc)
 	{
 		hdc = BeginPaint(m_hWnd, &ps);
+		//m_hdc = hdc;
 	}
 
 	if (hdc)
 	{
 		RECT rc;
 		GetClientRect(m_hWnd, &rc);
-		DrawThemeParentBackground(m_hWnd, ps.hdc, &rc);
+		BOOL b = DrawThemeParentBackground(m_hWnd, hdc, &rc);
+		int err = GetLastError();
 
-		m_hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(m_dwIconID));
-		DrawIcon(hdc, 0, 0, m_hIcon);
+
+		static int i = 0;
+		//BOOL b = FALSE;
+		//if ( i++ %2 == 0 )
+		//	b = TextOut(hdc, 0, 0, L"Windows!", 15);
+		//else
+		//	b = TextOut(hdc, 0, 0, L"Android!", 15);
+
+		if ( i++ %2 == 0 )
+			m_hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(IDI_ICON1));
+		else
+			m_hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(IDI_ICON2));
+
+		//SetBkColor(hdc, RGB(255, 255, 0));
+		
+		
+		//b = DrawIconEx(hdc, 0, 0, m_hIcon, 32, 32, 0, NULL, DI_NORMAL);
+		b = DrawIcon(hdc, 0, 0, m_hIcon);
+
+
+		err = GetLastError();
+		BOOL c = b;
+
 	}
+
+	//if (hdc)
+	//{
+	//	RECT rc;
+	//	GetClientRect(m_hWnd, &rc);
+
+	//	SIZE size;
+
+	//	if (m_fCompositionEnabled)
+	//	{
+	//		HTHEME hTheme = OpenThemeData(NULL, L"BUTTON");
+	//		if (hTheme)
+	//		{
+	//			HDC hdcPaint = NULL;
+	//			HPAINTBUFFER hBufferedPaint = BeginBufferedPaint(hdc, &rc, BPBF_TOPDOWNDIB, NULL, &hdcPaint);
+
+	//			DrawThemeParentBackground(m_hWnd, hdcPaint, &rc);
+
+	//			GetTextExtentPointW(hdc, szContentGlass, ARRAYSIZE(szContentGlass), &size);
+	//			RECT rcText;
+	//			rcText.left = (RECTWIDTH(rc) - size.cx) / 2;
+	//			rcText.top = (RECTHEIGHT(rc) - size.cy) / 2;
+	//			rcText.right = rcText.left + size.cx;
+	//			rcText.bottom = rcText.top + size.cy;
+
+	//			DTTOPTS dttOpts = { sizeof(dttOpts) };
+	//			dttOpts.dwFlags = DTT_COMPOSITED | DTT_TEXTCOLOR | DTT_GLOWSIZE;
+	//			dttOpts.crText = RGB(255, 255, 0);
+	//			dttOpts.iGlowSize = 10;
+	//			static int i = 0;
+
+	//			if (i++%2 == 0 )
+	//				DrawThemeTextEx(hTheme, hdcPaint, 0, 0, szContentGlass, -1, 0, &rcText, &dttOpts);
+	//			else 
+	//				DrawThemeTextEx(hTheme, hdcPaint, 0, 0, szContent, -1, 0, &rcText, &dttOpts);
+
+	//			EndBufferedPaint(hBufferedPaint, TRUE);
+
+	//			CloseThemeData(hTheme);
+	//		}
+	//	}
+	//	else
+	//	{
+	//		SetBkColor(hdc, RGB(255, 255, 0));
+	//		GetTextExtentPointW(hdc, szContent, ARRAYSIZE(szContent), &size);
+	//		TextOutW(hdc,
+	//			(RECTWIDTH(rc) - size.cx) / 2,
+	//			(RECTHEIGHT(rc) - size.cy) / 2,
+	//			szContent,
+	//			ARRAYSIZE(szContent));
+	//	}
+	//}
 
 	if (!hDeviceContext)
 	{
 		EndPaint(m_hWnd, &ps);
 	}
 }
+
 void CDeskBand::DynamicContextMenu(const HWND hWnd, POINT point)
 {
 	HMENU hmenu = CreateMenu();
@@ -561,11 +644,16 @@ void CDeskBand::OnICS_Loading()
 }
 void CDeskBand::OnICS_On()
 {
-	m_dwIconID = IDI_ICON2;
+	m_dwIconID = IDI_ICON1;
+	//PostMessage(this->m_hWnd, WM_PRINTCLIENT, (WPARAM) m_hdc, 0);
+	//PostMessage(this->m_hWnd, WM_PRINTCLIENT, 0, 0);
+	this->OnPaint(NULL);
 }
 void CDeskBand::OnICS_Off()
 {
 	m_dwIconID = IDI_ICON3;
+	//PostMessage(this->m_hWnd, WM_PRINTCLIENT, 0, 0);
+	this->OnPaint(NULL);
 }
 
 void CDeskBand::OnICS_ClientConnected()

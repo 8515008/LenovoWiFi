@@ -37,7 +37,11 @@ namespace Lenovo.WiFi.Client.Model
             {
                 if (null == PipeSvrStream)
                 {
-                    PipeSvrStream = new NamedPipeServerStream(PIPENAME, PipeDirection.InOut, 1, PipeTransmissionMode.Message);
+                    PipeSvrStream = new NamedPipeServerStream(PIPENAME, 
+                        PipeDirection.InOut, 
+                        1, 
+                        PipeTransmissionMode.Message,
+                        PipeOptions.Asynchronous);
                 }
 
                 return PipeSvrStream;
@@ -64,6 +68,7 @@ namespace Lenovo.WiFi.Client.Model
                 if (null == SWriter)
                 {
                     SWriter = new StreamWriter(PipeStream, Encoding.Unicode);
+                    SWriter.AutoFlush = true;
                 }
 
                 return SWriter;

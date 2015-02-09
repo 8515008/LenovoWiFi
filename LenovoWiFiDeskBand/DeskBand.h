@@ -68,5 +68,6 @@ private:
 	BOOL m_fMouseEnter;
 
 	DWORD m_dwIconID;
+	HDC m_hdc;
 };
 
