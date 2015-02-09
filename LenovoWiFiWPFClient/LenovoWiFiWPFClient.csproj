@@ -152,10 +152,6 @@
       <DependentUpon>SuccessWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TrayDesktopBand.cs" />
-    <Page Include="DesignData\SampleData.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\NotificationWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

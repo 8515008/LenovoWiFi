@@ -4,22 +4,22 @@
     xmlns:view="clr-namespace:Lenovo.WiFi.Client.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-    Height="400" Width="400" WindowStyle="None" Background="{DynamicResource WindowBackgroundBrush}"
-	d:DataContext="{d:DesignData /SampleData/MainViewModelSampleData.xaml}">
+	d:DataContext="{d:DesignData /SampleData/MainViewModelSampleData.xaml}"
+    Style="{DynamicResource StandardWindowStyle}">
 	<Grid>
-		<Label Content="{DynamicResource AppName}" FontSize="24"
+		<Label Content="{DynamicResource AppName}" Style="{DynamicResource BigFontSizeStyle}"
 			Margin="10, 0" HorizontalAlignment="Left"  VerticalAlignment="Top" />
 		<Image Source="{Binding QRCode, Mode=OneWay}"
 			Width="160" Height="160" VerticalAlignment="Top" Margin="0, 60" />
-		<Label Content="{DynamicResource ScanQRCodeString}" FontSize="14"
+        <Label Content="{DynamicResource ScanQRCodeString}" Style="{DynamicResource SmallFontSizeStyle}"
 			HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,220,0,0" />
-		<Label Content="{DynamicResource WiFiName}" FontSize="18"
+        <Label Content="{DynamicResource WiFiName}" Style="{DynamicResource NormalFontSizeStyle}"
 			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,273,0,0" />
-		<TextBox Text="{Binding SSID, Mode=OneWay}" FontSize="18"
-			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="158.323,277,0,0" Width="180"/>
-		<Label Content="{DynamicResource WiFiKey}" FontSize="18"
+        <TextBox Text="{Binding SSID, Mode=OneWay}" Style="{DynamicResource NormalFontSizeStyle}"
+			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="158,277,0,0" Width="180" Background="{x:Null}"/>
+        <Label Content="{DynamicResource WiFiKey}" Style="{DynamicResource NormalFontSizeStyle}"
 			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,315,0,0"/>
-		<TextBox Text="{Binding PresharedKey, Mode=OneWay}" FontSize="18"
-			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="158.323,319,0,0" Width="180" />
+        <TextBox Text="{Binding PresharedKey, Mode=OneWay}" Style="{DynamicResource NormalFontSizeStyle}"
+			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="158,319,0,0" Width="180" Background="{x:Null}" />
 	</Grid>
 </view:BottomRightWindow>

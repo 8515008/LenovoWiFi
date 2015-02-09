@@ -4,7 +4,6 @@
     xmlns:System="clr-namespace:System;assembly=mscorlib"
     x:Class="Lenovo.WiFi.Client.App"
     ShutdownMode="OnExplicitShutdown">
-    
     <Application.Resources>
 
         <System:String x:Key="AppName">联想WiFi</System:String>
@@ -13,80 +12,38 @@
         <System:String x:Key="Modify">修改</System:String>
         <System:String x:Key="Save">保存</System:String>
         <System:String x:Key="Cancel">取消</System:String>
-        <BitmapImage x:Key="AppLogo" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="Resources\logo.ico"/>
         <System:String x:Key="StartupMessage">正在创建WiFi热点，请稍候...</System:String>
-		<System:String x:Key="ScanQRCodeString">扫描此二维码进行连接</System:String>
-        <BitmapImage x:Key="AppExit" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="Resources\exit.ico"/>
-        <ControlTemplate x:Key="ButtonClose" TargetType="{x:Type Button}">
-            <StackPanel>
-                <Image x:Name="image1"
-        			Stretch="None"
-        			Visibility="Collapsed" 
-                    Source="Resources/close_32.png"    
-                       />
-                <Image x:Name="image2"
-        			Stretch="None"
-        			Visibility="Visible" 
-                    Source="Resources/close_32.png" />
-            </StackPanel>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsMouseOver"
-        			Value="true">
-                    <Setter TargetName="image1"
-        				Property="Visibility"
-        				Value="Visible" />
-                    <Setter TargetName="image2"
-        				Property="Visibility"
-        				Value="Collapsed" />
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
-        <LinearGradientBrush x:Key="WindowBackgroundBrush" EndPoint="1.105,1.101" MappingMode="RelativeToBoundingBox" StartPoint="0.551,0.106">
-            <GradientStop Color="#FFFFBE00" Offset="0.799"/>
-            <GradientStop Color="White" Offset="0.081"/>
+        <System:String x:Key="ScanQRCodeString">扫描此二维码进行连接</System:String>
+
+        <LinearGradientBrush x:Key="WindowBackgroundBrush"
+                             StartPoint="0.551,0.106"
+                             EndPoint="1.105,1.101"
+                             MappingMode="RelativeToBoundingBox" >
+            <GradientStop Color="#FFFFBE00" Offset="0.8"/>
+            <GradientStop Color="White" Offset="0.08"/>
         </LinearGradientBrush>
-        <ControlTemplate x:Key="ButtonCloseTemplate" TargetType="{x:Type Button}">
 
-            <Border x:Name="pannel1" >
-                <Border Padding="5">
-                    <StackPanel >
-                        <Image x:Name="image1" Stretch="Fill" Source="Resources/close_32.png"  Visibility="Collapsed"/>
-                        <Image x:Name="image2" Stretch="Fill" Source="Resources/close_32.png"  Visibility="Visible"/>
-                    </StackPanel>
-                </Border>
-            </Border>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsMouseOver" Value="true">
-                    <Setter Property="Visibility" TargetName="image1" Value="Visible"/>
-                    <Setter Property="Visibility" TargetName="image2" Value="Collapsed"/>
-                    <Setter Property="Background" TargetName="pannel1" Value="Gold"/>
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
-
-        <Style TargetType="Label" x:Key="LabelTitle">
-            <Setter Property="Height" Value="37"/>
-            <Setter Property="FontFamily" Value="Microsoft YaHei"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Content" Value="{DynamicResource AppName}"/>
-            
+        <Style x:Key="StandardWindowStyle" TargetType="Window">
+            <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}" />
+            <Setter Property="Width" Value="400" />
+            <Setter Property="Height" Value="400" />
+            <Setter Property="WindowStyle" Value="None" />
+        </Style>
+        
+        <Style x:Key="BaseFontStyle" TargetType="Control">
+            <Setter Property="FontFamily" Value="Microsoft Yahei"></Setter>
         </Style>
 
-        <Style TargetType="Label" x:Key="LabelCap">
-            <Setter Property="Height" Value="31"/>
-            <Setter Property="FontFamily" Value="Microsoft YaHei"/>
+        <Style x:Key="BigFontSizeStyle" TargetType="Control" BasedOn="{StaticResource BaseFontStyle}">
+            <Setter Property="FontSize" Value="24"/>
+        </Style>
+
+        <Style x:Key="NormalFontSizeStyle" TargetType="Control" BasedOn="{StaticResource BaseFontStyle}">
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+
+        <Style x:Key="SmallFontSizeStyle" TargetType="Control" BasedOn="{StaticResource BaseFontStyle}">
             <Setter Property="FontSize" Value="14"/>
-        </Style>
-
-        <Style TargetType="Window"  x:Key="WindowSize">
-            <Setter Property="Height" Value="400"/>
-            <Setter Property="Width" Value="400"/>
-            <Setter Property="Background" Value="{DynamicResource Brush_background}"/>
-            <Setter Property="WindowStyle" Value="None"/>
-            
         </Style>
 
     </Application.Resources>

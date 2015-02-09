@@ -4,9 +4,9 @@
         xmlns:view="clr-namespace:Lenovo.WiFi.Client.View"
         Height="150" Width="400" WindowStyle="None" Background="{DynamicResource WindowBackgroundBrush}">
     <Grid>
-        <Label Content="{DynamicResource AppName}" FontSize="24"
+        <Label Content="{DynamicResource AppName}" Style="{DynamicResource BigFontSizeStyle}"
 			Margin="10, 0" HorizontalAlignment="Left"  VerticalAlignment="Top" />
-        <Label Content="{DynamicResource StartupMessage}" FontSize="18"
+        <Label Content="{DynamicResource StartupMessage}" Style="{DynamicResource NormalFontSizeStyle}"
             HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </view:BottomRightWindow>

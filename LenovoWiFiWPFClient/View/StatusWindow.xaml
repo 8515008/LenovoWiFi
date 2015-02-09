@@ -7,17 +7,17 @@
     Height="170" Width="400" WindowStyle="None" Background="{DynamicResource WindowBackgroundBrush}"
 	d:DataContext="{d:DesignData /SampleData/StatusViewModelSampleData.xaml}">
 	<Grid>
-		<Label Content="{DynamicResource AppName}" FontSize="24"
+        <Label Content="{DynamicResource AppName}" Style="{DynamicResource BigFontSizeStyle}"
 			Margin="10, 0" HorizontalAlignment="Left"  VerticalAlignment="Top" />
-		<Label Content="{DynamicResource WiFiName}" FontSize="18"
+        <Label Content="{DynamicResource WiFiName}" Style="{DynamicResource NormalFontSizeStyle}"
 			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="75,45,0,0" />
-		<Label Content="{Binding SSID}" FontSize="18"
-			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="173.323,45,0,0" Width="144" />
-		<Label Content="{DynamicResource WiFiKey}" FontSize="18"
+        <Label Content="{Binding SSID}" Style="{DynamicResource NormalFontSizeStyle}"
+			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="173,45,0,0" Width="144" />
+        <Label Content="{DynamicResource WiFiKey}" Style="{DynamicResource NormalFontSizeStyle}"
 			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="75,78.94,0,0" />
-		<Label Content="{Binding PresharedKey}" FontSize="18"
-			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="173.323,78.94,0,0" />
-		<Label Content="{Binding Status}" FontSize="14"
+        <Label Content="{Binding PresharedKey}" Style="{DynamicResource NormalFontSizeStyle}"
+			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="173,79,0,0" />
+        <Label Content="{Binding Status}" Style="{DynamicResource SmallFontSizeStyle}"
 			HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, 10" />
 	</Grid>
 </view:BottomRightWindow>

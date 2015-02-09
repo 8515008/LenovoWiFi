@@ -14,7 +14,7 @@ namespace Lenovo.WiFi.Client.ViewModel
 {
     public class MainViewModel : ReactiveObject, IMainViewModel
     {
-        private const string QRCodeContentFormat = "http://www.lenovo.com/lenovowifi/welcome.htm?T={0}&P={1}&S={2}";
+        private const string QrCodeContentFormat = "http://www.lenovo.com/lenovowifi/welcome.htm?T={0}&P={1}&S={2}";
 
         private readonly IHotspot _hotspot;
 
@@ -34,7 +34,7 @@ namespace Lenovo.WiFi.Client.ViewModel
                 x => x._hotspot.SSID,
                 (authAlgo, psk, ssid) =>
                 {
-                    var qrString = string.Format(QRCodeContentFormat, authAlgo.Value, psk.Value, ssid.Value);
+                    var qrString = string.Format(QrCodeContentFormat, authAlgo.Value, psk.Value, ssid.Value);
                     var encoder = new QRCodeEncoder();
                     var bitmap = encoder.Encode(qrString);
                     return Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty,

@@ -5,22 +5,22 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
     x:Class="Lenovo.WiFi.Client.View.SuccessWindow"
-    Width="400" Height="400" ShowInTaskbar="True" WindowStyle="None" Background="{DynamicResource WindowBackgroundBrush}"
-	d:DataContext="{d:DesignData /SampleData/SuccessViewModelSampleData.xaml}">
+	d:DataContext="{d:DesignData /SampleData/SuccessViewModelSampleData.xaml}"
+    Style="{DynamicResource StandardWindowStyle}">
     <Grid>
-        <Label Content="{DynamicResource AppName}" FontSize="24"
+        <Label Content="{DynamicResource AppName}" Style="{DynamicResource BigFontSizeStyle}"
 			Margin="10, 0" HorizontalAlignment="Left"  VerticalAlignment="Top" />
         <Image Source="/LenovoWiFiWPFClient;component/Resources/wifi_512.png"
 			Height="186" Margin="0,42,0,0" VerticalAlignment="Top"  />
-        <Label Content="{DynamicResource WiFiName}" FontSize="18"
+        <Label Content="{DynamicResource WiFiName}" Style="{DynamicResource NormalFontSizeStyle}"
 			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="75,246.38,0,0" />
-        <TextBox Text="{Binding SSID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="18"
-			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="173,250.38,0,0" Width="144" />
-        <Label Content="{DynamicResource WiFiKey}" FontSize="18"
+        <TextBox Text="{Binding SSID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource NormalFontSizeStyle}"
+			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="173,250,0,0" Width="144" Background="{x:Null}" />
+        <Label Content="{DynamicResource WiFiKey}" Style="{DynamicResource NormalFontSizeStyle}"
 			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="75,280,0,0" />
-        <TextBox Text="{Binding PresharedKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="18"
-			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="173,284,0,0" Width="144" />
+        <TextBox Text="{Binding PresharedKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource NormalFontSizeStyle}"
+			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="173,284,0,0" Width="144" Background="{x:Null}" />
         <Button Content="{DynamicResource Modify}" IsEnabled="{Binding IsModified}" Command="{Binding AcceptChanges}"
-                VerticalAlignment="Top" Margin="120,330,120,0" FontSize="14" />
+                VerticalAlignment="Top" Margin="120,330,120,0" Style="{DynamicResource SmallFontSizeStyle}" />
     </Grid>
 </view:BottomRightWindow>
