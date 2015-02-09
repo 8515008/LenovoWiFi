@@ -38,7 +38,7 @@ DWORD CUIPipeClient::Connect()
 			0,
 			NULL,
 			OPEN_EXISTING,
-			FILE_FLAG_OVERLAPPED,
+			0,
 			NULL);
 
 		if (hPipe != INVALID_HANDLE_VALUE)

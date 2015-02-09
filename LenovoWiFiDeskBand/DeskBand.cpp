@@ -30,7 +30,7 @@ CDeskBand::CDeskBand()
 
 	m_dwIconID = IDI_ICON1;
 	m_pUIPipeClient = new CUIPipeClient();
-	m_pUIPipeClient->RegisterListener(this);
+	//pUIPipeClient->RegisterListener(this);
 }
 
 
@@ -137,6 +137,8 @@ STDMETHODIMP CDeskBand::ShowDW(BOOL bShow)
 	if (m_hWnd)
 	{
 		ShowWindow(m_hWnd, bShow ? SW_SHOW : SW_HIDE);
+
+		m_pUIPipeClient->Connect();
 
 	}
 
@@ -320,7 +322,7 @@ LRESULT CALLBACK CDeskBand::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 		pDeskband->m_hWnd = hWnd;
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pDeskband));
 
-		pDeskband->OnThreadSetupPipe();
+		//pDeskband->OnThreadSetupPipe();
 
 		break;
 	case WM_SETFOCUS:
