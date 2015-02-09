@@ -4,18 +4,47 @@
     xmlns:System="clr-namespace:System;assembly=mscorlib"
     x:Class="Lenovo.WiFi.Client.App"
     ShutdownMode="OnExplicitShutdown">
-    
     <Application.Resources>
 
-        <System:String x:Key="AppName">联想免费WiFi</System:String>
+        <System:String x:Key="AppName">联想WiFi</System:String>
         <System:String x:Key="WiFiName">WiFi名称：</System:String>
         <System:String x:Key="WiFiKey">WiFi密码：</System:String>
         <System:String x:Key="Modify">修改</System:String>
         <System:String x:Key="Save">保存</System:String>
         <System:String x:Key="Cancel">取消</System:String>
-        <BitmapImage x:Key="AppLogo" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="Resources\logo.ico"/>
-        <System:String x:Key="StartupMessage">正在创建免费WiFi，请稍候...</System:String>
-        <BitmapImage x:Key="AppExit" CreateOptions="IgnoreImageCache" CacheOption="OnLoad" UriSource="Resources\exit.ico"/>
+        <System:String x:Key="StartupMessage">正在创建WiFi热点，请稍候...</System:String>
+        <System:String x:Key="ScanQRCodeString">扫描此二维码进行连接</System:String>
+
+        <LinearGradientBrush x:Key="WindowBackgroundBrush"
+                             StartPoint="0.551,0.106"
+                             EndPoint="1.105,1.101"
+                             MappingMode="RelativeToBoundingBox" >
+            <GradientStop Color="#FFFFBE00" Offset="0.8"/>
+            <GradientStop Color="White" Offset="0.08"/>
+        </LinearGradientBrush>
+
+        <Style x:Key="StandardWindowStyle" TargetType="Window">
+            <Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}" />
+            <Setter Property="Width" Value="400" />
+            <Setter Property="Height" Value="400" />
+            <Setter Property="WindowStyle" Value="None" />
+        </Style>
+        
+        <Style x:Key="BaseFontStyle" TargetType="Control">
+            <Setter Property="FontFamily" Value="Microsoft Yahei"></Setter>
+        </Style>
+
+        <Style x:Key="BigFontSizeStyle" TargetType="Control" BasedOn="{StaticResource BaseFontStyle}">
+            <Setter Property="FontSize" Value="24"/>
+        </Style>
+
+        <Style x:Key="NormalFontSizeStyle" TargetType="Control" BasedOn="{StaticResource BaseFontStyle}">
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+
+        <Style x:Key="SmallFontSizeStyle" TargetType="Control" BasedOn="{StaticResource BaseFontStyle}">
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
 
     </Application.Resources>
 </Application>

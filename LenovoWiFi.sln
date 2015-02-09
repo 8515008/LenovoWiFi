@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LenovoWiFiWPFClient", "LenovoWiFiWPFClient\LenovoWiFiWPFClient.csproj", "{52FFB1F0-5956-4540-8D46-3DD74519E5C7}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AD8B7992-13A4-4833-AA80-54AC4222A9B6} = {AD8B7992-13A4-4833-AA80-54AC4222A9B6}
+		{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4} = {24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LenovoWiFiWCFLibrary", "LenovoWiFiWCFLibrary\LenovoWiFiWCFLibrary.csproj", "{AD8B7992-13A4-4833-AA80-54AC4222A9B6}"
@@ -16,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LenovoWiFiWCFService", "Len
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LenovoWiFiDeskBand", "LenovoWiFiDeskBand\LenovoWiFiDeskBand.vcxproj", "{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LenovoWiFiDeskbandHook", "LenovoWiFiDeskbandHook\LenovoWiFiDeskbandHook.vcxproj", "{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +88,20 @@ Global
 		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Release|Win32.Build.0 = Release|Win32
 		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Release|x64.ActiveCfg = Release|x64
 		{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}.Release|x64.Build.0 = Release|x64
+		{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}.Debug|Win32.Build.0 = Debug|Win32
+		{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}.Debug|x64.ActiveCfg = Debug|x64
+		{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}.Debug|x64.Build.0 = Debug|x64
+		{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}.Release|Any CPU.ActiveCfg = Release|Win32
+		{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}.Release|Win32.ActiveCfg = Release|Win32
+		{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}.Release|Win32.Build.0 = Release|Win32
+		{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}.Release|x64.ActiveCfg = Release|x64
+		{24B5F6FB-7B3B-4341-86D8-5E0E437C8AB4}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

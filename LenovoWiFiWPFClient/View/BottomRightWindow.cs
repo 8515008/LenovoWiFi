@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace Lenovo.WiFi.Client.View
@@ -17,14 +19,23 @@ namespace Lenovo.WiFi.Client.View
             this.ShowInTaskbar = false;
             this.Topmost = true;
 
-            this.Loaded += Window_Loaded;
+            this.FontFamily = new FontFamily("Microsoft YaHei");
+			this.FontSize = 14;
+
+            this.Loaded += OnLoaded;
+            this.LostFocus += OnLostFocus;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             var desktopWorkingArea = SystemParameters.WorkArea;
             this.Left = desktopWorkingArea.Right - this.Width - MarginRight;
             this.Top = desktopWorkingArea.Bottom - this.Height - MarginBottom;
+        }
+
+        private void OnLostFocus(object sender, RoutedEventArgs routedEventArgs)
+        {
+            this.Hide();
         }
     }
 }
