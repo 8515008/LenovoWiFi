@@ -22,7 +22,8 @@ namespace Lenovo.WiFi.Client
     public partial class App : Application, IDisposable, IHostedNetworkServiceCallback, IDeskbandPipeListener
     {
 #if DEBUG
-        private static readonly Guid CLSIDLenovoWiFiDeskBand = new Guid("{01E04581-4EEE-11d0-BFE9-00AA005B4383}");
+        private static readonly Guid CLSIDLenovoWiFiDeskBand = new Guid("{23ED1551-904E-4874-BA46-DBE1489D4D34}");
+        //private static readonly Guid CLSIDLenovoWiFiDeskBand = new Guid("{01E04581-4EEE-11d0-BFE9-00AA005B4383}");
 #else
         private static readonly Guid CLSIDLenovoWiFiDeskBand = new Guid("{23ED1551-904E-4874-BA46-DBE1489D4D34}");
 #endif
@@ -69,7 +70,7 @@ namespace Lenovo.WiFi.Client
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            DeskBandPipe.RegisterListener(this);
+            DeskBandPipe.SetDeskbandDelegate(this.OnHandleDeskbandCmd);
 
             _pipeServerWorker.DoWork += (sender, args) => DeskBandPipe.Start();
             _pipeServerWorker.RunWorkerAsync();
@@ -157,8 +158,34 @@ namespace Lenovo.WiFi.Client
         //    this.Dispatcher.BeginInvoke(new Action(Shutdown));
         //}
 
+        private int OnHandleDeskbandCmd(DeskbandCommand cmd)
+        {
+            switch(cmd)
+            { 
+                case DeskbandCommand.DESKB_mouseenter:
+                    this.OnMouseEnter();
+                    break;
+                case DeskbandCommand.DESKB_mouseleave:
+                    this.OnMouseLeave();
+                    break;
+                case DeskbandCommand.DESKB_lbuttonclick:
+                    this.OnLButtonClick();
+                    break;
+                case DeskbandCommand.DESKB_rbuttonclick:
+                    this.OnRButtonClick();
+                    break;
+                case DeskbandCommand.DESKB_exit:
+                    this.OnExit();
+                    break;
+                default:
+                    break;
+            }
+            return 0;
+        }
+
         public void OnMouseEnter()
         {
+            this.Dispatcher.BeginInvoke(new Action(()=> {
             if (_currentWindow != null && !(_currentWindow is MainWindow))
             {
                 _currentWindow.Hide();
@@ -170,40 +197,53 @@ namespace Lenovo.WiFi.Client
                 _currentWindow = _statusWindow;
                 _currentWindow.Show();
             }
+            }));
         }
 
         public void OnMouseLeave()
         {
-            if (_currentWindow != null && !(_currentWindow is MainWindow))
+            this.Dispatcher.BeginInvoke(new Action(() =>
             {
-                _currentWindow.Hide();
-                _currentWindow = null;
-            }
+                if (_currentWindow != null && !(_currentWindow is MainWindow))
+                {
+                    _currentWindow.Hide();
+                    _currentWindow = null;
+                }
+            }));
         }
 
         public void OnLButtonClick()
         {
-            if (_currentWindow != null)
+            this.Dispatcher.BeginInvoke(new Action(() =>
             {
-                _currentWindow.Hide();
-            }
+                if (_currentWindow != null)
+                {
+                    _currentWindow.Hide();
+                }
 
-            _currentWindow = _mainWindow;
-            _currentWindow.Show();
+                _currentWindow = _mainWindow;
+                _currentWindow.Show();
+            }));
         }
 
         public void OnRButtonClick()
         {
-            if (_currentWindow != null)
+            this.Dispatcher.BeginInvoke(new Action(() =>
             {
-                _currentWindow.Hide();
-                _currentWindow = null;
-            }
+                if (_currentWindow != null)
+                {
+                    _currentWindow.Hide();
+                    _currentWindow = null;
+                }
+            }));
         }
 
         public void OnExit()
         {
-            HideDeskband();
+            this.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                HideDeskband();
+            }));
         }
 
         private void ShowDeskband()
