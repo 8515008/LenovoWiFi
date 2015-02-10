@@ -14,6 +14,7 @@ namespace Lenovo.WiFi.Client.Model
         ICS_on, 
         ICS_off, 
         ICS_clientconnected, 
+        ICS_error,
         DESKB_mouseenter, 
         DESKB_mouseleave,
         DESKB_lbuttonclick,
@@ -126,6 +127,9 @@ namespace Lenovo.WiFi.Client.Model
                             uiDispatcher.BeginInvoke(m_delegate, DeskbandCommand.DESKB_exit);
                             //m_delegate.BeginInvoke(DeskbandCommand.DESKB_exit, null, null);
                             exit = true;
+                            break;
+                        case "error":
+                            uiDispatcher.BeginInvoke(m_delegate, DeskbandCommand.ICS_error);
                             break;
                         default:
                             //log

@@ -222,9 +222,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\logo.ico" />
   </ItemGroup>
   <ItemGroup>
