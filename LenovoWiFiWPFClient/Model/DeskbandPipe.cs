@@ -97,6 +97,8 @@ namespace Lenovo.WiFi.Client.Model
 
             PipeStream.WaitForConnection();
 
+            var uiDispatcher = App.Current.Dispatcher;
+
             while (true)
             {
                 try
@@ -105,19 +107,24 @@ namespace Lenovo.WiFi.Client.Model
                     switch (line)
                     {
                         case "mouseenter":
-                            m_delegate.BeginInvoke(DeskbandCommand.DESKB_mouseenter, null, null);
+                            uiDispatcher.BeginInvoke(m_delegate, DeskbandCommand.DESKB_mouseenter);
+                            //m_delegate.BeginInvoke(DeskbandCommand.DESKB_mouseenter, null, null);
                             break;
                         case "mouseleave":
-                            m_delegate.BeginInvoke(DeskbandCommand.DESKB_mouseleave, null, null);
+                            uiDispatcher.BeginInvoke(m_delegate, DeskbandCommand.DESKB_mouseleave);
+                            //m_delegate.BeginInvoke(DeskbandCommand.DESKB_mouseleave, null, null);
                             break;
                         case "lbuttonclick":
-                            m_delegate.BeginInvoke(DeskbandCommand.DESKB_lbuttonclick, null, null);
+                            uiDispatcher.BeginInvoke(m_delegate, DeskbandCommand.DESKB_lbuttonclick);
+                            //m_delegate.BeginInvoke(DeskbandCommand.DESKB_lbuttonclick, null, null);
                             break;
                         case "rbuttonclick":
-                            m_delegate.BeginInvoke(DeskbandCommand.DESKB_rbuttonclick, null, null);
+                            uiDispatcher.BeginInvoke(m_delegate, DeskbandCommand.DESKB_rbuttonclick);
+                            //m_delegate.BeginInvoke(DeskbandCommand.DESKB_rbuttonclick, null, null);
                             break;
                         case "exit":
-                            m_delegate.BeginInvoke(DeskbandCommand.DESKB_exit, null, null);
+                            uiDispatcher.BeginInvoke(m_delegate, DeskbandCommand.DESKB_exit);
+                            //m_delegate.BeginInvoke(DeskbandCommand.DESKB_exit, null, null);
                             exit = true;
                             break;
                         default:
@@ -149,7 +156,7 @@ namespace Lenovo.WiFi.Client.Model
 
         public void SetDeskbandDelegate(DeskbandDelegate del)
         {
-            m_delegate = del;
+            m_delegate = new DeskbandDelegate(del);
         }
 
         public bool SendCommandToDeskband(DeskbandCommand cmd)

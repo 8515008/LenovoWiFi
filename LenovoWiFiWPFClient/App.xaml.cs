@@ -185,7 +185,6 @@ namespace Lenovo.WiFi.Client
 
         public void OnMouseEnter()
         {
-            this.Dispatcher.BeginInvoke(new Action(()=> {
             if (_currentWindow != null && !(_currentWindow is MainWindow))
             {
                 _currentWindow.Hide();
@@ -197,53 +196,40 @@ namespace Lenovo.WiFi.Client
                 _currentWindow = _statusWindow;
                 _currentWindow.Show();
             }
-            }));
         }
 
         public void OnMouseLeave()
         {
-            this.Dispatcher.BeginInvoke(new Action(() =>
+            if (_currentWindow != null && !(_currentWindow is MainWindow))
             {
-                if (_currentWindow != null && !(_currentWindow is MainWindow))
-                {
-                    _currentWindow.Hide();
-                    _currentWindow = null;
-                }
-            }));
+                _currentWindow.Hide();
+                _currentWindow = null;
+            }
         }
 
         public void OnLButtonClick()
         {
-            this.Dispatcher.BeginInvoke(new Action(() =>
+            if (_currentWindow != null)
             {
-                if (_currentWindow != null)
-                {
-                    _currentWindow.Hide();
-                }
+                _currentWindow.Hide();
+            }
 
-                _currentWindow = _mainWindow;
-                _currentWindow.Show();
-            }));
+            _currentWindow = _mainWindow;
+            _currentWindow.Show();
         }
 
         public void OnRButtonClick()
         {
-            this.Dispatcher.BeginInvoke(new Action(() =>
+            if (_currentWindow != null)
             {
-                if (_currentWindow != null)
-                {
-                    _currentWindow.Hide();
-                    _currentWindow = null;
-                }
-            }));
+                _currentWindow.Hide();
+                _currentWindow = null;
+            }
         }
 
         public void OnExit()
         {
-            this.Dispatcher.BeginInvoke(new Action(() =>
-            {
-                HideDeskband();
-            }));
+            HideDeskband();
         }
 
         private void ShowDeskband()
