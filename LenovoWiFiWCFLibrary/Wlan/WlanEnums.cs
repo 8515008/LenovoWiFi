@@ -2,7 +2,7 @@
 
 namespace Lenovo.WiFi.Wlan
 {
-    enum Dot11AuthAlgorithm : uint
+    internal enum Dot11AuthAlgorithm : uint
     {
         WEPOpen = 1,
         WEPSharedKey = 2,
@@ -15,7 +15,7 @@ namespace Lenovo.WiFi.Wlan
         IHVEnd = 0xFFFFFFFF
     }
 
-    enum Dot11CipherAlgorithm : uint
+    internal enum Dot11CipherAlgorithm : uint
     {
         None = 0x00,
         WEP40 = 0x01,
@@ -30,7 +30,7 @@ namespace Lenovo.WiFi.Wlan
         IHVEnd = 0xFFFFFFFF
     }
 
-    enum Dot11PhyType : uint
+    internal enum Dot11PhyType : uint
     {
         Unknown = 0,
         Any = Unknown,
@@ -46,27 +46,27 @@ namespace Lenovo.WiFi.Wlan
         IHVEnd = 0xFFFFFFFF
     }
 
-    enum WlanApiVersion : uint
+    internal enum WlanApiVersion : uint
     {
         Version = VersionTwo,
         VersionOne = 1,
         VersionTwo = 2
     }
 
-    enum WlanHostedNetworkNotificationCode
+    internal enum WlanHostedNetworkNotificationCode
     {
         StateChange = 4096,
         PeerStateChange,
         RadioStateChange
     }
 
-    enum WlanHostedNetworkPeerAuthState
+    internal enum WlanHostedNetworkPeerAuthState
     {
         Invalid,
         Authenticated
     }
 
-    enum WlanHostedNetworkOpcode
+    internal enum WlanHostedNetworkOpcode
     {
         ConnectionSettings,
         SecuritySettings,
@@ -74,7 +74,7 @@ namespace Lenovo.WiFi.Wlan
         Enable
     }
 
-    enum WlanHostedNetworkReason
+    internal enum WlanHostedNetworkReason
     {
         Success,
         Unspecified,
@@ -109,7 +109,7 @@ namespace Lenovo.WiFi.Wlan
         ServiceAvailableOnVirtualStation
     }
 
-    enum WlanHostedNetworkState
+    internal enum WlanHostedNetworkState
     {
         Unavailable,
         Idle,
@@ -117,7 +117,7 @@ namespace Lenovo.WiFi.Wlan
     }
 
     [Flags]
-    enum WlanNotificationSource : uint
+    internal enum WlanNotificationSource : uint
     {
         None = 0,
         All = 0xFFFFFFFF,
@@ -129,7 +129,7 @@ namespace Lenovo.WiFi.Wlan
         HostedNetwork = 0x00000080,
     }
 
-    enum WlanOpcodeValueType
+    internal enum WlanOpcodeValueType
     {
         QueryOnly,
         SetByGroupPolicy,

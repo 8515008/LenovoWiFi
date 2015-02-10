@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.ServiceProcess;
 using NETCONLib;
 
+using NLog;
+
 namespace Lenovo.WiFi.ICS
 {
     internal class ICSManager : IDisposable
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly INetSharingManager _netSharingManager;
         private readonly ServiceController _icsService;
 
@@ -27,7 +31,7 @@ namespace Lenovo.WiFi.ICS
             _icsService.Dispose();
         }
 
-        public Dictionary<Guid, ICSConnection> Connections
+        public IDictionary<Guid, ICSConnection> Connections
         {
             get
             {
@@ -37,6 +41,7 @@ namespace Lenovo.WiFi.ICS
                 {
                     var icsConnection = new ICSConnection(this._netSharingManager, conn);
                     dictionary.Add(new Guid(icsConnection.InterfaceId), icsConnection);
+                    Logger.Trace("Connections: Interface {0} added", icsConnection.InterfaceId);
                 }
 
                 return dictionary;
@@ -54,13 +59,17 @@ namespace Lenovo.WiFi.ICS
 
         internal void EnableSharing(Guid publicGuid, Guid privateGuid)
         {
+            Logger.Trace("EnableSharing: Public GUID: {0}, Private GUID: {1}", publicGuid, privateGuid);
+
             if (!this.Connections.ContainsKey(publicGuid))
             {
+                Logger.Error("EnableSharing: Public GUID: {0} was not found in connection list", publicGuid);
                 throw new ArgumentException("The connection with publicGuid was not found.");
             }
 
             if (!this.Connections.ContainsKey(privateGuid))
             {
+                Logger.Error("EnableSharing: Private GUID: {0} was not found in connection list", privateGuid);
                 throw new ArgumentException("The connection with privateGuid was not found.");
             }
 
@@ -69,12 +78,15 @@ namespace Lenovo.WiFi.ICS
             if (publicConnection.IsPublicEnabled
                 && privateConnection.IsPrivateEnabled)
             {
+                Logger.Trace("EnableSharing: Both connections were enabled");
                 return;
             }
 
             this.DisableAllSharing();
             publicConnection.EnableAsPublic();
             privateConnection.EnableAsPrivate();
+
+            Logger.Trace("EnableSharing: Enabled");
         }
 
         private void DisableAllSharing()
@@ -86,6 +98,8 @@ namespace Lenovo.WiFi.ICS
                     connection.DisableSharing();
                 }
             }
+
+            Logger.Trace("DisableAllSharing: Previous sharing disabled");
         }
     }
 }

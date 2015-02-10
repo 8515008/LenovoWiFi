@@ -5,9 +5,9 @@ using System.Security;
 namespace Lenovo.WiFi.Wlan
 {
     [SuppressUnmanagedCodeSecurity()]
-    class NativeMethods
+    internal class NativeMethods
     {
-        const string WlanApiDll = "Wlanapi.dll";
+        private const string WlanApiDll = "Wlanapi.dll";
 
         #region WlanCloseHandle
 
