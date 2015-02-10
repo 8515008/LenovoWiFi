@@ -19,9 +19,6 @@ namespace Lenovo.WiFi.Client.View
             this.ShowInTaskbar = false;
             this.Topmost = true;
 
-            this.FontFamily = new FontFamily("Microsoft YaHei");
-			this.FontSize = 14;
-
             this.Loaded += OnLoaded;
             this.LostFocus += OnLostFocus;
         }

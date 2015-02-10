@@ -21,8 +21,7 @@ namespace Lenovo.WiFi.ICS
             }
 
             this._netConnectionProperties = nsManager.NetConnectionProps[netConnection];
-            this._netSharingConfiguration =
-                nsManager.INetSharingConfigurationForINetConnection[netConnection];
+            this._netSharingConfiguration = nsManager.INetSharingConfigurationForINetConnection[netConnection];
         }
 
         internal string InterfaceId
@@ -62,9 +61,7 @@ namespace Lenovo.WiFi.ICS
             get
             {
                 return this._netSharingConfiguration.SharingEnabled
-                       &&
-                       this._netSharingConfiguration.SharingConnectionType ==
-                       tagSHARINGCONNECTIONTYPE.ICSSHARINGTYPE_PRIVATE;
+                    && this._netSharingConfiguration.SharingConnectionType == tagSHARINGCONNECTIONTYPE.ICSSHARINGTYPE_PRIVATE;
             }
         }
 
