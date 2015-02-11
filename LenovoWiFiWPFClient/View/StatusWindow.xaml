@@ -4,7 +4,7 @@
     xmlns:view="clr-namespace:Lenovo.WiFi.Client.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
-    Height="170" Width="400" WindowStyle="None" Background="{DynamicResource WindowBackgroundBrush}"
+    Height="170" Style="{DynamicResource BaseWindowStyle}"
 	d:DataContext="{d:DesignData /SampleData/StatusViewModelSampleData.xaml}">
 	<Grid>
         <Label Content="{DynamicResource AppName}" Style="{DynamicResource BigFontSizeStyle}"
