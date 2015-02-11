@@ -224,6 +224,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="logo.ico" />
+    <Resource Include="Resources\logo.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="exit.ico" />

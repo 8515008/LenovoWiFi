@@ -1,5 +1,17 @@
 #pragma once
 
+#define ICS_LOADING L"ics_loading"
+#define ICS_ON L"ics_on"
+#define ICS_OFF L"ics_off"
+#define ICS_CLIENTCONNECTED L"ics_clientconnected"
+#define CMD_EXIT L"exit\r\n"
+#define CMD_MOUSEENTER L"mouseenter\r\n"
+#define CMD_MOUSELEAVE L"mouseleave\r\n"
+#define CMD_RBUTTONCLICK L"rbuttonclick\r\n"
+#define CMD_LBUTTONCLICK L"lbuttonclick\r\n"
+#define CMD_HANDSHAKE	L"handshake\r\n"
+
+
 class IDeskbandListener
 {
 public:

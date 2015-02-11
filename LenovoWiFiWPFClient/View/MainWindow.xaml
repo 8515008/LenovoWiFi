@@ -21,6 +21,8 @@
 			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,315,0,0"/>
         <TextBox Text="{Binding PresharedKey, Mode=OneWay}" Style="{DynamicResource NormalFontSizeStyle}"
 			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="158,319,0,0" Width="180" Background="{x:Null}" />
-        <Image Margin="0,0,392,392" Source="/LenovoWiFiWPFClient;component/Resources/logo.ico" Stretch="Fill"/>
+
+        
 	</Grid>
+
 </view:BottomRightWindow>

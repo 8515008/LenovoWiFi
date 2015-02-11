@@ -2,18 +2,14 @@
 #include <iostream>
 #include <string>
 
+using namespace std;
+
 CONST LPTSTR	PIPE_NAME = TEXT("\\\\.\\pipe\\LenovoWiFi");
 CONST UINT		DEFAULT_PIPE_TIMEOUT = 20000u;
 CONST INT		BUFFER_SIZE = 8;
 
 #define BUFSIZE 512
 
-#define ICS_LOADING L"ics_loading"
-#define ICS_ON L"ics_on"
-#define ICS_OFF L"ics_off"
-#define ICS_CLIENTCONNECTED L"ics_clientconnected"
-
-using namespace std;
 
 CUIPipeClient::CUIPipeClient()
 :m_hPipe(NULL), m_pDeskbandListener(NULL)
