@@ -20,12 +20,7 @@ namespace Lenovo.WiFi.ICS
 
             if (!_netSharingManager.SharingInstalled)
             {
-                string message;
-                message = Environment.OSVersion.Version.Major == 5
-                    ? "The operating system doesn't support connection sharing"
-                    : "ICS requires elevated privilege";
-                Logger.Error(".ctor: {0}", message);
-                throw new ICSException(message);
+                throw new ICSException("The operating system doesn't support connection sharing.");
             }
 
             _icsService = new ServiceController("SharedAccess");
