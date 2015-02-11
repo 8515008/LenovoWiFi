@@ -20,7 +20,7 @@ namespace Lenovo.WiFi.Client.View
             this.Topmost = true;
 
             this.Loaded += OnLoaded;
-            this.LostFocus += OnLostFocus;
+            this.Deactivated += OnDeactivated;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
@@ -30,7 +30,7 @@ namespace Lenovo.WiFi.Client.View
             this.Top = desktopWorkingArea.Bottom - this.Height - MarginBottom;
         }
 
-        private void OnLostFocus(object sender, RoutedEventArgs routedEventArgs)
+        private void OnDeactivated(object sender, EventArgs eventArgs)
         {
             this.Hide();
         }

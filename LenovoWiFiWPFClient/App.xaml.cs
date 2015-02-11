@@ -1,21 +1,17 @@
 ﻿using System;
-using System.CodeDom;
 using System.ComponentModel;
-using System.Diagnostics;
+using System.Configuration;
 using System.IO;
 using System.IO.Pipes;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Automation;
-using System.Windows.Controls;
 using Autofac;
+using Lenovo.WiFi.Client.Model;
 using Lenovo.WiFi.Client.View;
 using Lenovo.WiFi.Client.ViewModel;
 using IContainer = Autofac.IContainer;
-using Lenovo.WiFi.Client.Model;
 
 namespace Lenovo.WiFi.Client
 {
@@ -37,7 +33,7 @@ namespace Lenovo.WiFi.Client
         private Window _currentWindow;
         private bool _mainWindowsShowing;
 
-        private DeskbandWarningDialogHook _dialogHook = new DeskbandWarningDialogHook();
+        //private DeskbandWarningDialogHook _dialogHook = new DeskbandWarningDialogHook();
         private static DeskbandPipe pipeWorker = null;
 
         static public DeskbandPipe DeskBandPipe
@@ -69,38 +65,39 @@ namespace Lenovo.WiFi.Client
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            DeskBandPipe.RegisterListener(this);
+            //DeskBandPipe.RegisterListener(this);
 
-            _pipeServerWorker.DoWork += (sender, args) => DeskBandPipe.Start();
-            _pipeServerWorker.RunWorkerAsync();
+            //ShowDeskband();
 
-            ShowDeskband();
+            //_pipeServerWorker.DoWork += (sender, args) => HideDeskband();
+            //_pipeServerWorker.RunWorkerAsync();
 
-            var splashWindow = _container.Resolve<SplashWindow>();
-            splashWindow.Show();
+            //var splashWindow = _container.Resolve<SplashWindow>();
+            //splashWindow.Show();
 
-            Task.Factory.StartNew(() =>
-            {
-                _container.Resolve<ISplashViewModel>().Start();
-            }).ContinueWith(t => 
-            {
-                this.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    splashWindow.Close();
+            //Task.Factory.StartNew(() =>
+            //{
+            //    _container.Resolve<ISplashViewModel>().Start();
+            //}).ContinueWith(t => 
+            //{
+            //    this.Dispatcher.BeginInvoke(new Action(() =>
+            //    {
+            //        splashWindow.Close();
 
-                    var successWindow = _container.Resolve<SuccessWindow>();
-                    successWindow.DataContext = _container.Resolve<ISuccessViewModel>();
-                    successWindow.Show();
+            //        var successWindow = _container.Resolve<SuccessWindow>();
+            //        successWindow.DataContext = _container.Resolve<ISuccessViewModel>();
+            //        successWindow.Show();
 
-                    _currentWindow = successWindow;
-                }));
-            });
+            //        _currentWindow = successWindow;
+            //    }));
+            //});
 
             _mainWindow = _container.Resolve<MainWindow>();
-            _mainWindow.DataContext = _container.Resolve<IMainViewModel>();
+            //_mainWindow.DataContext = _container.Resolve<IMainViewModel>();
+            _mainWindow.Show();
 
-            _statusWindow = _container.Resolve<StatusWindow>();
-            _statusWindow.DataContext = _container.Resolve<IStatusViewModel>();
+            //_statusWindow = _container.Resolve<StatusWindow>();
+            //_statusWindow.DataContext = _container.Resolve<IStatusViewModel>();
         }
 
         private void ListeningPipe()
@@ -208,19 +205,19 @@ namespace Lenovo.WiFi.Client
 
         private void ShowDeskband()
         {
-            _dialogHook.StartHook();
+            //_dialogHook.StartHook();
 
             var trayDeskBand = (ITrayDeskBand)new TrayDesktopBand();
             trayDeskBand.ShowDeskBand(CLSIDLenovoWiFiDeskBand);
 
             // TODO: Stop Hooking by receiving pipe message
 
-            Task.Run(() =>
-            {
-                Thread.Sleep(1000);
+            //Task.Run(() =>
+            //{
+            //    Thread.Sleep(1000);
 
-                _dialogHook.StopHook();
-            });
+            //    _dialogHook.StopHook();
+            //});
         }
 
         private void HideDeskband()

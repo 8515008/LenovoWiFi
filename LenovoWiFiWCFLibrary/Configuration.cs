@@ -1,44 +1,67 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
+using NLog;
 
 namespace Lenovo.WiFi
 {
     static class Settings
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private const string KeyHostedNetworkName = "hostednetworkname";
         private const string KeyHostedNetworkKey = "hostednetworkkey";
+
         private static Configuration _configuration;
+        private static KeyValueConfigurationElement _nameConfiguration;
+        private static KeyValueConfigurationElement _keyConfiguration;
 
         public static void Load()
         {
+            Logger.Trace("Load: Configuration loading...");
+
             _configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            _nameConfiguration = _configuration.AppSettings.Settings[KeyHostedNetworkName];
+            _keyConfiguration = _configuration.AppSettings.Settings[KeyHostedNetworkKey];
+
+            Logger.Trace("Load: Configuration loaded");
+            Logger.Info("Load: Name: {0}, Key: {1}", _nameConfiguration.Value, _keyConfiguration.Value);
         }
 
         public static string HostedNetworkName
         {
             get
             {
-                if (string.IsNullOrEmpty(_configuration.AppSettings.Settings[KeyHostedNetworkName].Value))
+                Logger.Trace("HostedNetworkName: Getting value");
+                if (string.IsNullOrEmpty(_nameConfiguration.Value))
                 {
-                    _configuration.AppSettings.Settings[KeyHostedNetworkName].Value = GenerateHostedNetworkName();
-                    Save();
+                    Logger.Trace("HostedNetworkName: Value empty, generating new value...");
+
+                    _nameConfiguration.Value = GenerateHostedNetworkName();
+                    _configuration.Save();
                 }
-                return _configuration.AppSettings.Settings[KeyHostedNetworkName].Value;
+                Logger.Info("HostedNetworkName: Value: {0}", _nameConfiguration.Value);
+
+                return _nameConfiguration.Value;
             }
             set
             {
+                Logger.Trace("HostedNetworkName: New value: {0}", value);
                 if (string.IsNullOrEmpty(value))
                 {
+                    Logger.Error("HostedNetworkName: New value is null or empty");
                     throw new ArgumentNullException("value");
                 }
 
-                if (_configuration.AppSettings.Settings[KeyHostedNetworkName].Value != value)
+                if (_nameConfiguration.Value != value)
                 {
-                    _configuration.AppSettings.Settings[KeyHostedNetworkName].Value = value;
-                    Save();
+                    _nameConfiguration.Value = value;
+                    _configuration.Save();
+
+                    Logger.Trace("HostedNetworkName: New value set");
+                }
+                else
+                {
+                    Logger.Trace("HostedNetworkName: New value is identical as current one.");
                 }
             }
         }
@@ -47,41 +70,49 @@ namespace Lenovo.WiFi
         {
             get
             {
-                if (string.IsNullOrEmpty(_configuration.AppSettings.Settings[KeyHostedNetworkKey].Value))
+                Logger.Trace("HostedNetworkKey: Getting value");
+                if (string.IsNullOrEmpty(_keyConfiguration.Value))
                 {
-                    _configuration.AppSettings.Settings[KeyHostedNetworkKey].Value = GenerateHostedNetworkKey();
-                    Save();
+                    Logger.Trace("HostedNetworkKey: Value empty, generating new value...");
+
+                    _keyConfiguration.Value = GenerateHostedNetworkKey();
+                    _configuration.Save();
                 }
-                return _configuration.AppSettings.Settings[KeyHostedNetworkKey].Value;
+                Logger.Info("HostedNetworkKey: Value: {0}", _nameConfiguration.Value);
+
+                return _keyConfiguration.Value;
             }
             set
             {
+                Logger.Trace("HostedNetworkKey: New value: {0}", value);
                 if (string.IsNullOrEmpty(value))
                 {
+                    Logger.Error("HostedNetworkKey: New value is null or empty");
                     throw new ArgumentNullException("value");
                 }
 
-                if (_configuration.AppSettings.Settings[KeyHostedNetworkKey].Value != value)
+                if (_keyConfiguration.Value != value)
                 {
-                    _configuration.AppSettings.Settings[KeyHostedNetworkKey].Value = value;
-                    Save();
+                    _keyConfiguration.Value = value;
+                    _configuration.Save();
+
+                    Logger.Trace("HostedNetworkKey: New value set");
+                }
+                else
+                {
+                    Logger.Trace("HostedNetworkKey: New value is identical as current one.");
                 }
             }
         }
 
         private static string GenerateHostedNetworkName()
         {
-            return "LenovoWiFi" + string.Format("{0:000}", new Random().Next(1, 100));
+            return string.Format("LenovoWiFi{0:000}", new Random().Next(1, 100));
         }
 
         private static string GenerateHostedNetworkKey()
         {
             return "1234567890";
-        }
-
-        public static void Save()
-        {
-            _configuration.Save();
         }
     }
 }
