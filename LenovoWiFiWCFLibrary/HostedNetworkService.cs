@@ -7,7 +7,6 @@ namespace Lenovo.WiFi
     [ServiceBehavior]
     public class HostedNetworkService : IHostedNetworkService, IDisposable
     {
-        bool _disposed;
         readonly HostedNetworkManager _hostedNetworkManager = new HostedNetworkManager();
         readonly IList<IHostedNetworkServiceCallback> _clients = new List<IHostedNetworkServiceCallback>();
 
@@ -29,23 +28,7 @@ namespace Lenovo.WiFi
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this); 
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                _hostedNetworkManager.Dispose();
-            }
-
-            _disposed = true;
+            _hostedNetworkManager.Dispose();
         }
 
         public string GetHostedNetworkName()
