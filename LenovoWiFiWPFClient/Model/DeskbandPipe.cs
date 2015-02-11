@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Lenovo.WiFi.Client.Model
@@ -19,7 +20,8 @@ namespace Lenovo.WiFi.Client.Model
         DESKB_mouseleave,
         DESKB_lbuttonclick,
         DESKB_rbuttonclick,
-        DESKB_exit
+        DESKB_exit,
+        DESKB_handshake
     }
 
     public delegate int DeskbandDelegate(DeskbandCommand cmd);
@@ -90,11 +92,26 @@ namespace Lenovo.WiFi.Client.Model
             }
         }
 
+        public void Disconnect()
+        {
+            if (PipeStream.IsConnected)
+                PipeStream.Disconnect();
+        }
+
         public bool Start()
         {
             if (null == m_delegate) return false;
 
             bool exit = false;
+
+            //Task t = Task.Run(() =>
+            //    {
+            //        Thread.Sleep(10000);
+            //        var uiDispatcher2 = App.Current.Dispatcher;
+            //        uiDispatcher2.BeginInvoke(m_delegate, DeskbandCommand.DESKB_exit);
+
+            //    });
+
 
             PipeStream.WaitForConnection();
 
@@ -130,6 +147,9 @@ namespace Lenovo.WiFi.Client.Model
                             break;
                         case "error":
                             uiDispatcher.BeginInvoke(m_delegate, DeskbandCommand.ICS_error);
+                            break;
+                        case "handshake":
+                            uiDispatcher.BeginInvoke(m_delegate, DeskbandCommand.DESKB_handshake);
                             break;
                         default:
                             //log

@@ -38,6 +38,7 @@ namespace Lenovo.WiFi.Client
         private Window _currentWindow;
         private bool _mainWindowsShowing;
 
+        private ITrayDeskBand trayDeskBand = null;
         private DeskbandWarningDialogHook _dialogHook = new DeskbandWarningDialogHook();
         private static DeskbandPipe pipeWorker = null;
 
@@ -71,18 +72,21 @@ namespace Lenovo.WiFi.Client
         protected override void OnStartup(StartupEventArgs e)
         {
             DeskBandPipe.SetDeskbandDelegate(this.OnHandleDeskbandCmd);
-
             _pipeServerWorker.DoWork += (sender, args) => DeskBandPipe.Start();
             _pipeServerWorker.RunWorkerAsync();
 
             ShowDeskband();
 
             var splashWindow = _container.Resolve<SplashWindow>();
+
             splashWindow.Show();
+
+            App.DeskBandPipe.SendCommandToDeskband(DeskbandCommand.ICS_Loading);
 
             Task.Factory.StartNew(() =>
             {
                 _container.Resolve<ISplashViewModel>().Start();
+
             }).ContinueWith(t => 
             {
                 this.Dispatcher.BeginInvoke(new Action(() =>
@@ -94,6 +98,8 @@ namespace Lenovo.WiFi.Client
                     successWindow.Show();
 
                     _currentWindow = successWindow;
+
+                    App.DeskBandPipe.SendCommandToDeskband(DeskbandCommand.ICS_on);
                 }));
             });
 
@@ -102,6 +108,8 @@ namespace Lenovo.WiFi.Client
 
             _statusWindow = _container.Resolve<StatusWindow>();
             _statusWindow.DataContext = _container.Resolve<IStatusViewModel>();
+
+
         }
 
         //private void ListeningPipe()
@@ -177,6 +185,9 @@ namespace Lenovo.WiFi.Client
                 case DeskbandCommand.DESKB_exit:
                     this.OnExit();
                     break;
+                case DeskbandCommand.DESKB_handshake:
+                    this.OnDeskbandShowCompleted();
+                    break;
                 default:
                     break;
             }
@@ -229,30 +240,38 @@ namespace Lenovo.WiFi.Client
 
         public void OnExit()
         {
+            DeskBandPipe.Disconnect();
+
             HideDeskband();
+
+            this.Dispatcher.BeginInvoke(new Action(Shutdown));
+        }
+
+        public void OnDeskbandShowCompleted()
+        {
+            _dialogHook.StopHook();
         }
 
         private void ShowDeskband()
         {
             _dialogHook.StartHook();
 
-            var trayDeskBand = (ITrayDeskBand)new TrayDesktopBand();
+            trayDeskBand = (ITrayDeskBand)new TrayDesktopBand();
             trayDeskBand.ShowDeskBand(CLSIDLenovoWiFiDeskBand);
 
+            //delete by jxzhou, move to OnDeskbandShowCompleted
             // TODO: Stop Hooking by receiving pipe message
+            //Task.Run(() =>
+            //{
+            //    Thread.Sleep(1000);
 
-            Task.Run(() =>
-            {
-                Thread.Sleep(1000);
-
-                _dialogHook.StopHook();
-            });
+            //});
         }
 
         private void HideDeskband()
         {
-            var trayDeskBand = (ITrayDeskBand)new TrayDesktopBand();
-            trayDeskBand.HideDeskBand(CLSIDLenovoWiFiDeskBand);
+            if (null != trayDeskBand)
+                trayDeskBand.HideDeskBand(CLSIDLenovoWiFiDeskBand);
         }
 
         public void DeviceConnected(byte[] macAddress)
@@ -268,6 +287,9 @@ namespace Lenovo.WiFi.Client
                 notification.DataContext = new NotificationViewModel { Message = BitConverter.ToString(macAddress) };
 
                 notification.Show();
+
+                App.DeskBandPipe.SendCommandToDeskband(DeskbandCommand.ICS_clientconnected);
+
             }));
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Lenovo.WiFi.Client.Model;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -10,7 +11,9 @@ namespace Lenovo.WiFi.Client.View
         public SuccessWindow()
         {
             InitializeComponent();
-        }
+
+
+        }     
 
         private void CloseWindow(object sender, MouseButtonEventArgs e)
         {
@@ -21,5 +24,6 @@ namespace Lenovo.WiFi.Client.View
         {
 
         }
+
     }
 }

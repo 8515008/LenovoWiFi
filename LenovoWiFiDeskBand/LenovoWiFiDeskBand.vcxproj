@@ -22,6 +22,7 @@
     <ProjectGuid>{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>LenovoWiFiDeskBand</RootNamespace>
+    <ProjectName />
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -215,9 +216,14 @@
     <None Include="export.def" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resources\logo_ICS_connected.ico" />
+    <Image Include="Resources\logo_ICS_error.ico" />
+    <Image Include="Resources\logo_ICS_loading0.ico" />
     <Image Include="Resources\logo_ICS_loading1.ico" />
     <Image Include="Resources\logo_ICS_loading2.ico" />
     <Image Include="Resources\logo_ICS_loading3.ico" />
+    <Image Include="Resources\logo_ICS_off.ico" />
+    <Image Include="Resources\logo_ICS_on.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

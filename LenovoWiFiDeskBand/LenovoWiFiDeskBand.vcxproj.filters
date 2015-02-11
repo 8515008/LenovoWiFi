@@ -92,5 +92,20 @@
     <Image Include="Resources\logo_ICS_loading3.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\logo_ICS_loading0.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\logo_ICS_connected.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\logo_ICS_error.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\logo_ICS_off.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\logo_ICS_on.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -21,7 +21,7 @@ m_hIcon(NULL),
 m_hMenu(NULL),
 m_pSite(NULL),
 m_fMouseEnter(FALSE),
-m_dwIconID(IDI_ICON_OFF)
+m_dwIconID(IDI_ICON_LOADDING1)
 {
 	CNTService *pService = new CNTService(g_szLenovoWiFiServiceName);
 	if (pService->Exists() && pService->GetCurrentState() == SERVICE_RUNNING)
@@ -402,7 +402,6 @@ void CDeskBand::OnPaint(const HDC hDeviceContext)
 		BOOL b = DrawThemeParentBackground(m_hWnd, hdc, &rc);
 		int err = GetLastError();
 
-
 		m_hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(m_dwIconID));
 
 		b = DrawIcon(hdc, 0, 0, m_hIcon);
@@ -423,8 +422,6 @@ void CDeskBand::DynamicContextMenu(const HWND hWnd, POINT point)
 	AppendMenu(hMenuPopup, MF_STRING, ID_RESTART_WIFI, TEXT("重启WIFI"));
 	AppendMenu(hMenuPopup, MF_STRING, ID_EXIT, TEXT("退出"));
 
-
-
 	AppendMenu(hmenu, MF_POPUP, (UINT_PTR)hMenuPopup, TEXT("弹出菜单"));
 
 	UINT uMenuItemID = TrackPopupMenu(hMenuPopup,
@@ -433,11 +430,18 @@ void CDeskBand::DynamicContextMenu(const HWND hWnd, POINT point)
 
 	switch (uMenuItemID)
 	{
+	//TODO: check if client existed. if yes, send pipe cmd, else start it and send pipe cmd again.
 	case ID_RESTART_WIFI:
+		OnICS_Off();
+		OnICS_Loading();
 		m_pServiceClient->RestartHostedNetwork();
+		OnICS_On();
+
 		break;
 	case ID_STOP_WIFI:
 		m_pServiceClient->StopHostedNetwork();
+		OnICS_Off();
+
 		break;
 	case ID_SETTINGS:
 		break;
@@ -446,7 +450,7 @@ void CDeskBand::DynamicContextMenu(const HWND hWnd, POINT point)
 	case ID_HELP:
 		break;
 	case ID_EXIT:
-		m_pUIPipeClient->Send(TEXT("exit\r\n"));
+		m_pUIPipeClient->Send(CMD_EXIT);
 		break;
 	default:
 		break;
@@ -454,9 +458,10 @@ void CDeskBand::DynamicContextMenu(const HWND hWnd, POINT point)
 
 	DestroyMenu(hmenu);
 }
+
 void CDeskBand::OnContextMenu(const HWND hWnd, const int xPos, const int yPos)
 {
-	m_pUIPipeClient->Send(TEXT("rbuttonclick\r\n"));
+	m_pUIPipeClient->Send(CMD_RBUTTONCLICK);
 
 	RECT rect;
 	GetClientRect(hWnd, &rect);
@@ -518,17 +523,17 @@ void CDeskBand::OnContextMenu(const HWND hWnd, const int xPos, const int yPos)
 
 void CDeskBand::OnMouseEnter()
 {
-	m_pUIPipeClient->Send(TEXT("mouseenter\r\n"));
+	m_pUIPipeClient->Send(CMD_MOUSEENTER);
 }
 
 void CDeskBand::OnLeftButtonClick()
 {
-	m_pUIPipeClient->Send(TEXT("lbuttonclick\r\n"));
+	m_pUIPipeClient->Send(CMD_LBUTTONCLICK);
 }
 
 void CDeskBand::OnMouseLeave()
 {
-	m_pUIPipeClient->Send(TEXT("mouseleave\r\n"));
+	m_pUIPipeClient->Send(CMD_MOUSELEAVE);
 }
 
 
@@ -541,13 +546,24 @@ void CDeskBand::OnThreadSetupPipe()
 
 void CDeskBand::OnThreadSetupPipe2()
 {
-	m_pUIPipeClient->Connect();
+	DWORD dwRet = m_pUIPipeClient->Connect();
+	if (ERROR_SUCCESS == dwRet)
+	{
+		m_pUIPipeClient->Send(CMD_HANDSHAKE);
+	}
+
 }
 
 void CDeskBand::OnICS_Loading()
 {
-	//TODO: set timer to update the icon.
+	//TODO: set timer to update the icon in future.
+	m_dwIconID = IDI_ICON_LOADDING1;
+
+	RECT rc;
+	GetClientRect(m_hWnd, &rc);
+	InvalidateRect(m_hWnd, &rc, TRUE);
 }
+
 void CDeskBand::OnICS_On()
 {
 	m_dwIconID = IDI_ICON_ON;
