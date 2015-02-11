@@ -66,7 +66,8 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup>
-    <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
@@ -225,9 +226,6 @@
     <Resource Include="logo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="exit.ico" />
     <Resource Include="Resources\close_32.png" />
   </ItemGroup>
@@ -245,6 +243,12 @@
     <DesignData Include="SampleData\NotificationViewModelSampleData.xaml" />
     <DesignData Include="SampleData\StatusViewModelSampleData.xaml" />
     <DesignData Include="SampleData\SuccessViewModelSampleData.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\logo_128.ico" />
+    <Resource Include="Resources\wifi_32_1.bmp" />
+    <Resource Include="Resources\wifi_32_2.bmp" />
+    <Resource Include="Resources\wifi_32_3.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
