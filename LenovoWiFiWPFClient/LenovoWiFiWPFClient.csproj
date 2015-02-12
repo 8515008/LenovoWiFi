@@ -122,11 +122,10 @@
     </ApplicationDefinition>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="DeskbandWarningDialogHook.cs" />
-    <Compile Include="Model\DeskbandPipe.cs" />
     <Compile Include="Model\HostedNetworkClient.cs" />
     <Compile Include="Model\HostedNetwork.cs" />
-    <Compile Include="Model\IDeskbandPipeListener.cs" />
     <Compile Include="Model\IHotspot.cs" />
+    <Compile Include="Model\DeskbandPipeServer.cs" />
     <Compile Include="Native\ModuleSafeHandle.cs" />
     <Compile Include="Native\NativeMethods.cs" />
     <Compile Include="ViewModel\IMainViewModel.cs" />
@@ -226,11 +225,7 @@
     <Resource Include="Resources\logo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="exit.ico" />
     <Resource Include="Resources\close_32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="wifi_32.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\mywifi_32.png" />

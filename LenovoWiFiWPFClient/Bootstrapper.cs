@@ -13,15 +13,16 @@ namespace Lenovo.WiFi.Client
             var builder = new ContainerBuilder();
 
             builder.RegisterType<HostedNetwork>().As<IHotspot>().SingleInstance();
+            builder.RegisterType<DeskbandPipeServer>().SingleInstance();
 
-            builder.RegisterType<SplashWindow>().SingleInstance();
             builder.RegisterType<SplashViewModel>().As<ISplashViewModel>().SingleInstance();
-            builder.RegisterType<SuccessWindow>().SingleInstance();
+            builder.RegisterType<SplashWindow>().SingleInstance();
             builder.RegisterType<SuccessViewModel>().As<ISuccessViewModel>().SingleInstance();
-            builder.RegisterType<MainWindow>().SingleInstance();
+            builder.RegisterType<SuccessWindow>().SingleInstance();
             builder.RegisterType<MainViewModel>().As<IMainViewModel>().SingleInstance();
-            builder.RegisterType<StatusWindow>().SingleInstance();
+            builder.RegisterType<MainWindow>().SingleInstance();
             builder.RegisterType<StatusViewModel>().As<IStatusViewModel>().SingleInstance();
+            builder.RegisterType<StatusWindow>().SingleInstance();
             builder.RegisterType<NotificationWindow>();
 
             return builder.Build();

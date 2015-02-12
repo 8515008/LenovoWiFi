@@ -1,12 +1,7 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
 
-#ifdef _DEBUG
-//LPCTSTR DIALOG_WINDOW_NAME = TEXT("Address");
 LPCTSTR DIALOG_WINDOW_NAME = TEXT("Lenovo WiFi");
-#else
-LPCTSTR DIALOG_WINDOW_NAME = TEXT("Lenovo WiFi");
-#endif
 LPCTSTR PANEL_CLASS_NAME = TEXT("DirectUIHWND");
 LPCTSTR SINK_CLASS_NAME = TEXT("CtrlNotifySink");
 LPCTSTR BUTTON_CLASS_NAME = TEXT("Button");

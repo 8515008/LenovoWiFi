@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace Lenovo.WiFi.Client.Model
 {
-    public class HostedNetwork : IHotspot, IHostedNetworkServiceCallback
+    public class HostedNetwork : IHotspot
     {
         private HostedNetworkClient _client;
 
@@ -55,11 +55,6 @@ namespace Lenovo.WiFi.Client.Model
         {
             Stop();
             Start();
-        }
-
-        public void DeviceConnected(byte[] macAddress)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
