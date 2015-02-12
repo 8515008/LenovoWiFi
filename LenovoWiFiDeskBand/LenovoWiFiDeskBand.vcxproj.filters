@@ -45,6 +45,12 @@
     <ClInclude Include="UIPipeClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="str.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -83,9 +89,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\ics_installer_128.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="Resources\ics_connected.ico">
       <Filter>Resource Files</Filter>
     </Image>

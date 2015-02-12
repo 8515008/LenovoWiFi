@@ -3,6 +3,8 @@
 #include <functional>
 #include <Uxtheme.h>
 
+#include "Log.h"
+
 #pragma comment(lib, "UxTheme.lib")
 
 extern HINSTANCE g_hInstance;
@@ -31,6 +33,7 @@ m_dwIconID(IDI_LOADING0)
 
 	m_pUIPipeClient = new CUIPipeClient();
 	m_pUIPipeClient->RegisterListener(this);
+
 }
 
 

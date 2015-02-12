@@ -149,7 +149,6 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -157,6 +156,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LENOVOWIFIDESKBAND_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/D _CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -175,9 +175,11 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="DeskBand.h" />
     <ClInclude Include="HostedNetworkClient.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="NTService.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="str.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UIPipeClient.h" />
   </ItemGroup>
@@ -218,7 +220,6 @@
   <ItemGroup>
     <Image Include="Resources\ics_connected.ico" />
     <Image Include="Resources\ics_disabled.ico" />
-    <Image Include="Resources\ics_installer_128.ico" />
     <Image Include="Resources\ics_loading_1.ico" />
     <Image Include="Resources\ics_loading_2.ico" />
     <Image Include="Resources\ics_ready.ico" />

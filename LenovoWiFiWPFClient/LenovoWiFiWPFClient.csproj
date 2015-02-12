@@ -230,9 +230,6 @@
     <Resource Include="Resources\close_32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\wifi_512.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="wifi_32.png" />
   </ItemGroup>
   <ItemGroup>
