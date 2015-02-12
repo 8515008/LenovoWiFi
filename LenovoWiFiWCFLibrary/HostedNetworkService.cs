@@ -1,22 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using NLog;
 
 namespace Lenovo.WiFi
 {
     [ServiceBehavior]
     public class HostedNetworkService : IHostedNetworkService, IDisposable
     {
-        readonly HostedNetworkManager _hostedNetworkManager = new HostedNetworkManager();
-        readonly IList<IHostedNetworkServiceCallback> _clients = new List<IHostedNetworkServiceCallback>();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        private readonly HostedNetworkManager _hostedNetworkManager;
+        private readonly IList<IHostedNetworkServiceCallback> _clients = new List<IHostedNetworkServiceCallback>();
 
         public HostedNetworkService()
         {
-            Settings.Load();
+            Logger.Trace(".ctor: Invoked");
+            _hostedNetworkManager = new HostedNetworkManager();
 
-            SetHostedNetworkName(Settings.HostedNetworkName);
-            SetHostedNetworkKey(Settings.HostedNetworkKey);
+            Logger.Trace(".ctor: Applying settings");
+            ApplySettings();
+            Logger.Trace(".ctor: Registering event handlers");
+            RegisterEventHandlers();
+        }
 
+        private void ApplySettings()
+        {
+            _hostedNetworkManager.SetHostedNetworkName(Settings.Instance.HostedNetworkName);
+            _hostedNetworkManager.SetHostedNetworkKey(Settings.Instance.HostedNetworkKey);
+        }
+
+        private void RegisterEventHandlers()
+        {
             _hostedNetworkManager.DeviceConnected += (sender, args) =>
             {
                 foreach (var client in _clients)
@@ -38,8 +53,8 @@ namespace Lenovo.WiFi
 
         public void SetHostedNetworkName(string name)
         {
-            Settings.HostedNetworkName = name;
             _hostedNetworkManager.SetHostedNetworkName(name);
+            Settings.Instance.HostedNetworkName = name;
         }
 
         public string GetHostedNetworkKey()
@@ -49,8 +64,8 @@ namespace Lenovo.WiFi
 
         public void SetHostedNetworkKey(string key)
         {
-            Settings.HostedNetworkKey = key;
             _hostedNetworkManager.SetHostedNetworkKey(key);
+            Settings.Instance.HostedNetworkKey = key;
         }
 
         public string GetHostedNetworkAuthAlgorithm()

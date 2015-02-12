@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Configuration;
+
 using NLog;
 
 namespace Lenovo.WiFi
 {
-    static class Settings
+    internal class Settings
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private const string KeyHostedNetworkName = "hostednetworkname";
         private const string KeyHostedNetworkKey = "hostednetworkkey";
 
-        private static Configuration _configuration;
-        private static KeyValueConfigurationElement _nameConfiguration;
-        private static KeyValueConfigurationElement _keyConfiguration;
+        private static Settings _instance;
 
-        public static void Load()
+        private readonly Configuration _configuration;
+        private readonly KeyValueConfigurationElement _nameConfiguration;
+        private readonly KeyValueConfigurationElement _keyConfiguration;
+
+        private Settings()
         {
             Logger.Trace("Load: Configuration loading...");
 
@@ -27,12 +29,17 @@ namespace Lenovo.WiFi
             Logger.Info("Load: Name: {0}, Key: {1}", _nameConfiguration.Value, _keyConfiguration.Value);
         }
 
-        public static string HostedNetworkName
+        public static Settings Instance
+        {
+            get { return _instance ?? (_instance = new Settings()); }
+        }
+
+        public string HostedNetworkName
         {
             get
             {
                 Logger.Trace("HostedNetworkName: Getting value");
-                if (string.IsNullOrEmpty(_nameConfiguration.Value))
+                if (String.IsNullOrEmpty(_nameConfiguration.Value))
                 {
                     Logger.Trace("HostedNetworkName: Value empty, generating new value...");
 
@@ -46,7 +53,7 @@ namespace Lenovo.WiFi
             set
             {
                 Logger.Trace("HostedNetworkName: New value: {0}", value);
-                if (string.IsNullOrEmpty(value))
+                if (String.IsNullOrEmpty(value))
                 {
                     Logger.Error("HostedNetworkName: New value is null or empty");
                     throw new ArgumentNullException("value");
@@ -66,12 +73,12 @@ namespace Lenovo.WiFi
             }
         }
 
-        public static string HostedNetworkKey
+        public string HostedNetworkKey
         {
             get
             {
                 Logger.Trace("HostedNetworkKey: Getting value");
-                if (string.IsNullOrEmpty(_keyConfiguration.Value))
+                if (String.IsNullOrEmpty(_keyConfiguration.Value))
                 {
                     Logger.Trace("HostedNetworkKey: Value empty, generating new value...");
 
@@ -85,7 +92,7 @@ namespace Lenovo.WiFi
             set
             {
                 Logger.Trace("HostedNetworkKey: New value: {0}", value);
-                if (string.IsNullOrEmpty(value))
+                if (String.IsNullOrEmpty(value))
                 {
                     Logger.Error("HostedNetworkKey: New value is null or empty");
                     throw new ArgumentNullException("value");
@@ -107,7 +114,7 @@ namespace Lenovo.WiFi
 
         private static string GenerateHostedNetworkName()
         {
-            return string.Format("LenovoWiFi{0:000}", new Random().Next(1, 100));
+            return String.Format("LenovoWiFi{0:000}", new Random().Next(1, 100));
         }
 
         private static string GenerateHostedNetworkKey()

@@ -63,7 +63,6 @@
     <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration.cs" />
     <Compile Include="HostedNetworkManager.cs" />
     <Compile Include="HostedNetworkService.cs" />
     <Compile Include="ICS\ICSConnection.cs" />
@@ -72,6 +71,7 @@
     <Compile Include="IHostedNetworkService.cs" />
     <Compile Include="IHostedNetworkServiceCallback.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Wlan\NativeMethods.cs" />
     <Compile Include="Wlan\WlanEnums.cs" />
