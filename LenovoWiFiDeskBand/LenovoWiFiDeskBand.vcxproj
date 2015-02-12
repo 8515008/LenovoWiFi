@@ -22,6 +22,7 @@
     <ProjectGuid>{3A9EF326-98BB-42ED-AE52-FFC601D0F7CD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>LenovoWiFiDeskBand</RootNamespace>
+    <ProjectName />
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -148,7 +149,6 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -156,6 +156,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LENOVOWIFIDESKBAND_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/D _CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -174,9 +175,11 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="DeskBand.h" />
     <ClInclude Include="HostedNetworkClient.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="NTService.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="str.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UIPipeClient.h" />
   </ItemGroup>
@@ -212,10 +215,14 @@
     <ResourceCompile Include="LenovoWiFiDeskBand.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\logo_round_pure.ico" />
+    <None Include="export.def" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="export.def" />
+    <Image Include="Resources\ics_connected.ico" />
+    <Image Include="Resources\ics_disabled.ico" />
+    <Image Include="Resources\ics_loading_1.ico" />
+    <Image Include="Resources\ics_loading_2.ico" />
+    <Image Include="Resources\ics_ready.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

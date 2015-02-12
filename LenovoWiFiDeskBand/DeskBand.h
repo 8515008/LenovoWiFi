@@ -48,6 +48,8 @@ protected:
 	 void OnMouseLeave();
 	 void DynamicContextMenu(const HWND hWnd, POINT point);
 
+	 void OnThreadSetupPipe();
+	 void OnThreadSetupPipe2();
 	 virtual void OnICS_Loading();
 	 virtual void OnICS_On();
 	 virtual void OnICS_Off();
@@ -64,5 +66,8 @@ private:
 	CHostedNetworkClient *m_pServiceClient;
 	CUIPipeClient *m_pUIPipeClient;
 	BOOL m_fMouseEnter;
+
+	DWORD m_dwIconID;
+	HDC m_hdc;
 };
 

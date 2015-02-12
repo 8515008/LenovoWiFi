@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include <iostream>
+#include <string>
+
+using namespace std;
 
 CONST LPTSTR	PIPE_NAME = TEXT("\\\\.\\pipe\\LenovoWiFi");
 CONST UINT		DEFAULT_PIPE_TIMEOUT = 20000u;
@@ -7,10 +10,6 @@ CONST INT		BUFFER_SIZE = 8;
 
 #define BUFSIZE 512
 
-#define ICS_LOADING L"ics_loading"
-#define ICS_ON L"ics_on"
-#define ICS_OFF L"ics_off"
-#define ICS_CLIENTCONNECTED L"ics_clientconnected"
 
 CUIPipeClient::CUIPipeClient()
 :m_hPipe(NULL), m_pDeskbandListener(NULL)
@@ -38,7 +37,7 @@ DWORD CUIPipeClient::Connect()
 			0,
 			NULL,
 			OPEN_EXISTING,
-			0,
+			FILE_FLAG_OVERLAPPED,
 			NULL);
 
 		if (hPipe != INVALID_HANDLE_VALUE)
@@ -91,30 +90,34 @@ DWORD CUIPipeClient::Connect()
 			&cbRead,  // number of bytes read 
 			NULL);    // not overlapped 
 
-		if (!fSuccess && GetLastError() != ERROR_MORE_DATA)
+		DWORD dwErr = GetLastError();
+		if (!fSuccess && dwErr != ERROR_MORE_DATA)
 			break;
+
 
 		_tprintf(TEXT("\"%s\"\n"), chBuf);
 
-		std::wstring strRead = chBuf;
+		std::wstring strRead(chBuf);		
 
-		if (ICS_LOADING == strRead)
+		if (wstring::npos != strRead.find(ICS_LOADING))
 		{
 			m_pDeskbandListener->OnICS_Loading();
 		}
-		else if (ICS_ON == strRead)
+		else if (wstring::npos != strRead.find(ICS_ON))
 		{
 			m_pDeskbandListener->OnICS_On();
 		}
-		else if (ICS_OFF == strRead)
+		else if (wstring::npos != strRead.find(ICS_OFF))
 		{
 			m_pDeskbandListener->OnICS_Off();
 		}
-		else if (ICS_CLIENTCONNECTED == strRead)
+		else if (wstring::npos != strRead.find(ICS_CLIENTCONNECTED))
 		{
 			m_pDeskbandListener->OnICS_ClientConnected();
 		}
-	} while (!fSuccess);  // repeat loop if ERROR_MORE_DATA 
+
+		Sleep(200);
+	} while (fSuccess);  // repeat loop if ERROR_MORE_DATA 
 
 	if (!fSuccess)
 	{

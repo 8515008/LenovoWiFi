@@ -11,7 +11,6 @@ namespace Lenovo.WiFi.Client.View
 {
     public partial class MainWindow : BottomRightWindow
     {
-        private int Count = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -21,5 +20,7 @@ namespace Lenovo.WiFi.Client.View
         {
             this.Close();
         }
+
+
     }
 }

@@ -1,5 +1,9 @@
 #include "stdafx.h"
+#include <thread>
+#include <functional>
 #include <Uxtheme.h>
+
+#include "Log.h"
 
 #pragma comment(lib, "UxTheme.lib")
 
@@ -10,22 +14,26 @@ CONST TCHAR g_szLenovoWiFiServiceName[] = TEXT("LenovoWiFi");
 CONST TCHAR g_szDeskBandClassName[]		= TEXT("LenovoWiFiDeskBandWndClass");
 
 CDeskBand::CDeskBand()
-	: m_cRef(1),
-	m_hWnd(NULL),
-	m_hParentWnd(NULL),
-	m_fFocus(FALSE),
-	m_fCompositionEnabled(FALSE),
-	m_hIcon(NULL),
-	m_hMenu(NULL),
-	m_pSite(NULL),
-	m_fMouseEnter(FALSE)
+: m_cRef(1),
+m_hWnd(NULL),
+m_hParentWnd(NULL),
+m_fFocus(FALSE),
+m_fCompositionEnabled(FALSE),
+m_hIcon(NULL),
+m_hMenu(NULL),
+m_pSite(NULL),
+m_fMouseEnter(FALSE),
+m_dwIconID(IDI_LOADING0)
 {
 	CNTService *pService = new CNTService(g_szLenovoWiFiServiceName);
 	if (pService->Exists() && pService->GetCurrentState() == SERVICE_RUNNING)
 	{
 		m_pServiceClient = new CHostedNetworkClient();
 	}
+
 	m_pUIPipeClient = new CUIPipeClient();
+	m_pUIPipeClient->RegisterListener(this);
+
 }
 
 
@@ -132,17 +140,6 @@ STDMETHODIMP CDeskBand::ShowDW(BOOL bShow)
 	if (m_hWnd)
 	{
 		ShowWindow(m_hWnd, bShow ? SW_SHOW : SW_HIDE);
-
-
-		m_pUIPipeClient->Connect();
-
-		//DWORD dwError = Connect();
-
-		//if (dwError != ERROR_SUCCESS)
-		//{
-		//	return dwError;
-		//}
-
 	}
 
 	return S_OK;
@@ -325,6 +322,8 @@ LRESULT CALLBACK CDeskBand::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 		pDeskband->m_hWnd = hWnd;
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pDeskband));
 
+		pDeskband->OnThreadSetupPipe();
+
 		break;
 	case WM_SETFOCUS:
 		pDeskband->OnFocus(TRUE);
@@ -343,8 +342,7 @@ LRESULT CALLBACK CDeskBand::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 		break;
 	case WM_ERASEBKGND:
 		if (pDeskband->m_fCompositionEnabled)
-		{
-			
+		{			
 			lResult = 1;
 		}
 		break;
@@ -404,10 +402,12 @@ void CDeskBand::OnPaint(const HDC hDeviceContext)
 	{
 		RECT rc;
 		GetClientRect(m_hWnd, &rc);
-		DrawThemeParentBackground(m_hWnd, ps.hdc, &rc);
+		BOOL b = DrawThemeParentBackground(m_hWnd, hdc, &rc);
+		int err = GetLastError();
 
-		m_hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(IDI_ICON2));
-		DrawIcon(hdc, 0, 0, m_hIcon);
+		m_hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(m_dwIconID));
+
+		b = DrawIcon(hdc, 0, 0, m_hIcon);
 	}
 
 	if (!hDeviceContext)
@@ -415,6 +415,7 @@ void CDeskBand::OnPaint(const HDC hDeviceContext)
 		EndPaint(m_hWnd, &ps);
 	}
 }
+
 void CDeskBand::DynamicContextMenu(const HWND hWnd, POINT point)
 {
 	HMENU hmenu = CreateMenu();
@@ -424,8 +425,6 @@ void CDeskBand::DynamicContextMenu(const HWND hWnd, POINT point)
 	AppendMenu(hMenuPopup, MF_STRING, ID_RESTART_WIFI, TEXT("重启WIFI"));
 	AppendMenu(hMenuPopup, MF_STRING, ID_EXIT, TEXT("退出"));
 
-
-
 	AppendMenu(hmenu, MF_POPUP, (UINT_PTR)hMenuPopup, TEXT("弹出菜单"));
 
 	UINT uMenuItemID = TrackPopupMenu(hMenuPopup,
@@ -434,11 +433,18 @@ void CDeskBand::DynamicContextMenu(const HWND hWnd, POINT point)
 
 	switch (uMenuItemID)
 	{
+	//TODO: check if client existed. if yes, send pipe cmd, else start it and send pipe cmd again.
 	case ID_RESTART_WIFI:
+		OnICS_Off();
+		OnICS_Loading();
 		m_pServiceClient->RestartHostedNetwork();
+		OnICS_On();
+
 		break;
 	case ID_STOP_WIFI:
 		m_pServiceClient->StopHostedNetwork();
+		OnICS_Off();
+
 		break;
 	case ID_SETTINGS:
 		break;
@@ -447,7 +453,7 @@ void CDeskBand::DynamicContextMenu(const HWND hWnd, POINT point)
 	case ID_HELP:
 		break;
 	case ID_EXIT:
-		m_pUIPipeClient->Send(TEXT("exit\r\n"));
+		m_pUIPipeClient->Send(CMD_EXIT);
 		break;
 	default:
 		break;
@@ -455,9 +461,10 @@ void CDeskBand::DynamicContextMenu(const HWND hWnd, POINT point)
 
 	DestroyMenu(hmenu);
 }
+
 void CDeskBand::OnContextMenu(const HWND hWnd, const int xPos, const int yPos)
 {
-	m_pUIPipeClient->Send(TEXT("rbuttonclick\r\n"));
+	m_pUIPipeClient->Send(CMD_RBUTTONCLICK);
 
 	RECT rect;
 	GetClientRect(hWnd, &rect);
@@ -519,35 +526,70 @@ void CDeskBand::OnContextMenu(const HWND hWnd, const int xPos, const int yPos)
 
 void CDeskBand::OnMouseEnter()
 {
-	m_pUIPipeClient->Send(TEXT("mouseenter\r\n"));
+	m_pUIPipeClient->Send(CMD_MOUSEENTER);
 }
 
 void CDeskBand::OnLeftButtonClick()
 {
-	m_pUIPipeClient->Send(TEXT("lbuttonclick\r\n"));
+	m_pUIPipeClient->Send(CMD_LBUTTONCLICK);
 }
 
 void CDeskBand::OnMouseLeave()
 {
-	m_pUIPipeClient->Send(TEXT("mouseleave\r\n"));
+	m_pUIPipeClient->Send(CMD_MOUSELEAVE);
+}
+
+
+void CDeskBand::OnThreadSetupPipe()
+{
+
+	std::thread thread(std::bind(&CDeskBand::OnThreadSetupPipe2, this));
+	thread.detach();
+}
+
+void CDeskBand::OnThreadSetupPipe2()
+{
+	DWORD dwRet = m_pUIPipeClient->Connect();
+	if (ERROR_SUCCESS == dwRet)
+	{
+		m_pUIPipeClient->Send(CMD_HANDSHAKE);
+	}
+
 }
 
 void CDeskBand::OnICS_Loading()
 {
+	//TODO: set timer to update the icon in future.
+	m_dwIconID = IDI_LOADING1;
 
+	RECT rc;
+	GetClientRect(m_hWnd, &rc);
+	InvalidateRect(m_hWnd, &rc, TRUE);
 }
+
 void CDeskBand::OnICS_On()
 {
+	m_dwIconID = IDI_READY;
 
+	RECT rc;
+	GetClientRect(m_hWnd, &rc);
+	InvalidateRect(m_hWnd, &rc, TRUE);
 }
+
 void CDeskBand::OnICS_Off()
 {
-
+	m_dwIconID = IDI_DISABLED;
+	RECT rc;
+	GetClientRect(m_hWnd, &rc);
+	InvalidateRect(m_hWnd, &rc, TRUE);
 }
 
 void CDeskBand::OnICS_ClientConnected()
 {
-
+	m_dwIconID = IDI_CONECTED;
+	RECT rc;
+	GetClientRect(m_hWnd, &rc);
+	InvalidateRect(m_hWnd, &rc, TRUE);
 }
 
 STDMETHODIMP CDeskBand::GetClassID(CLSID *pClassID)
@@ -585,7 +627,7 @@ STDMETHODIMP CDeskBand::HasFocusIO()
 STDMETHODIMP CDeskBand::TranslateAcceleratorIO(LPMSG lpMsg)
 {
 	return S_FALSE;
-}
+} 
 
 STDMETHODIMP CDeskBand::UIActivateIO(BOOL fActivate, MSG *pMsg)
 {

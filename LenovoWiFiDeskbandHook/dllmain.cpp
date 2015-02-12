@@ -2,7 +2,8 @@
 #include "stdafx.h"
 
 #ifdef _DEBUG
-LPCTSTR DIALOG_WINDOW_NAME = TEXT("Address");
+//LPCTSTR DIALOG_WINDOW_NAME = TEXT("Address");
+LPCTSTR DIALOG_WINDOW_NAME = TEXT("Lenovo WiFi");
 #else
 LPCTSTR DIALOG_WINDOW_NAME = TEXT("Lenovo WiFi");
 #endif

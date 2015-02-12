@@ -45,6 +45,12 @@
     <ClInclude Include="UIPipeClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="str.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -78,13 +84,25 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\logo_round_pure.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="export.def">
       <Filter>Source Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\ics_connected.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\ics_disabled.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\ics_loading_1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\ics_loading_2.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\ics_ready.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

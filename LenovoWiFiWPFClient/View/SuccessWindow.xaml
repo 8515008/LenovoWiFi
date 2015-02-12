@@ -10,7 +10,7 @@
     <Grid>
         <Label Content="{DynamicResource AppName}" Style="{DynamicResource BigFontSizeStyle}"
 			Margin="10, 0" HorizontalAlignment="Left"  VerticalAlignment="Top" />
-        <Image Source="/LenovoWiFiWPFClient;component/Resources/wifi_512.png"
+        <Image Source="/LenovoWiFiWPFClient;component/Resources/mywifi_32.png"
 			Height="186" Margin="0,42,0,0" VerticalAlignment="Top"  />
         <Label Content="{DynamicResource WiFiName}" Style="{DynamicResource NormalFontSizeStyle}"
 			HorizontalAlignment="Left" VerticalAlignment="Top" Margin="75,246.38,0,0" />
