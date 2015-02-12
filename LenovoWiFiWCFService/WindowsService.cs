@@ -42,7 +42,6 @@ namespace Lenovo.WiFi
             Environment.CurrentDirectory = Path.GetDirectoryName(assemblyLocation);
             Logger.Info("OnStart: Current directory: {0}", Environment.CurrentDirectory);
 
-#if !DEBUG
             //var latestVersion = new Version(0, 0);
             //foreach (var subDirectory in new DirectoryInfo(rootDirectory).GetDirectories())
             //{
@@ -63,7 +62,6 @@ namespace Lenovo.WiFi
             //{
             //    return;
             //}
-#endif
 
             try
             {
