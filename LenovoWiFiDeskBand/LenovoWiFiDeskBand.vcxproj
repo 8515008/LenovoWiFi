@@ -216,14 +216,12 @@
     <None Include="export.def" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\logo_ICS_connected.ico" />
-    <Image Include="Resources\logo_ICS_error.ico" />
-    <Image Include="Resources\logo_ICS_loading0.ico" />
-    <Image Include="Resources\logo_ICS_loading1.ico" />
-    <Image Include="Resources\logo_ICS_loading2.ico" />
-    <Image Include="Resources\logo_ICS_loading3.ico" />
-    <Image Include="Resources\logo_ICS_off.ico" />
-    <Image Include="Resources\logo_ICS_on.ico" />
+    <Image Include="Resources\ics_connected.ico" />
+    <Image Include="Resources\ics_disabled.ico" />
+    <Image Include="Resources\ics_installer_128.ico" />
+    <Image Include="Resources\ics_loading_1.ico" />
+    <Image Include="Resources\ics_loading_2.ico" />
+    <Image Include="Resources\ics_ready.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

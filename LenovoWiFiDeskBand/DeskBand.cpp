@@ -21,7 +21,7 @@ m_hIcon(NULL),
 m_hMenu(NULL),
 m_pSite(NULL),
 m_fMouseEnter(FALSE),
-m_dwIconID(IDI_ICON_LOADDING1)
+m_dwIconID(IDI_LOADING0)
 {
 	CNTService *pService = new CNTService(g_szLenovoWiFiServiceName);
 	if (pService->Exists() && pService->GetCurrentState() == SERVICE_RUNNING)
@@ -557,7 +557,7 @@ void CDeskBand::OnThreadSetupPipe2()
 void CDeskBand::OnICS_Loading()
 {
 	//TODO: set timer to update the icon in future.
-	m_dwIconID = IDI_ICON_LOADDING1;
+	m_dwIconID = IDI_LOADING1;
 
 	RECT rc;
 	GetClientRect(m_hWnd, &rc);
@@ -566,7 +566,7 @@ void CDeskBand::OnICS_Loading()
 
 void CDeskBand::OnICS_On()
 {
-	m_dwIconID = IDI_ICON_ON;
+	m_dwIconID = IDI_READY;
 
 	RECT rc;
 	GetClientRect(m_hWnd, &rc);
@@ -575,7 +575,7 @@ void CDeskBand::OnICS_On()
 
 void CDeskBand::OnICS_Off()
 {
-	m_dwIconID = IDI_ICON_OFF;
+	m_dwIconID = IDI_DISABLED;
 	RECT rc;
 	GetClientRect(m_hWnd, &rc);
 	InvalidateRect(m_hWnd, &rc, TRUE);
@@ -583,7 +583,7 @@ void CDeskBand::OnICS_Off()
 
 void CDeskBand::OnICS_ClientConnected()
 {
-	m_dwIconID = IDI_ICON_CONNECTED;
+	m_dwIconID = IDI_CONECTED;
 	RECT rc;
 	GetClientRect(m_hWnd, &rc);
 	InvalidateRect(m_hWnd, &rc, TRUE);
