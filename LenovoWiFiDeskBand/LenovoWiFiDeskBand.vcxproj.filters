@@ -89,19 +89,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Resources\ics_connected.ico">
+    <Image Include="..\..\images\ico\ics_loading_1.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Resources\ics_disabled.ico">
+    <Image Include="..\..\images\ico\ics_loading_2.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Resources\ics_loading_1.ico">
+    <Image Include="..\..\images\ico\ics_ready.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Resources\ics_loading_2.ico">
+    <Image Include="..\..\images\ico\ics_connected.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Resources\ics_ready.ico">
+    <Image Include="..\..\images\ico\ics_disabled.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
