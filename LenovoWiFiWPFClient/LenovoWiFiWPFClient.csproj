@@ -66,8 +66,7 @@
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>logo_128.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
@@ -241,6 +240,9 @@
     <Resource Include="Resources\wifi_32_1.bmp" />
     <Resource Include="Resources\wifi_32_2.bmp" />
     <Resource Include="Resources\wifi_32_3.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="logo_128.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
