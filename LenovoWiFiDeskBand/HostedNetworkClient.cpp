@@ -7,8 +7,15 @@ LPCTSTR MONIKER = L"service:mexAddress=net.pipe://localhost/LenovoWiFi/HostedNet
 
 CHostedNetworkClient::CHostedNetworkClient()
 {
+	Log.i(L"CHostedNetworkClient::CHostedNetworkClient", L"CoInitializeEx begin\n");
+
 	DWORD dwError;
 	HRESULT hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+
+	if (FAILED(hr))
+	{
+		Log.i(L"CHostedNetworkClient::CHostedNetworkClient", L"CoInitializeEx failed: error %d\n", GetLastError());
+	}
 
 	hr = CoGetObject(
 		MONIKER,
@@ -18,6 +25,8 @@ CHostedNetworkClient::CHostedNetworkClient()
 
 	if (FAILED(hr))
 	{
+		Log.i(L"CHostedNetworkClient::CHostedNetworkClient", L"CoGetObject failed: error %d\n", GetLastError());
+
 		BAIL_ON_HRESULT_ERROR(dwError, hr)
 	}
 
@@ -31,7 +40,13 @@ CHostedNetworkClient::CHostedNetworkClient()
 		GetUserDefaultLCID(),
 		&dispId);
 
-	BAIL_ON_FAILURE(hr)
+	if (FAILED(hr))
+	{
+		Log.i(L"CHostedNetworkClient::CHostedNetworkClient", L"GetIDsOfNames failed: error %d\n", GetLastError());
+
+		BAIL_ON_HRESULT_ERROR(dwError, hr)
+	}
+
 	m_lStartFuncID = dispId;
 
 	szFunc = SysAllocString(TEXT("StopHostedNetwork"));
@@ -43,11 +58,18 @@ CHostedNetworkClient::CHostedNetworkClient()
 		GetUserDefaultLCID(),
 		&dispId);
 
-	BAIL_ON_FAILURE(hr)
+	if (FAILED(hr))
+	{
+		Log.i(L"CHostedNetworkClient::CHostedNetworkClient", L"GetIDsOfNames failed: error %d\n", GetLastError());
+
+		BAIL_ON_HRESULT_ERROR(dwError, hr)
+	}
+
 	m_lStopFuncID = dispId;
 
 	return;
 ERROR_LABEL:
+
 	CoUninitialize();
 	throw dwError;
 }

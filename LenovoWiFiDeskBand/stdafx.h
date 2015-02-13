@@ -26,3 +26,5 @@
 #include "UIPipeClient.h"
 #include "NTService.h"
 #include "DeskBand.h"
+
+#include "Log.h"

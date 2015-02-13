@@ -2,8 +2,8 @@
 #include <thread>
 #include <functional>
 #include <Uxtheme.h>
+#include <Shlwapi.h>
 
-#include "Log.h"
 
 #pragma comment(lib, "UxTheme.lib")
 
@@ -25,11 +25,18 @@ m_pSite(NULL),
 m_fMouseEnter(FALSE),
 m_dwIconID(IDI_LOADING0)
 {
-	CNTService *pService = new CNTService(g_szLenovoWiFiServiceName);
-	if (pService->Exists() && pService->GetCurrentState() == SERVICE_RUNNING)
-	{
-		m_pServiceClient = new CHostedNetworkClient();
-	}
+	//2015/2/13 jxzhou
+	//remove this code, otherwise, will cause COM CoGetObject return error. don't know why!!!
+
+	//Log.i(L"CDeskBand::CDeskBand", L"CDeskBand::CDeskBand()1\n");
+
+	//CNTService *pService = new CNTService(g_szLenovoWiFiServiceName);
+	//if (pService->Exists() && pService->GetCurrentState() == SERVICE_RUNNING)
+	//{
+	//	Log.i(L"CDeskBand::CDeskBand", L"CDeskBand::CDeskBand()2\n");
+	//	m_pServiceClient = new CHostedNetworkClient();
+	//	Log.i(L"CDeskBand::CDeskBand", L"CDeskBand::CDeskBand()3\n");
+	//}
 
 	m_pUIPipeClient = new CUIPipeClient();
 	m_pUIPipeClient->RegisterListener(this);
@@ -140,6 +147,9 @@ STDMETHODIMP CDeskBand::ShowDW(BOOL bShow)
 	if (m_hWnd)
 	{
 		ShowWindow(m_hWnd, bShow ? SW_SHOW : SW_HIDE);
+
+		Log.i(L"CDeskBand::ResizeBorderDW", L"ShowWindow()\n");
+
 	}
 
 	return S_OK;
@@ -267,6 +277,8 @@ STDMETHODIMP CDeskBand::SetSite(IUnknown *pUnkSite)
 			hResult = pOleWindow->GetWindow(&m_hParentWnd);
 			if (SUCCEEDED(hResult))
 			{
+				Log.i(L"CDeskBand::SetSite", L"CreateWindowEx()\n");
+
 				WNDCLASS wndClass = { 0 };
 				wndClass.style = CS_HREDRAW | CS_VREDRAW;
 				wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
@@ -323,6 +335,9 @@ LRESULT CALLBACK CDeskBand::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pDeskband));
 
 		pDeskband->OnThreadSetupPipe();
+
+		Log.i(L"CDeskBand::WindowProc", L"OnThreadSetupPipe()\n");
+
 
 		break;
 	case WM_SETFOCUS:
@@ -393,6 +408,8 @@ void CDeskBand::OnPaint(const HDC hDeviceContext)
 	HDC hdc = hDeviceContext;
 	PAINTSTRUCT ps;
 
+	Log.i(L"CDeskBand::OnPaint", L"1()\n");
+
 	if (!hdc)
 	{
 		hdc = BeginPaint(m_hWnd, &ps);
@@ -404,10 +421,12 @@ void CDeskBand::OnPaint(const HDC hDeviceContext)
 		GetClientRect(m_hWnd, &rc);
 		BOOL b = DrawThemeParentBackground(m_hWnd, hdc, &rc);
 		int err = GetLastError();
+		Log.i(L"CDeskBand::OnPaint", L"2()\n");
 
 		m_hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(m_dwIconID));
 
 		b = DrawIcon(hdc, 0, 0, m_hIcon);
+		Log.i(L"CDeskBand::OnPaint", L"3()\n");
 	}
 
 	if (!hDeviceContext)
@@ -437,12 +456,14 @@ void CDeskBand::DynamicContextMenu(const HWND hWnd, POINT point)
 	case ID_RESTART_WIFI:
 		OnICS_Off();
 		OnICS_Loading();
-		m_pServiceClient->RestartHostedNetwork();
+		//m_pServiceClient->RestartHostedNetwork();
+		m_pUIPipeClient->Send(CMD_RESTARTWIFI);
+
 		OnICS_On();
 
 		break;
 	case ID_STOP_WIFI:
-		m_pServiceClient->StopHostedNetwork();
+		//m_pServiceClient->StopHostedNetwork();
 		OnICS_Off();
 
 		break;
@@ -539,6 +560,24 @@ void CDeskBand::OnMouseLeave()
 	m_pUIPipeClient->Send(CMD_MOUSELEAVE);
 }
 
+void CDeskBand::InitLog()
+{
+	// path: %temp%\lenovo\wifi\deskband.log
+	char logpath[512] = { 0 };
+	GetTempPathA(sizeof(logpath) / sizeof(logpath[0]), logpath);
+	PathAppendA(logpath, "lenovo");
+	CreateDirectoryA(logpath, NULL);
+
+	PathAppendA(logpath, "wifi");
+	CreateDirectoryA(logpath, NULL);
+
+	PathAppendA(logpath, "deskband.log");
+
+	//RegQueryValueEx(HKEY_CURRENT_USER,L"SOFTWARE\\Lenovo\\Easyplus",L"LogLevel",LOG_LEVEL_WARN); 
+
+	Log.add(new DebugLogger());
+	Log.add(new FileLogger(logpath));
+}
 
 void CDeskBand::OnThreadSetupPipe()
 {

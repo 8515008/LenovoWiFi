@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include "Log.h"
+
 extern long g_cDllRef;
 
 CClassFactory::CClassFactory()
@@ -53,15 +55,21 @@ STDMETHODIMP CClassFactory::CreateInstance(IUnknown *pUnkOuter, REFIID riid, voi
 {
 	HRESULT hr = CLASS_E_NOAGGREGATION;
 
+	Log.i(L"CClassFactory::CreateInstance", L"CClassFactory::CreateInstance()\n");
+
+
 	if (!pUnkOuter)
 	{
 		hr = E_OUTOFMEMORY;
 
+		Log.i(L"CClassFactory::CreateInstance", L"CClassFactory::CreateInstance()2\n");
 		CDeskBand *pDeskBand = new CDeskBand();
 		if (pDeskBand)
 		{
+			Log.i(L"CClassFactory::CreateInstance", L"CClassFactory::CreateInstance()3\n");
 			hr = pDeskBand->QueryInterface(riid, ppvObject);
 			pDeskBand->Release();
+			Log.i(L"CClassFactory::CreateInstance", L"CClassFactory::CreateInstance()4\n");
 		}
 	}
 

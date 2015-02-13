@@ -1,5 +1,8 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
+#include <Shlwapi.h>
+#include "Log.h"
+
 
 // {23ED1551-904E-4874-BA46-DBE1489D4D34}
 CLSID CLSIDLenovoWiFiDeskBand = 
@@ -10,8 +13,32 @@ TCHAR CONST LENOVO_WIFI_DESKBAND_NAME[] = TEXT("Lenovo WiFi");
 HINSTANCE g_hInstance = NULL;
 long g_cDllRef = 0;
 
+
+void InitLog()
+{
+	// path: %temp%\lenovo\wifi\deskband.log
+	char logpath[512] = { 0 };
+	GetTempPathA(sizeof(logpath) / sizeof(logpath[0]), logpath);
+	PathAppendA(logpath, "lenovo");
+	CreateDirectoryA(logpath, NULL);
+
+	PathAppendA(logpath, "wifi");
+	CreateDirectoryA(logpath, NULL);
+
+	PathAppendA(logpath, "deskband.log");
+
+	//RegQueryValueEx(HKEY_CURRENT_USER,L"SOFTWARE\\Lenovo\\Easyplus",L"LogLevel",LOG_LEVEL_WARN); 
+
+	Log.add(new DebugLogger());
+	Log.add(new FileLogger(logpath));
+}
+
 STDAPI_(BOOL) DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
+	InitLog();
+
+	Log.i(L"DllMain", L"DllMain()\n");
+
 	if (fdwReason == DLL_PROCESS_ATTACH)
 	{
 		g_hInstance = hinstDLL;
@@ -22,6 +49,8 @@ STDAPI_(BOOL) DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 
 STDAPI DllGetClassObject(REFCLSID rCLSID, REFIID rIID, void **ppv)
 {
+	Log.i(L"DllGetClassObject", L"DllGetClassObject()\n");
+
 	HRESULT hr = CLASS_E_CLASSNOTAVAILABLE;
 
 	if (IsEqualCLSID(CLSIDLenovoWiFiDeskBand, rCLSID))
@@ -41,11 +70,15 @@ STDAPI DllGetClassObject(REFCLSID rCLSID, REFIID rIID, void **ppv)
 
 STDAPI DllCanUnloadNow()
 {
+	Log.i(L"DllCanUnloadNow", L"DllCanUnloadNow %d()\n", g_cDllRef);
+
 	return g_cDllRef > 0 ? S_FALSE : S_OK;
 }
 
 HRESULT RegisterServer()
 {
+	Log.i(L"RegisterServer", L"RegisterServer()\n");
+
 	TCHAR szCLSID[MAX_PATH];
 	StringFromGUID2(CLSIDLenovoWiFiDeskBand, szCLSID, ARRAYSIZE(szCLSID));
 
@@ -137,6 +170,8 @@ HRESULT RegisterServer()
 
 HRESULT RegisterComCat()
 {
+	Log.i(L"RegisterComCat", L"RegisterComCat()\n");
+
 	ICatRegister *pCatRegister;
 	HRESULT hr = CoCreateInstance(CLSID_StdComponentCategoriesMgr, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pCatRegister));
 	if (SUCCEEDED(hr))
@@ -150,6 +185,8 @@ HRESULT RegisterComCat()
 
 STDAPI DllRegisterServer()
 {
+	Log.i(L"DllRegisterServer", L"DllRegisterServer()\n");
+
 	HRESULT hResult = RegisterServer();
 	if (SUCCEEDED(hResult))
 	{
