@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.ServiceProcess;
 
 using NLog;
+using System.Configuration.Install;
 
 namespace Lenovo.WiFi
 {
@@ -105,9 +106,25 @@ namespace Lenovo.WiFi
             }
         }
 
-        public static void Main()
+        public static void Main(string[] args)
         {
-            Run(new WindowsService());
+            if (System.Environment.UserInteractive)
+            {
+                string parameter = string.Concat(args);
+                switch (parameter)
+                {
+                    case "--install":
+                        ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
+                        break;
+                    case "--uninstall":
+                        ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });
+                        break;
+                }
+            }
+            else
+            {
+                ServiceBase.Run(new WindowsService());
+            }
         }
     }
 }

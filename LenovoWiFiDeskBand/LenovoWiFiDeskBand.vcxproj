@@ -218,8 +218,8 @@
   <ItemGroup>
     <Image Include="Resources\ics_connected.ico" />
     <Image Include="Resources\ics_disabled.ico" />
-    <Image Include="Resources\ics_loading_1.ico" />
     <Image Include="Resources\ics_loading_2.ico" />
+    <Image Include="Resources\ics_loading_1.ico" />
     <Image Include="Resources\ics_ready.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
