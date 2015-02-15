@@ -79,13 +79,13 @@ namespace Lenovo.WiFi.Client.ViewModel
 
         public ICommand AcceptChanges { get; protected set; }
 
-        private bool IsSSIDValid(string ssid)
+        private static bool IsSSIDValid(string ssid)
         {
             var length = Encoding.Default.GetByteCount(ssid);
             return length >= 1 && length <= 32;
         }
 
-        private bool IsPresharedKeyValid(string presharedKey)
+        private static bool IsPresharedKeyValid(string presharedKey)
         {
             var length = Encoding.Default.GetByteCount(presharedKey);
             return length >= 8 && length <= 63;

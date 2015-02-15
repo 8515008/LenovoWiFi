@@ -8,7 +8,6 @@ using Lenovo.WiFi.Client.Model;
 
 using MessagingToolkit.QRCode.Codec;
 using ReactiveUI;
-using Autofac;
 
 namespace Lenovo.WiFi.Client.ViewModel
 {

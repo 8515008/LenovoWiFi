@@ -1,5 +1,4 @@
-﻿using Autofac;
-using Lenovo.WiFi.Client.Model;
+﻿using Lenovo.WiFi.Client.Model;
 
 namespace Lenovo.WiFi.Client.ViewModel
 {

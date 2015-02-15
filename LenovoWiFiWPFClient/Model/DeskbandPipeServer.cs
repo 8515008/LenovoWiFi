@@ -3,17 +3,29 @@ using System.IO;
 using System.IO.Pipes;
 using System.Text;
 
+using NLog;
+
 namespace Lenovo.WiFi.Client.Model
 {
     internal class DeskbandPipeServer : IDisposable
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private const string PipeName = "LenovoWiFi";
 
         private readonly NamedPipeServerStream _pipeServerStream;
 
         internal DeskbandPipeServer()
         {
-            _pipeServerStream = new NamedPipeServerStream(PipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
+            Logger.Trace(".ctor: Invoked");
+            _pipeServerStream = new NamedPipeServerStream(
+                PipeName, 
+                PipeDirection.InOut, 
+                1, 
+                PipeTransmissionMode.Message,
+                PipeOptions.Asynchronous);
+
+            Logger.Trace(".ctor: Named pipe created");
         }
 
         public void Dispose()
@@ -30,6 +42,7 @@ namespace Lenovo.WiFi.Client.Model
 
         internal void Start()
         {
+            Logger.Trace("Start: Start waiting for deskband...");
             _pipeServerStream.WaitForConnection();
 
             using (var reader = new StreamReader(_pipeServerStream, Encoding.Unicode))
@@ -40,6 +53,7 @@ namespace Lenovo.WiFi.Client.Model
                     {
                         var line = reader.ReadLine();
                         var exit = false;
+                        Logger.Info("Start: New message arrived: {0}", line);
 
                         switch (line)
                         {
@@ -62,18 +76,17 @@ namespace Lenovo.WiFi.Client.Model
                             case "handshake":
                                 OnHookFinished();
                                 break;
-                            default:
-                                break;
                         }
 
                         if (exit)
                         {
+                            Logger.Trace("Start: Exiting...");
                             break;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
-                        //log ex.string.
+                        Logger.TraceException("Start: An exception was catched", e);
                     }
                 }
             }
@@ -81,8 +94,10 @@ namespace Lenovo.WiFi.Client.Model
 
         internal void Send(string message)
         {
+            Logger.Trace("Send: Invoked with message: {0}", message);
             if (!_pipeServerStream.IsConnected)
             {
+                Logger.Warn("Send: Pipe was disconnected...Message ignored...");
                 return;
             }
 
@@ -94,7 +109,7 @@ namespace Lenovo.WiFi.Client.Model
                 }
                 catch (Exception e)
                 {
-                    
+                    Logger.TraceException("Send: An exception was thrown while writing to the pipe", e);
                 }
             }
         }
@@ -105,6 +120,7 @@ namespace Lenovo.WiFi.Client.Model
             {
                 _pipeServerStream.Disconnect();
             }
+            Logger.Trace("Stop: The pipe was closed");
         }
 
         private void OnDeskbandMouseEnter()
