@@ -49,6 +49,7 @@ namespace Lenovo.WiFi.Client
 
             var splashWindow = _container.Resolve<SplashWindow>();
             splashWindow.Show();
+            splashWindow.Focus();
 
             Task.Factory.StartNew(() =>
             {
@@ -65,6 +66,7 @@ namespace Lenovo.WiFi.Client
                     var successWindow = _container.Resolve<SuccessWindow>();
                     successWindow.DataContext = _container.Resolve<ISuccessViewModel>();
                     successWindow.Show();
+                    successWindow.Focus();
 
                     _currentWindow = successWindow;
                 }));

@@ -19,8 +19,9 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={pf64}\lenovo\{#MyAppName}
+DefaultDirName={pf}\lenovo\{#MyAppName}
 DefaultGroupName={#MyAppName}
+SetupLogging=yes
 DisableProgramGroupPage=yes
 LicenseFile=.\EULA.txt
 OutputDir=.\
@@ -31,6 +32,7 @@ SolidCompression=yes
 Uninstallable=true
 UninstallDisplayIcon={app}\{#MyAppExeName}
 AlwaysRestart=no
+ArchitecturesInstallIn64BitMode=x64
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -54,8 +56,10 @@ Source: ".\System.Reactive.Core.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\System.Reactive.Interfaces.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\System.Reactive.Linq.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\System.Reactive.PlatformServices.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\System.Reactive.Windows.Threading.dll"; DestDir: "{app}"; Flags: ignoreversionSource: ".\LenovoWiFiDeskBand.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs uninsrestartdelete regserver;
-Source: ".\LenovoWiFiDeskbandHook.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\System.Reactive.Windows.Threading.dll"; DestDir: "{app}"; Flags: ignoreversionSource: ".\Win32\LenovoWiFiDeskBand.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs uninsrestartdelete regserver; Check: not Is64BitInstallMode
+Source: ".\Win32\LenovoWiFiDeskbandHook.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: not Is64BitInstallMode
+Source: ".\x64\LenovoWiFiDeskBand.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs uninsrestartdelete regserver; Check: Is64BitInstallMode
+Source: ".\x64\LenovoWiFiDeskbandHook.dll"; DestDir: "{app}"; Flags: ignoreversion; Check: Is64BitInstallMode
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -68,7 +72,7 @@ Root: HKLM; Subkey: "Software\Lenovo\LenovoWiFi"; ValueType: string; ValueName: 
 Root: HKLM; Subkey: "Software\Lenovo\LenovoWiFi"; ValueType: string; ValueName: "Version"; ValueData: "PKGVERSION"; 
 
 [Run]
-Filename: {sys}\sc.exe; Parameters: "create LenovoWiFi start=auto binPath= ""{app}\LenovoWiFiWCFService.exe""" ; Flags: runhidden
+Filename: {sys}\sc.exe; Parameters: "create LenovoWiFi start= auto binPath= ""{app}\LenovoWiFiWCFService.exe""" ; Flags: runhidden
 Filename: {sys}\sc.exe; Parameters: "start LenovoWiFi" ; Flags: runhidden
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
@@ -77,5 +81,6 @@ Type: filesandordirs; Name: "{app}"
 
 [UninstallRun]
 ;Filename: "{cf32}\lenovo\easyplussdk\uninstall.exe"; Parameters: "/verysilent /NORESTART /APPNAME SHAREit"; Check: not IsWinXP();
-Filename: {sys}\sc.exe; Parameters: "stop LenovoWiFi" ; Flags: runhidden;Filename: {sys}\sc.exe; Parameters: "delete LenovoWiFi" ; Flags: runhidden
+Filename: {sys}\sc.exe; Parameters: "stop LenovoWiFi" ; Flags: runhidden
+Filename: {sys}\sc.exe; Parameters: "delete LenovoWiFi" ; Flags: runhidden
 

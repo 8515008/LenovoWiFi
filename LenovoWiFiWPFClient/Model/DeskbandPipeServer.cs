@@ -13,7 +13,7 @@ namespace Lenovo.WiFi.Client.Model
 
         internal DeskbandPipeServer()
         {
-            _pipeServerStream = new NamedPipeServerStream(PipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Message);
+            _pipeServerStream = new NamedPipeServerStream(PipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous);
         }
 
         public void Dispose()

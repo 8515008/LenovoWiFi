@@ -1,13 +1,20 @@
 echo "Welcome to lenovo wifi build console"
 
-;msbuild "xxx.sln" /p:Configuration=Release /p:Platform=x86
+%VS120COMNTOOLS%\vsDevCmd.bat
 
-;C:\Users\james\Documents\GitHub\LenovoWiFi
+msbuild "..\LenovoWiFi.sln" /p:Configuration=Release /p:Platform=Win32
+msbuild "..\LenovoWiFi.sln" /p:Configuration=Release /p:Platform=x64
 
 del ..\..\output\* /S /Q
 md ..\..\output
+md ..\..\rel_inst
 
-copy * ..\..\output\
-copy ..\bin\Release\* ..\..\output\
-copy ..\bin\Release\x64\* ..\..\output\
+xcopy * ..\..\output\
+xcopy ..\bin\Release\* ..\..\output\ /S
+
 "C:\Program Files (x86)\Inno Setup 5\Compil32.exe" /cc "..\..\output\LenovoWifiInstaller.iss"
+
+set dst=%date:~0,4%%date:~5,2%%date:~8,2%
+del ..\..\rel_inst\%dst%\* /S /Q
+md ..\..\rel_inst\%dst%
+move ..\..\output\LenovoWifiSetup.exe ..\..\rel_inst\%dst%\lenovowifi%dst%.exe
