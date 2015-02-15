@@ -383,10 +383,11 @@ namespace Lenovo.WiFi
             WlanHostedNetworkReason failReason;
 
             Logger.Trace("SetHostedNetworkKey: Invoking WlanHostedNetworkSetSecondaryKey...");
+
             Utilities.ThrowOnError(
                 NativeMethods.WlanHostedNetworkSetSecondaryKey(
                     this._wlanHandle,
-                    (uint) key.Length + 1,
+                    (uint) keyLength + 1,
                     Encoding.ASCII.GetBytes(key),
                     true,
                     true,
@@ -526,7 +527,7 @@ namespace Lenovo.WiFi
                 throw new ApplicationException("No preferred public network is available.");
             }
 
-            Logger.Error("GetPreferredPublicGuid: Preferred GUID: {0}", nic.Id);
+            Logger.Info("GetPreferredPublicGuid: Preferred GUID: {0}", nic.Id);
             return new Guid(nic.Id);
         }
 

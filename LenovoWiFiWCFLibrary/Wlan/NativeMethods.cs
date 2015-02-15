@@ -143,7 +143,6 @@ namespace Lenovo.WiFi.Wlan
 
         #region WlanRegisterNotification
 
-
         public delegate void WlanNotificationCallback(WlanNotificationData notificationData, IntPtr context);
 
         [DllImport(WlanApiDll)]

@@ -116,7 +116,6 @@ namespace Lenovo.WiFi.Wlan
         Active
     }
 
-    [Flags]
     internal enum WlanNotificationSource : uint
     {
         None = 0,
